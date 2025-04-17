@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import BaseHead from '../../components/BaseHead.astro';
 import { getCollection, render } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
 
@@ -15,6 +16,9 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 <BaseLayout title={`${entry.data.title} | Portfolio | ${SITE_TITLE}`} description={entry.data.description}>
+  <head>
+    <BaseHead title={`${entry.data.title} | Portfolio | ${SITE_TITLE}`} description={entry.data.description} image={entry.data.heroImage} />
+  </head>
     <main>
         <article>
             <div class="hero-image">
