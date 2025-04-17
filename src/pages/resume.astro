@@ -12,11 +12,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 				</div>
 				<h1 class="text-4xl md:text-5xl font-bold mt-4">심상현</h1>
 				<p class="job-title mt-2">Software Engineer</p>
+				<div class="contact-info-inline mt-3 flex justify-center gap-4 text-xs text-gray-500">
+					<span class="flex items-center"><span class="text-emoji-sm">✉️</span> <a href="mailto:simsanghyeon00@gmail.com" class="hover-link-sm">simsanghyeon00@gmail.com</a></span>
+					<span class="flex items-center"><span class="text-emoji-sm">💻</span> <a href="https://github.com/halfmoon-mind" target="_blank" rel="noopener noreferrer" class="hover-link-sm">github.com/halfmoon-mind</a></span>
+				</div>
 			</div>
 
 			<div class="profile-content grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
 				<!-- 연락처 정보 -->
-				<div class="contact-section space-y-3 md:col-span-1">
+				<!-- <div class="contact-section space-y-3 md:col-span-1">
 					<h3 class="text-xs uppercase tracking-widest mb-3 font-medium section-label">연락처</h3>
 					
 					<div class="flex items-center space-x-3">
@@ -46,10 +50,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 							Github
 						</a>
 					</div>
-				</div>
+				</div> -->
 
 				<!-- 소개 정보 -->
-				<div class="intro-section md:col-span-2">
+				<div class="intro-section md:col-span-3">
 					<h3 class="text-xs uppercase tracking-widest mb-4 font-medium section-label">소개</h3>
 					<p class="text-sm leading-relaxed whitespace-pre-line">
 						웹 개발 및 소프트웨어 엔지니어링에 5년 이상의 경험이 있는 전문가입니다. 
@@ -190,6 +194,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		margin-top: 0.5rem;
 	}
 	
+	.mt-3 {
+		margin-top: 0.75rem;
+	}
+	
 	.mt-4 {
 		margin-top: 1rem;
 	}
@@ -200,6 +208,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 	
 	.grid {
 		display: grid;
+	}
+	
+	.gap-4 {
+		gap: 1rem;
 	}
 	
 	.gap-6 {
@@ -216,6 +228,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 	
 	.flex {
 		display: flex;
+	}
+	
+	.justify-center {
+		justify-content: center;
 	}
 	
 	.items-center {
@@ -267,6 +283,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		color: #666;
 	}
 	
+	.text-emoji-sm {
+		color: #666;
+		font-size: 0.875rem;
+		margin-right: 0.25rem;
+	}
+	
+	.text-gray-500 {
+		color: #6b7280;
+	}
+	
 	.hover-link {
 		color: #0077cc;
 		transition: color 0.2s, text-decoration 0.2s;
@@ -275,6 +301,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 	.hover-link:hover {
 		color: #005fa3;
 		text-decoration: underline;
+	}
+	
+	.hover-link-sm {
+		color: #0077cc;
+		transition: color 0.2s, text-decoration 0.2s;
+		font-size: 0.75rem;
+	}
+	
+	.hover-link-sm:hover {
+		color: #005fa3;
+		text-decoration: underline;
+	}
+	
+	.contact-info-inline {
+		font-size: 0.75rem;
+		color: #6b7280;
 	}
 	
 	/* 기존 스타일 오버라이드 */
@@ -449,5 +491,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 		.period {
 			margin-top: 0.25rem;
 		}
+	}
+
+	.job-title {
+		margin: 0.2rem 0 !important;
+		padding: 0 !important;
+		font-weight: 500;
 	}
 </style> 
