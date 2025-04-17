@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
 
 export async function getStaticPaths() {
@@ -12,9 +12,8 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-// For Astro content collections
+const { Content } = await render(entry);
 ---
-
 <BaseLayout title={`${entry.data.title} | Portfolio | ${SITE_TITLE}`} description={entry.data.description}>
     <main>
         <article>
@@ -73,8 +72,8 @@ const { entry } = Astro.props;
                     )}
                 </div>
                 <div class="content">
-                    <!-- Display the raw markdown content -->
-                    <div set:html={entry.body}></div>
+                    <!-- Display the rendered markdown content -->
+                    <Content />
                 </div>
                 <div class="back-link">
                     <a href="/portfolio">← Back to Portfolio</a>
