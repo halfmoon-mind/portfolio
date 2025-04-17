@@ -1,0 +1,453 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="이력서" description="전문가 이력서">
+	<div class="resume-container">
+		<!-- 프로필 헤더 영역 (Resume_example.tsx 참고) -->
+		<div class="resume-header">
+			<div class="profile-title text-center mb-8">
+				<div class="profile-image-container">
+					<img src="/profile.jpg" alt="심상현 프로필 이미지" class="profile-image" />
+				</div>
+				<h1 class="text-4xl md:text-5xl font-bold mt-4">심상현</h1>
+				<p class="job-title mt-2">Software Engineer</p>
+			</div>
+
+			<div class="profile-content grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+				<!-- 연락처 정보 -->
+				<div class="contact-section space-y-3 md:col-span-1">
+					<h3 class="text-xs uppercase tracking-widest mb-3 font-medium section-label">연락처</h3>
+					
+					<div class="flex items-center space-x-3">
+						<span class="text-emoji">📞</span>
+						<p class="text-sm">010-1234-5678</p>
+					</div>
+					
+					<div class="flex items-center space-x-3">
+						<span class="text-emoji">✉️</span>
+						<a href="mailto:email@example.com" class="text-sm hover-link">
+							email@example.com
+						</a>
+					</div>
+					
+					<div class="flex items-center space-x-3">
+						<span class="text-emoji">📍</span>
+						<p class="text-sm">서울특별시</p>
+					</div>
+					
+					<div class="flex items-center space-x-3">
+						<span class="text-emoji">💻</span>
+						<a 
+							href="https://github.com/yourusername" 
+							target="_blank" 
+							rel="noopener noreferrer" 
+							class="text-sm hover-link">
+							Github
+						</a>
+					</div>
+				</div>
+
+				<!-- 소개 정보 -->
+				<div class="intro-section md:col-span-2">
+					<h3 class="text-xs uppercase tracking-widest mb-4 font-medium section-label">소개</h3>
+					<p class="text-sm leading-relaxed whitespace-pre-line">
+						웹 개발 및 소프트웨어 엔지니어링에 5년 이상의 경험이 있는 전문가입니다. 
+						프론트엔드와 백엔드 개발에 모두 능숙하며, 사용자 중심의 웹 애플리케이션을 
+						구축하는 데 열정을 가지고 있습니다.
+						
+						새로운 기술을 배우고 적용하는 것을 좋아하며, 문제 해결 능력과 
+						팀 협업 능력을 중요시합니다. 
+						항상 사용자 경험을 최우선으로 생각하며 개발하고 있습니다.
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="resume-section">
+			<h2>기술 스택</h2>
+			<div class="section-content skills">
+				<div class="skill-category">
+					<h3>프론트엔드</h3>
+					<ul>
+						<li>HTML5 / CSS3</li>
+						<li>JavaScript / TypeScript</li>
+						<li>React / Vue.js</li>
+						<li>Next.js / Astro</li>
+						<li>Tailwind CSS</li>
+					</ul>
+				</div>
+				<div class="skill-category">
+					<h3>백엔드</h3>
+					<ul>
+						<li>Node.js</li>
+						<li>Express.js</li>
+						<li>Python / Django</li>
+						<li>REST API 설계</li>
+						<li>GraphQL</li>
+					</ul>
+				</div>
+				<div class="skill-category">
+					<h3>기타</h3>
+					<ul>
+						<li>Git / GitHub</li>
+						<li>Docker</li>
+						<li>AWS / Vercel</li>
+						<li>CI/CD</li>
+						<li>Agile 방법론</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="resume-section">
+			<h2>경력</h2>
+			<div class="section-content">
+				<div class="experience-item">
+					<div class="experience-header">
+						<h3>ABC 테크놀로지</h3>
+						<p class="period">2020년 6월 - 현재</p>
+					</div>
+					<p class="position">시니어 프론트엔드 개발자</p>
+					<ul class="responsibilities">
+						<li>SaaS 제품의 웹 인터페이스 개발 및 개선</li>
+						<li>React와 TypeScript를 사용하여 재사용 가능한 컴포넌트 라이브러리 구축</li>
+						<li>성능 최적화로 페이지 로딩 시간 40% 단축</li>
+						<li>주니어 개발자 멘토링 및 코드 리뷰 담당</li>
+					</ul>
+				</div>
+
+				<div class="experience-item">
+					<div class="experience-header">
+						<h3>XYZ 솔루션즈</h3>
+						<p class="period">2018년 3월 - 2020년 5월</p>
+					</div>
+					<p class="position">풀스택 개발자</p>
+					<ul class="responsibilities">
+						<li>고객 관리 시스템 개발 및 유지보수</li>
+						<li>Node.js와 Express를 사용한 RESTful API 구현</li>
+						<li>데이터베이스 설계 및 최적화</li>
+						<li>애자일 개발 방법론을 적용한 프로젝트 진행</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="resume-section">
+			<h2>교육</h2>
+			<div class="section-content">
+				<div class="education-item">
+					<div class="education-header">
+						<h3>한국대학교</h3>
+						<p class="period">2014년 3월 - 2018년 2월</p>
+					</div>
+					<p>컴퓨터공학 학사</p>
+					<p>학점: 4.0/4.5</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="resume-section">
+			<h2>프로젝트</h2>
+			<div class="section-content">
+				<div class="project-item">
+					<h3>개인 포트폴리오 웹사이트</h3>
+					<p>Astro, TypeScript, Tailwind CSS를 사용하여 개발한 개인 블로그 및 포트폴리오 웹사이트</p>
+					<p><a href="https://github.com/yourusername/portfolio" target="_blank">GitHub 링크</a></p>
+				</div>
+
+				<div class="project-item">
+					<h3>온라인 쇼핑몰</h3>
+					<p>React, Node.js, MongoDB를 사용하여 개발한 e-커머스 플랫폼</p>
+					<p><a href="https://github.com/yourusername/e-commerce" target="_blank">GitHub 링크</a></p>
+				</div>
+			</div>
+		</div>
+
+		<div class="resume-section">
+			<h2>자격증</h2>
+			<div class="section-content">
+				<ul class="certification-list">
+					<li>AWS 공인 솔루션스 아키텍트 (2022)</li>
+					<li>정보처리기사 (2018)</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</BaseLayout>
+
+<style>
+	/* Resume_example.tsx 스타일 적용 */
+	.text-center {
+		text-align: center;
+	}
+	
+	.mb-8 {
+		margin-bottom: 2rem;
+	}
+	
+	.mt-2 {
+		margin-top: 0.5rem;
+	}
+	
+	.mt-4 {
+		margin-top: 1rem;
+	}
+	
+	.mt-8 {
+		margin-top: 2rem;
+	}
+	
+	.grid {
+		display: grid;
+	}
+	
+	.gap-6 {
+		gap: 1.5rem;
+	}
+	
+	.space-y-3 > * + * {
+		margin-top: 0.75rem;
+	}
+	
+	.space-x-3 {
+		column-gap: 0.75rem;
+	}
+	
+	.flex {
+		display: flex;
+	}
+	
+	.items-center {
+		align-items: center;
+	}
+	
+	.text-xs {
+		font-size: 0.75rem;
+	}
+	
+	.text-sm {
+		font-size: 0.875rem;
+		color: #555;
+	}
+	
+	.text-4xl {
+		font-size: 2.25rem;
+	}
+	
+	.font-medium {
+		font-weight: 500;
+	}
+	
+	.font-bold {
+		font-weight: 700;
+	}
+	
+	.uppercase {
+		text-transform: uppercase;
+	}
+	
+	.tracking-widest {
+		letter-spacing: 0.1em;
+	}
+	
+	.whitespace-pre-line {
+		white-space: pre-line;
+	}
+	
+	.leading-relaxed {
+		line-height: 1.625;
+	}
+	
+	.section-label {
+		color: #777;
+	}
+	
+	.text-emoji {
+		color: #666;
+	}
+	
+	.hover-link {
+		color: #0077cc;
+		transition: color 0.2s, text-decoration 0.2s;
+	}
+	
+	.hover-link:hover {
+		color: #005fa3;
+		text-decoration: underline;
+	}
+	
+	/* 기존 스타일 오버라이드 */
+	.resume-header {
+		border-bottom: none;
+		margin-bottom: 3rem;
+	}
+	
+	.profile-image-container {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 1rem;
+	}
+	
+	.profile-image {
+		width: 160px;
+		height: 160px;
+		border-radius: 50%;
+		object-fit: cover;
+		border: 3px solid #f0f0f0;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	}
+	
+	@media (min-width: 768px) {
+		.grid-cols-1 {
+			grid-template-columns: repeat(1, minmax(0, 1fr));
+		}
+		
+		.md\:grid-cols-3 {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+		
+		.md\:col-span-1 {
+			grid-column: span 1 / span 1;
+		}
+		
+		.md\:col-span-2 {
+			grid-column: span 2 / span 2;
+		}
+		
+		.md\:text-5xl {
+			font-size: 3rem;
+		}
+	}
+	
+	.resume-container {
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 2rem;
+		background-color: white;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		border-radius: 8px;
+	}
+
+	.resume-section {
+		margin-bottom: 2rem;
+	}
+
+	.resume-section h2 {
+		border-bottom: 2px solid #f0f0f0;
+		padding-bottom: 0.5rem;
+		font-size: 1.5rem;
+		color: #444;
+	}
+
+	.section-content {
+		padding: 1rem 0;
+	}
+
+	.skills {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+		gap: 2rem;
+	}
+
+	.skill-category h3 {
+		margin-top: 0;
+		color: #555;
+	}
+
+	.skill-category ul {
+		list-style-type: none;
+		padding: 0;
+	}
+
+	.skill-category li {
+		margin-bottom: 0.5rem;
+		background-color: #f8f8f8;
+		padding: 0.5rem 1rem;
+		border-radius: 4px;
+		font-weight: 500;
+	}
+
+	.experience-item, .education-item, .project-item {
+		margin-bottom: 1.5rem;
+	}
+
+	.experience-header, .education-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+	}
+
+	.experience-header h3, .education-header h3, .project-item h3 {
+		margin: 0;
+		color: #333;
+	}
+
+	.period {
+		color: #666;
+		font-style: italic;
+	}
+
+	.position {
+		color: #555;
+		font-weight: 500;
+		margin: 0.5rem 0;
+	}
+
+	.responsibilities {
+		margin-top: 0.5rem;
+	}
+
+	.responsibilities li {
+		margin-bottom: 0.25rem;
+	}
+
+	.project-item p {
+		margin: 0.5rem 0;
+	}
+
+	.certification-list {
+		list-style-type: none;
+		padding: 0;
+	}
+
+	.certification-list li {
+		background-color: #f8f8f8;
+		padding: 0.75rem 1rem;
+		border-radius: 4px;
+		margin-bottom: 0.5rem;
+		font-weight: 500;
+	}
+
+	a {
+		color: #0077cc;
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: underline;
+	}
+
+	@media (max-width: 768px) {
+		.profile-section {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.profile-image {
+			margin-bottom: 1rem;
+		}
+
+		.skills {
+			grid-template-columns: 1fr;
+		}
+
+		.experience-header, .education-header {
+			flex-direction: column;
+		}
+
+		.period {
+			margin-top: 0.25rem;
+		}
+	}
+</style> 
