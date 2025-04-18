@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import BaseHead from '../../components/BaseHead.astro';
 import { getCollection, render } from 'astro:content';
 import { SITE_TITLE } from '../../consts';
+import { Image } from 'astro:assets';
 
 export async function getStaticPaths() {
     const portfolioEntries = await getCollection('portfolio');
@@ -14,6 +15,11 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+
+// 페이지 내에 표시될 이미지 최적 크기 정의
+const DISPLAY_IMAGE_WIDTH = 1200;
+const DISPLAY_IMAGE_HEIGHT = 600;
+const IMAGE_QUALITY = 85;
 ---
 <BaseLayout title={`${entry.data.title} | Portfolio | ${SITE_TITLE}`} description={entry.data.description} image={entry.data.heroImage}>
   <head>
@@ -23,7 +29,16 @@ const { Content } = await render(entry);
         <article>
             <div class="hero-image">
                 {entry.data.heroImage && (
-                    <img src={entry.data.heroImage} alt={`Cover image for ${entry.data.title}`} />
+                    entry.data.heroImage.startsWith('http') ? (
+                        <img src={entry.data.heroImage} alt={`Cover image for ${entry.data.title}`} />
+                    ) : (
+                        <img 
+                            src={`${entry.data.heroImage}?w=${DISPLAY_IMAGE_WIDTH}&h=${DISPLAY_IMAGE_HEIGHT}&q=${IMAGE_QUALITY}&fit=cover`} 
+                            alt={`Cover image for ${entry.data.title}`} 
+                            width={DISPLAY_IMAGE_WIDTH}
+                            height={DISPLAY_IMAGE_HEIGHT}
+                        />
+                    )
                 )}
             </div>
             <div class="prose">

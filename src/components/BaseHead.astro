@@ -3,6 +3,7 @@
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
 import { SITE_TITLE } from '../consts';
+import { Image } from 'astro:assets';
 
 interface Props {
 	title: string;
@@ -15,7 +16,31 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 
 // 이미지 URL 처리 로직 추가
-const imageUrl = image.startsWith('http') ? image : new URL(image, Astro.site).toString();
+let imageUrl = image;
+let optimizedImageUrl = image;
+
+// OG 이미지 권장 크기 (소셜 미디어 플랫폼 최적화)
+const OG_IMAGE_WIDTH = 1200;
+const OG_IMAGE_HEIGHT = 630;
+
+// 이미지가 로컬 경로인 경우 최적화 작업 수행
+if (!image.startsWith('http')) {
+  // 이미지가 상대 경로일 경우 절대 URL로 변환
+  imageUrl = new URL(image, Astro.site).toString();
+  
+  // OG 이미지 최적화를 위한 URL 생성 (Astro의 이미지 서비스 활용)
+  try {
+    // 이미지 서비스를 사용하여 최적화된 이미지 URL 생성
+    // 가로/세로 크기와 품질 파라미터 추가
+    optimizedImageUrl = `${imageUrl}?w=${OG_IMAGE_WIDTH}&h=${OG_IMAGE_HEIGHT}&q=75&fit=cover`;
+  } catch (e) {
+    console.error('이미지 최적화 중 오류 발생:', e);
+    optimizedImageUrl = imageUrl;
+  }
+} else {
+  // 외부 이미지는 그대로 사용
+  optimizedImageUrl = imageUrl;
+}
 ---
 
 <!-- Global Metadata -->
@@ -48,11 +73,11 @@ const imageUrl = image.startsWith('http') ? image : new URL(image, Astro.site).t
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={imageUrl} />
+<meta property="og:image" content={optimizedImageUrl} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={imageUrl} />
+<meta property="twitter:image" content={optimizedImageUrl} />
