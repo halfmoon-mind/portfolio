@@ -6,11 +6,18 @@ import { SITE_TITLE } from '../consts';
 <header>
 	<nav>
 		<h2><a href="/">{SITE_TITLE}</a></h2>
-		<div class="internal-links">
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/blog">Blog</HeaderLink>
-			<HeaderLink href="/portfolio">Portfolio</HeaderLink>
-			<HeaderLink href="/resume">Resume</HeaderLink>
+		<div class="menu-container">
+			<button id="menu-toggle" aria-label="메뉴 열기">
+				<div class="menu-icon-wrapper">
+					<span class="menu-icon"></span>
+				</div>
+			</button>
+			<div class="internal-links" id="dropdown-menu">
+				<HeaderLink href="/">Home</HeaderLink>
+				<HeaderLink href="/blog">Blog</HeaderLink>
+				<HeaderLink href="/portfolio">Portfolio</HeaderLink>
+				<HeaderLink href="/resume">Resume</HeaderLink>
+			</div>
 		</div>
 		<div class="social-links">
 			<a href="https://github.com/halfmoon-mind" target="_blank">
@@ -38,8 +45,8 @@ import { SITE_TITLE } from '../consts';
 	header {
 		margin: 0;
 		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
+		background: #f9f9f9;
+		box-shadow: none;
 	}
 	h2 {
 		margin: 0;
@@ -58,20 +65,201 @@ import { SITE_TITLE } from '../consts';
 	nav a {
 		padding: 1em 0.5em;
 		color: var(--black);
-		border-bottom: 4px solid transparent;
+		border-bottom: none;
 		text-decoration: none;
 	}
 	nav a.active {
 		text-decoration: none;
-		border-bottom-color: var(--accent);
+		color: var(--accent);
 	}
 	.social-links,
 	.social-links a {
 		display: flex;
 	}
+	
+	.menu-container {
+		position: relative;
+		display: flex;
+		align-items: center;
+	}
+	
+	#menu-toggle {
+		display: none;
+		position: relative;
+		width: 44px;
+		height: 44px;
+		background: #f5f5f5;
+		border: none;
+		border-radius: 50%;
+		cursor: pointer;
+		transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+		box-shadow: none;
+		margin-right: 12px;
+		-webkit-tap-highlight-color: transparent;
+	}
+	
+	#menu-toggle:hover {
+		box-shadow: none;
+		transform: translateY(-2px);
+	}
+	
+	#menu-toggle:active {
+		transform: scale(0.95);
+	}
+	
+	.menu-icon-wrapper {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+	}
+	
+	.menu-icon {
+		position: relative;
+		width: 20px;
+		height: 2px;
+		background-color: #444;
+		border-radius: 4px;
+		transition: all 0.3s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+	}
+	
+	.menu-icon::before,
+	.menu-icon::after {
+		content: '';
+		position: absolute;
+		width: 20px;
+		height: 2px;
+		background-color: #444;
+		border-radius: 4px;
+		transition: all 0.3s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+	}
+	
+	.menu-icon::before {
+		top: -6px;
+		left: 0;
+		width: 16px;
+	}
+	
+	.menu-icon::after {
+		bottom: -6px;
+		left: 0;
+		width: 14px;
+	}
+	
+	#menu-toggle.active {
+		background: #efefef;
+		box-shadow: none;
+	}
+	
+	#menu-toggle.active .menu-icon {
+		background-color: transparent;
+		transform: rotate(360deg);
+	}
+	
+	#menu-toggle.active .menu-icon::before {
+		transform: rotate(45deg) translate(4px, 4px);
+		width: 20px;
+		background-color: var(--accent, #0077CC);
+	}
+	
+	#menu-toggle.active .menu-icon::after {
+		transform: rotate(-45deg) translate(4px, -4px);
+		width: 20px;
+		background-color: var(--accent, #0077CC);
+	}
+	
 	@media (max-width: 720px) {
 		.social-links {
 			display: none;
 		}
+		
+		#menu-toggle {
+			display: flex;
+		}
+		
+		.internal-links {
+			display: none;
+			position: absolute;
+			top: calc(100% + 8px);
+			right: 0;
+			background: #f5f5f5;
+			box-shadow: none;
+			border: none;
+			z-index: 10;
+			width: 220px;
+			padding: 4px 0;
+			border-radius: 12px;
+			overflow: hidden;
+			opacity: 0;
+			transform: translateY(-8px);
+			transition: opacity 0.3s ease, transform 0.3s ease;
+		}
+		
+		.internal-links.show {
+			display: block;
+			opacity: 1;
+			transform: translateY(0);
+		}
+		
+		.internal-links a {
+			display: flex;
+			align-items: center;
+			padding: 12px 16px;
+			font-weight: 500;
+			border-bottom: none;
+			transition: background-color 0.2s ease;
+		}
+		
+		.internal-links a:hover {
+			background-color: #eaeaea;
+		}
+		
+		.internal-links a.active {
+			border-left: none;
+			padding-left: 16px;
+			background-color: #ebebeb;
+			border-bottom: none;
+			color: var(--accent, #0077CC);
+			font-weight: 600;
+		}
 	}
 </style>
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		const menuToggle = document.getElementById('menu-toggle');
+		const dropdownMenu = document.getElementById('dropdown-menu');
+		
+		if (menuToggle && dropdownMenu) {
+			menuToggle.addEventListener('click', (e) => {
+				e.stopPropagation();
+				menuToggle.classList.toggle('active');
+				dropdownMenu.classList.toggle('show');
+				
+				// 접근성: aria-expanded 상태 토글
+				const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+				menuToggle.setAttribute('aria-expanded', (!isExpanded).toString());
+				menuToggle.setAttribute('aria-label', isExpanded ? '메뉴 열기' : '메뉴 닫기');
+			});
+			
+			// 드롭다운 메뉴 외부 클릭 시 메뉴 닫기
+			document.addEventListener('click', (event) => {
+				const target = event.target as Node;
+				const isClickInside = menuToggle.contains(target) || dropdownMenu.contains(target);
+				
+				if (!isClickInside && dropdownMenu.classList.contains('show')) {
+					menuToggle.classList.remove('active');
+					dropdownMenu.classList.remove('show');
+					menuToggle.setAttribute('aria-expanded', 'false');
+					menuToggle.setAttribute('aria-label', '메뉴 열기');
+				}
+			});
+			
+			// 초기 접근성 속성 설정
+			menuToggle.setAttribute('aria-expanded', 'false');
+			menuToggle.setAttribute('aria-controls', 'dropdown-menu');
+		}
+	});
+</script>
