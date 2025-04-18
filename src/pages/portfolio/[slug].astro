@@ -21,10 +21,11 @@ const DISPLAY_IMAGE_WIDTH = 1200;
 const DISPLAY_IMAGE_HEIGHT = 600;
 const IMAGE_QUALITY = 85;
 ---
-<BaseLayout title={`${entry.data.title} | Portfolio | ${SITE_TITLE}`} description={entry.data.description} image={entry.data.heroImage}>
-  <head>
+
+<head>
     <BaseHead title={`${entry.data.title} | Portfolio | ${SITE_TITLE}`} description={entry.data.description} image={entry.data.heroImage} />
-  </head>
+</head>
+<BaseLayout title={`${entry.data.title} | Portfolio | ${SITE_TITLE}`} description={entry.data.description} heroImage={entry.data.heroImage} pubDate={entry.data.pubDate} updatedDate={entry.data.updatedDate} tags={entry.data.tags} githubUrl={entry.data.githubUrl} liveUrl={entry.data.liveUrl}>
     <main>
         <article>
             <div class="hero-image">

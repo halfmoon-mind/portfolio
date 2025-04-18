@@ -1,20 +1,29 @@
 ---
+import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-interface Props {
-	title: string;
-	description: string;
-	image?: string;
-}
+type Props = CollectionEntry<'portfolio'>['data'];
 
-const { title, description, image } = Astro.props;
+const { title, description, heroImage } = Astro.props;
 ---
 
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description} image={image} />
+		<BaseHead title={title} description={description} />
+		<style>
+			body {
+				display: flex;
+				flex-direction: column;
+				min-height: 100vh;
+			}
+			main {
+				flex: 1;
+				width: 100%;
+				margin: 0;
+			}
+		</style>
 	</head>
 	<body>
 		<Header />
@@ -25,15 +34,3 @@ const { title, description, image } = Astro.props;
 	</body>
 </html>
 
-<style>
-	body {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-	main {
-		flex: 1;
-		width: 100%;
-		margin: 0;
-	}
-</style>
