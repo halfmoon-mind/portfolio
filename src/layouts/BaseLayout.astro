@@ -3,15 +3,32 @@ import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { SITE_TITLE } from '../consts';
 
 type Props = CollectionEntry<'portfolio'>['data'];
 
 const { title, description, heroImage } = Astro.props;
+
+// 웹사이트 구조화된 데이터 생성
+const websiteSchema = {
+	"@context": "https://schema.org",
+	"@type": "WebSite",
+	"name": SITE_TITLE,
+	"url": Astro.site?.toString(),
+	"potentialAction": {
+		"@type": "SearchAction",
+		"target": {
+			"@type": "EntryPoint",
+			"urlTemplate": `${Astro.site}search?q={search_term_string}`
+		},
+		"query-input": "required name=search_term_string"
+	}
+};
 ---
 
-<html lang="en">
+<html lang="ko">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead title={title} description={description} image={heroImage} />
 		<style>
 			body {
 				display: flex;
@@ -25,6 +42,8 @@ const { title, description, heroImage } = Astro.props;
 				margin: 0 auto;
 			}
 		</style>
+		<!-- Schema.org 구조화된 데이터 -->
+		<script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
 	</head>
 	<body>
 		<Header />

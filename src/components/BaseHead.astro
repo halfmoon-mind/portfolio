@@ -2,18 +2,24 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
-import { SITE_TITLE } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { Image } from 'astro:assets';
 
 interface Props {
 	title: string;
 	description: string;
 	image?: string;
+	article?: boolean;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
+const { 
+	title, 
+	description = SITE_DESCRIPTION, 
+	image = '/blog-placeholder-1.jpg',
+	article = false
+} = Astro.props;
 
 // 이미지 URL 처리 로직 추가
 let imageUrl = image;
@@ -67,13 +73,19 @@ if (!image.startsWith('http')) {
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
+<meta name="author" content="사이트 작성자 이름" />
+<meta name="keywords" content="포트폴리오, 블로그, 기술, 개발, 웹 개발" />
 
 <!-- Open Graph / Facebook -->
-<meta property="og:type" content="website" />
+<meta property="og:type" content={article ? 'article' : 'website'} />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={optimizedImageUrl} />
+<meta property="og:image:width" content={OG_IMAGE_WIDTH.toString()} />
+<meta property="og:image:height" content={OG_IMAGE_HEIGHT.toString()} />
+<meta property="og:site_name" content={SITE_TITLE} />
+<meta property="og:locale" content="ko_KR" />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
@@ -81,3 +93,14 @@ if (!image.startsWith('http')) {
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={optimizedImageUrl} />
+<meta name="twitter:creator" content="@트위터핸들" />
+
+<!-- Mobile App Meta Tags -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="apple-mobile-web-app-title" content={SITE_TITLE} />
+
+<!-- Security and Performance -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="theme-color" content="#ffffff" />
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
