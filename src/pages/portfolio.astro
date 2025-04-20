@@ -3,11 +3,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { SITE_TITLE } from '../consts';
 
+const title = `Portfolio | ${SITE_TITLE}`;
+const description = '다양한 프로젝트를 한 눈에 보아요';
 // Get all portfolio entries
 const portfolioEntries = await getCollection('portfolio');
 ---
 
-<BaseLayout title={`Portfolio | ${SITE_TITLE}`} description="다양한 프로젝트를 한 눈에 보아요" pubDate={new Date()}>
+<BaseLayout title={title} description={description} pubDate={new Date()} updatedDate={new Date()}>
 	<main>
 		<section>
 			<h1>Portfolio</h1>

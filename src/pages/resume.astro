@@ -1,8 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE_TITLE } from '../consts';
+
+const title = `Resume | ${SITE_TITLE}`;
+const description = '심상현의 이력서';
 ---
 
-<BaseLayout title="이력서" description="전문가 이력서">
+<BaseLayout title={title} description={description} pubDate={new Date()} updatedDate={new Date()}>
 	<div class="resume-container">
 		<!-- 프로필 헤더 영역 (Resume_example.tsx 참고) -->
 		<div class="resume-header">

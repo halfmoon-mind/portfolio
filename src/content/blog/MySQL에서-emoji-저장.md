@@ -1,9 +1,9 @@
 ---
-title: "MySQL에서 이모지(Emoji) 저장 문제 해결하기"
-description: "Flutter 애플리케이션에서 MySQL에 이모지 저장 시 발생하는 문제 해결법"
-pubDate: "2025-04-17"
-heroImage: "https://velog.velcdn.com/images/halfmoon_mind/post/642cf83f-eaea-40c0-bbfd-8e540365f7c3/image.png"
-tags: ["MySQL", "Flutter", "이모지", "UTF-8"]
+title: 'MySQL에서 이모지(Emoji) 저장 문제 해결하기'
+description: 'Flutter 애플리케이션에서 MySQL에 이모지 저장 시 발생하는 문제 해결법'
+pubDate: '2023-04-30'
+heroImage: 'https://velog.velcdn.com/images/halfmoon_mind/post/642cf83f-eaea-40c0-bbfd-8e540365f7c3/image.png'
+tags: ['MySQL', 'Flutter', '이모지', 'UTF-8']
 ---
 
 Flutter 애플리케이션을 개발하는 과정에서 이모지를 MySQL 데이터베이스에 저장할 때 발생한 문제와 그 해결 과정을 공유한다.

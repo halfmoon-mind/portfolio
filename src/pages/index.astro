@@ -1,49 +1,183 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const latestPosts = posts.slice(0, 3); // 최근 3개 글 표시
+
+// 포트폴리오 항목도 가져오기
+const portfolios = (await getCollection('portfolio')).sort(
+	(a, b) => (b.data.pubDate?.valueOf() || 0) - (a.data.pubDate?.valueOf() || 0)
+);
+
+const latestPortfolios = portfolios.slice(0, 3); // 최근 3개 포트폴리오 표시
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION} pubDate={new Date()} updatedDate={new Date()}>
+	<div class="container">
+		<h1>From Half, To Full</h1>
+		<p>
+			항상 최선을 다하는 엔지니어 심상현입니다. 현재 2년차 Flutter Engineer로 활동하고 있습니다.
+			<br>
+			새로운 것을 익히고, 그것을 활용하여 새로운 서비스 혹은 기존의 프로덕트를 개선하고 있습니다.
+			<br>
+			빠르게 MVP를 만들어 시장에 내놓고, 그것을 검증하고 반복하는 것을 좋아합니다.
+		</p>
+
+		<section>
+			<h2>최신 글</h2>
+			<ul class="card-grid">
+				{latestPosts.map((post) => (
+					<li class="card">
+						<a href={`/blog/${post.id}`}>
+							<div class="image-container">
+								<img src={post.data.heroImage} alt=""/>
+							</div>
+							<div class="content">
+								<h4 class="title">{post.data.title}</h4>
+								<p class="date">
+									<FormattedDate date={post.data.pubDate} />
+								</p>
+							</div>
+						</a>
+					</li>
+				))}
 			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+			<div class="more-link">
+				<a href="/blog">블로그 더 보기 →</a>
+			</div>
+		</section>
+
+		<section>
+			<h2>최신 포트폴리오</h2>
+			<ul class="card-grid">
+				{latestPortfolios.map((portfolio) => (
+					<li class="card">
+						<a href={`/portfolio/${portfolio.id}`}>
+							<div class="image-container">
+								<img src={portfolio.data.heroImage} alt=""/>
+							</div>
+							<div class="content">
+								<h4 class="title">{portfolio.data.title}</h4>
+								<p class="description">{portfolio.data.description}</p>
+							</div>
+						</a>
+					</li>
+				))}
+			</ul>
+			<div class="more-link">
+				<a href="/portfolio">포트폴리오 더 보기 →</a>
+			</div>
+		</section>
+	</div>
+	<style>
+		.container {
+			padding: 1em 0;
+			max-width: 960px;
+			margin: 0 auto;
+		}
+		
+		section {
+			margin-top: 2em;
+		}
+		
+		section h2 {
+			font-size: 1.5em;
+			margin-bottom: 1em;
+		}
+		
+		.card-grid {
+			list-style: none;
+			padding: 0;
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+			gap: 1.5em;
+		}
+		
+		.card {
+			border: 1px solid #eee;
+			border-radius: 8px;
+			overflow: hidden;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+			transition: transform 0.2s ease, box-shadow 0.2s ease;
+		}
+		
+		.card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+		}
+		
+		.card a {
+			text-decoration: none;
+			color: inherit;
+			display: block;
+		}
+		
+		.image-container {
+			width: 100%;
+			height: 200px; /* 모든 이미지 높이 동일하게 설정 */
+			overflow: hidden;
+		}
+		
+		.card img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover; /* 이미지 비율 유지하면서 컨테이너에 맞춤 */
+			transition: transform 0.3s ease;
+		}
+		
+		.card:hover img {
+			transform: scale(1.05);
+		}
+		
+		.content {
+			padding: 1em;
+		}
+		
+		.title {
+			margin: 0;
+			font-size: 1.1em;
+			margin-bottom: 0.5em;
+		}
+		
+		.date, .description {
+			margin: 0;
+			font-size: 0.9em;
+			color: #666;
+		}
+		
+		.more-link {
+			margin-top: 1em;
+			text-align: right;
+		}
+		
+		.more-link a {
+			color: var(--accent);
+			text-decoration: none;
+			font-weight: 500;
+		}
+		
+		@media (max-width: 768px) {
+			.card-grid {
+				grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+				gap: 1em;
+			}
+			
+			.image-container {
+				height: 180px;
+			}
+		}
+		
+		@media (max-width: 480px) {
+			.card-grid {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</BaseLayout>
