@@ -17,7 +17,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { 
 	title, 
 	description = SITE_DESCRIPTION, 
-	image = '/blog-placeholder-1.jpg',
+	image = '/og-image.png',
 	article = false
 } = Astro.props;
 
@@ -31,16 +31,14 @@ const OG_IMAGE_HEIGHT = 630;
 
 // 이미지가 로컬 경로인 경우 최적화 작업 수행
 if (!image.startsWith('http')) {
-  // 이미지가 상대 경로일 경우 절대 URL로 변환
-  imageUrl = new URL(image, Astro.site).toString();
+  // 상대 경로를 절대 URL로 변환
+  imageUrl = new URL(image.startsWith('/') ? image : `/${image}`, Astro.site).toString();
   
-  // OG 이미지 최적화를 위한 URL 생성 (Astro의 이미지 서비스 활용)
+  // OG 이미지 최적화를 위한 URL 생성
   try {
     // 이미지 서비스를 사용하여 최적화된 이미지 URL 생성
-    // 가로/세로 크기와 품질 파라미터 추가
     optimizedImageUrl = `${imageUrl}?w=${OG_IMAGE_WIDTH}&h=${OG_IMAGE_HEIGHT}&q=75&fit=cover`;
   } catch (e) {
-    console.error('이미지 최적화 중 오류 발생:', e);
     optimizedImageUrl = imageUrl;
   }
 } else {

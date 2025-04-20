@@ -7,10 +7,16 @@ import { SITE_TITLE } from '../consts';
 
 const baseHeroImage = "/og-image.png";
 
-type Props = CollectionEntry<'portfolio'>['data'];
+// Props 타입을 확장하여 홈페이지와 블로그 포스트를 모두 수용할 수 있도록 함
+type Props = {
+	title: string;
+	description: string;
+	heroImage?: string;
+	pubDate?: Date;
+	updatedDate?: Date;
+};
 
 const { title, description, heroImage } = Astro.props;
-
 
 // 웹사이트 구조화된 데이터 생성
 const websiteSchema = {

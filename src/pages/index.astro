@@ -18,11 +18,12 @@ const portfolios = (await getCollection('portfolio')).sort(
 
 const latestPortfolios = portfolios.slice(0, 3); // 최근 3개 포트폴리오 표시
 
+// 홈페이지의 OG 이미지 경로 설정
 const heroImage = "/og-image.png";
 
 ---
 
-<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION} pubDate={new Date()} updatedDate={new Date()} heroImage={heroImage} >
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION} heroImage={heroImage} pubDate={new Date()} updatedDate={new Date()}>
 	<div class="container">
 		<h1>From Half, To Full</h1>
 		<p>
