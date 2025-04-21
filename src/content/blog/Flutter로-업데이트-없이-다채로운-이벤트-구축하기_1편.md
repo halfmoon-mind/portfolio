@@ -7,7 +7,7 @@ tags: ['Flutter', 'Method Channel', 'WebView', 'Event Page']
 ---
 
 안녕하세요
-현재 테일크루라는 회사에서 Flutter Engineer로 웹소설 플랫폼 "투댓"이라는 서비스를 만들고 있는 심상현입니다.
+현재 테일크루라는 회사에서 Flutter Engineer로 웹소설 플랫폼 "모픽"이라는 서비스를 만들고 있는 심상현입니다.
 
 > _숭실대학교 Developer Conference, DEVCON에서 발표한 이야기를 요약한 내용입니다_
 
@@ -71,6 +71,7 @@ Method Channel이란 Native언어의 코드를 실행하거나, Native 영역에
 dialog라는 함수 안에 flutter 영역으로 dialog라는 이벤트에 "EVENT_TITLE_HELLO"라는 데이터를 첫 번째 인자로 전달하는 것을 알 수 있습니다.
 
 **위치 : lib/webview/webview.dart**
+
 주의 : 현재 코드에서는 `flutter_inappwebview: ^5.8.0` 버전을 사용하고 있습니다. 패키지 버전 업데이트 따라서 해당 코드의 인자나 값이 정상적으로 실행되지 않을 수도 있습니다.
 
 ```dart
