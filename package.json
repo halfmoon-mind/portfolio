@@ -2,7 +2,7 @@
   "name": "agreeable-aurora",
   "type": "module",
   "version": "0.0.1",
-  "homepage": "https://halfmoon-mind.netlify.app/",
+  "homepage": "https://halfmoon.day/",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",

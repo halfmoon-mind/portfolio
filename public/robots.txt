@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Allow all crawlers
-Sitemap: https://halfmoon-mind.netlify.app/sitemap-index.xml 
+Sitemap: https://halfmoon.day/sitemap-index.xml 
