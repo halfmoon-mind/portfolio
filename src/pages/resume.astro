@@ -593,6 +593,10 @@ Flutter 뿐 아니라 다양한 분야의 지식을 배우면서 <span class="hi
 	.print-compact .intro-container {
 		padding: 0.3rem !important;
 		margin-top: 0.3rem !important;
+		background-color: var(--bg-card) !important;
+		border: 1px solid #eee !important;
+		border-radius: 4px !important;
+		box-shadow: none !important;
 	}
 	
 	.print-compact .section-title {
@@ -930,7 +934,7 @@ Flutter 뿐 아니라 다양한 분야의 지식을 배우면서 <span class="hi
 		.resume-container .contact-info { gap: 0.3rem !important; flex-wrap: wrap !important; }
 		.resume-container .contact-item { padding: 0.1rem 0.3rem !important; font-size: 0.65rem !important; border-radius: 3px !important; }
 		.resume-container .contact-item .icon { font-size: 0.7rem !important; margin-right: 0.15rem !important; }
-		.resume-container .intro-container { padding: 0.3rem !important; margin-top: 0.3rem !important; border-left: none !important; background-color: #fdfdfd !important; } /* 테두리 제거 */
+		.resume-container .intro-container { padding: 0.3rem !important; margin-top: 0.3rem !important; border: 1px solid #eee !important; background-color: #ffffff !important; border-radius: 4px !important; }
 		.resume-container .intro-container::before { display: none !important; }
 		.resume-container .section-title { margin-bottom: 0.3rem !important; }
 		.resume-container .section-title h2 { font-size: 0.9rem !important; padding-right: 0.5rem !important; }
@@ -1576,22 +1580,22 @@ Flutter 뿐 아니라 다양한 분야의 지식을 배우면서 <span class="hi
 
 	/* 소개 영역 스타일 */
 	.intro-container {
-		background-color: var(--bg-light);
+		background-color: var(--bg-card);
 		border-radius: 12px;
 		padding: 1.5rem;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+		box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
 		position: relative;
-		overflow: hidden;
+		border: 1px solid var(--border-color);
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.intro-container:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
 	}
 
 	.intro-container::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 4px;
-		height: 100%;
-		background: linear-gradient(180deg, var(--primary-color), transparent);
+		display: none;
 	}
 
 	.section-title {
