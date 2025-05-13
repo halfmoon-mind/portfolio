@@ -22,4 +22,22 @@ const { Content } = await render(post);
 </head>
 <BlogPost {...post.data}>
 	<Content />
+	
+	<div class="giscus-container mt-10">
+		<script src="https://giscus.app/client.js"
+			data-repo="halfmoon-mind/portfolio"
+			data-repo-id="R_kgDOObRjxQ"
+			data-category="General"
+			data-category-id="DIC_kwDOObRjxc4CqGbP"
+			data-mapping="title"
+			data-strict="0"
+			data-reactions-enabled="1"
+			data-emit-metadata="0"
+			data-input-position="bottom"
+			data-theme="light"
+			data-lang="ko"
+			crossorigin="anonymous"
+			async>
+		</script>
+	</div>
 </BlogPost>
