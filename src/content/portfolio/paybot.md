@@ -1,7 +1,7 @@
 ---
 title: '정산봇'
 description: 'Slack 봇으로 정산을 간편하게'
-pubDate: '2025-04-17'
+pubDate: '2025-01'
 heroImage: '/assets/paybot.png'
 tags: ['Slack API', 'Bolt.js', 'Node.js', 'MongoDB', 'nginx']
 slackUrl: 'https://slack.com/marketplace/A087W0YSC7N-'
@@ -15,10 +15,10 @@ slackUrl: 'https://slack.com/marketplace/A087W0YSC7N-'
 Slack API와 Bolt.js 프레임워크를 활용하여 개발되었으며, 사용자가 `/계좌등록` 명령어를 통해 자신의 계좌를 안전하게 등록하고
 `/정산하기` 명령어로 특정 유저와 1/N로 정산 요청을 할 수 있습니다. 정산 요청 시 자동으로 대상 유저에게 DM을 보내
 요청자의 계좌 정보와 함께 토스 송금 페이지로 바로 이동할 수 있는 링크를 제공합니다.
-      
-Node.js 기반 서버는 nginx를 통해 홈서버에 배포되었으며, MongoDB를 데이터베이스로 활용하여 
+
+Node.js 기반 서버는 nginx를 통해 홈서버에 배포되었으며, MongoDB를 데이터베이스로 활용하여
 사용자의 계좌 정보를 암호화하여 안전하게 저장하고 정산 내역을 체계적으로 관리합니다.
-반복적이고 귀찮은 정산 과정을 자동화하여 팀 협업 시 발생하는 금전적 문제를 
+반복적이고 귀찮은 정산 과정을 자동화하여 팀 협업 시 발생하는 금전적 문제를
 투명하고 효율적으로 해결할 수 있도록 돕습니다.
 
 ## 기능

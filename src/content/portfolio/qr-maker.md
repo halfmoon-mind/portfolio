@@ -1,11 +1,11 @@
 ---
-title: "QR Maker"
-description: "광고 없는 QR코드 생성기"
-pubDate: "2025-04-17"
-heroImage: "/assets/qr_maker.png"
-tags: ["React", "Vite"]
-webUrl: "https://www.qrmaker.site/"
-githubUrl: "https://github.com/halfmoon-mind/qr-maker"
+title: 'QR Maker'
+description: '광고 없는 QR코드 생성기'
+pubDate: '2023-12'
+heroImage: '/assets/qr_maker.png'
+tags: ['React', 'Vite']
+webUrl: 'https://www.qrmaker.site/'
+githubUrl: 'https://github.com/halfmoon-mind/qr-maker'
 ---
 
 # QR Maker

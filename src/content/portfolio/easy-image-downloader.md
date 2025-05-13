@@ -1,7 +1,7 @@
 ---
 title: 'Easy Image Downloader'
 description: '이미지 손쉽게 다운로드 할 수 있는 Chrome Extension'
-pubDate: '2025-04-17'
+pubDate: '2025-03'
 heroImage: '/assets/easy_image_downloader.png'
 tags: ['JavaScript', 'Chrome Extension API']
 storeUrl: 'https://chromewebstore.google.com/detail/easy-image-downloader/lnldmkhkjnkcfndnhibbnaohplecldmb?authuser=0&hl=ko'

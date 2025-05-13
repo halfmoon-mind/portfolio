@@ -2,6 +2,8 @@
 title: '다잇슈'
 description: '숭실대 학생들을 위한 종합 커뮤니티 서비스'
 pubDate: '2025-04-17'
+startDate: '2023-04'
+endDate: '2024-03'
 heroImage: '/assets/da_it_ssu.png'
 tags: ['Next.js', 'React.js', 'Emotion.js', 'Storybook', 'Spring Boot', 'Python']
 githubUrl: 'https://github.com/DaITssu'

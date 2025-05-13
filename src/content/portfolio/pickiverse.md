@@ -1,9 +1,19 @@
 ---
 title: '피키버스'
 description: '이상형 월드컵 플랫폼'
-pubDate: '2025-04-17'
+pubDate: '2025-01'
 heroImage: '/assets/pickiverse.png'
-tags: ['Flutter', 'Fastlane', 'Bloc', 'Nest.js', 'Next.js', 'Cloudflare Images', 'Mantine UI', 'Supabase']
+tags:
+  [
+    'Flutter',
+    'Fastlane',
+    'Bloc',
+    'Nest.js',
+    'Next.js',
+    'Cloudflare Images',
+    'Mantine UI',
+    'Supabase',
+  ]
 iosUrl: 'https://apps.apple.com/kr/app/%ED%94%BC%ED%82%A4%EB%B2%84%EC%8A%A4/id6742077036?uo=2'
 androidUrl: 'https://play.google.com/store/apps/details?id=com.pickiverse.app'
 webUrl: 'https://pickiverse.com'

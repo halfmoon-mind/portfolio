@@ -2,6 +2,8 @@
 title: '깨끗해질지도'
 description: '소비로서 친환경을 실천할 수 있게 도와주는 서비스'
 pubDate: '2025-04-17'
+startDate: '2023-05'
+endDate: '2023-11'
 heroImage: '/assets/may_be_clean.png'
 tags: ['Flutter', 'Google Maps API', 'GetX', 'Spring Boot']
 iosUrl: 'https://apps.apple.com/kr/app/%EA%B9%A8%EB%81%97%ED%95%B4%EC%A7%88%EC%A7%80%EB%8F%84/id6449622294'

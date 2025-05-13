@@ -1,7 +1,7 @@
 ---
 title: 'Multiple Window Connection'
 description: '여러 개의 웹브라우저가 동적으로 연결되는 시스템'
-pubDate: '2025-04-17'
+pubDate: '2023-12'
 heroImage: '/assets/multiple_window_connection.png'
 tags: ['Flutter Web', 'JavaScript', 'Method Channel', 'Local Storage']
 webUrl: 'https://mutliple-windows.s3.ap-northeast-2.amazonaws.com/index.html'

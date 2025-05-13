@@ -46,20 +46,36 @@ const IMAGE_QUALITY = 85;
                 <div class="title">
                     <h1>{entry.data.title}</h1>
                     <div class="date">
-                        <time datetime={entry.data.pubDate.toISOString()}>
-                            {entry.data.pubDate.toLocaleDateString('en-us', {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                            })}
-                        </time>
+                        {entry.data.startDate && entry.data.endDate ? (
+                            <div class="project-period">
+                                <time datetime={new Date(entry.data.startDate).toISOString()}>
+                                    {new Date(entry.data.startDate).toLocaleDateString('en-US', {
+                                        year: 'numeric',
+                                        month: 'long',
+                                    })}
+                                </time>
+                                <span> - </span>
+                                <time datetime={new Date(entry.data.endDate).toISOString()}>
+                                    {new Date(entry.data.endDate).toLocaleDateString('en-US', {
+                                        year: 'numeric',
+                                        month: 'long',
+                                    })}
+                                </time>
+                            </div>
+                        ) : (
+                            <time datetime={entry.data.pubDate.toISOString()}>
+                                {entry.data.pubDate.toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                })}
+                            </time>
+                        )}
                         {entry.data.updatedDate && (
                             <div class="updated-date">
-                                Updated: <time datetime={entry.data.updatedDate.toISOString()}>
-                                    {entry.data.updatedDate.toLocaleDateString('en-us', {
+                                업데이트: <time datetime={entry.data.updatedDate.toISOString()}>
+                                    {entry.data.updatedDate.toLocaleDateString('en-US', {
                                         year: 'numeric',
-                                        month: 'short',
-                                        day: 'numeric',
+                                        month: 'long',
                                     })}
                                 </time>
                             </div>
@@ -145,6 +161,13 @@ const IMAGE_QUALITY = 85;
     }
 
     .date time {
+        font-style: italic;
+    }
+
+    .project-period {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
         font-style: italic;
     }
 
