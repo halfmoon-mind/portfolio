@@ -71,7 +71,7 @@ webUrl: 'https://pickiverse.com'
 
 - Frontend는 Vercel, Database는 Supabase를 사용하여 비용을 최소화할 수 있도록 노력하였습니다.
 - 이미지 저장소를 Cloudflare Images로 전환하여 1달에 5달러로 절감하였습니다.
-- AWS EC2에서 AMD 기반 cpu를 사용하는 서버로 변경하여, 기존 사용 비용에서 10% 이상 절감하였습니다. 또한 ALB를 통한 HTTP가 아닌, certbot과 nginx를 통한 HTTPS 통신을 사용하여 비용을 최소화하였습니다.
+- AWS EC2에서 ARM 기반 cpu를 사용하는 서버로 변경하여, 기존 사용 비용에서 10% 이상 절감하였습니다. 또한 ALB를 통한 HTTP가 아닌, certbot과 nginx를 통한 HTTPS 통신을 사용하여 비용을 최소화하였습니다.
 
 ### Flutter
 
