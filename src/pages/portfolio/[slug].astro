@@ -46,7 +46,7 @@ const IMAGE_QUALITY = 85;
                 <div class="title">
                     <h1>{entry.data.title}</h1>
                     <div class="date">
-                        {entry.data.startDate && entry.data.endDate ? (
+                        {entry.data.startDate ? (
                             <div class="project-period">
                                 <time datetime={new Date(entry.data.startDate).toISOString()}>
                                     {new Date(entry.data.startDate).toLocaleDateString('en-US', {
@@ -54,13 +54,17 @@ const IMAGE_QUALITY = 85;
                                         month: 'long',
                                     })}
                                 </time>
-                                <span> - </span>
-                                <time datetime={new Date(entry.data.endDate).toISOString()}>
-                                    {new Date(entry.data.endDate).toLocaleDateString('en-US', {
-                                        year: 'numeric',
-                                        month: 'long',
-                                    })}
-                                </time>
+                                {entry.data.endDate && (
+                                    <>
+                                        <span> - </span>
+                                        <time datetime={new Date(entry.data.endDate).toISOString()}>
+                                            {new Date(entry.data.endDate).toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                month: 'long',
+                                            })}
+                                        </time>
+                                    </>
+                                )}
                             </div>
                         ) : (
                             <time datetime={entry.data.pubDate.toISOString()}>

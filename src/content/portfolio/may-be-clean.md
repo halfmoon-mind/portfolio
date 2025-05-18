@@ -1,7 +1,7 @@
 ---
 title: '깨끗해질지도'
 description: '소비로서 친환경을 실천할 수 있게 도와주는 서비스'
-pubDate: '2025-04-17'
+pubDate: '2023-11-18'
 startDate: '2023-05'
 endDate: '2023-11'
 heroImage: '/assets/may_be_clean.png'

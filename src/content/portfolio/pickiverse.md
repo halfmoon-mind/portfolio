@@ -1,7 +1,8 @@
 ---
 title: '피키버스'
 description: '이상형 월드컵 플랫폼'
-pubDate: '2025-01'
+pubDate: '2025-04'
+startDate: '2025-01'
 heroImage: '/assets/pickiverse.png'
 tags:
   [

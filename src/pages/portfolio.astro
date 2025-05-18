@@ -7,6 +7,10 @@ const title = `Portfolio | ${SITE_TITLE}`;
 const description = '다양한 프로젝트를 한 눈에 보아요';
 // Get all portfolio entries
 const portfolioEntries = await getCollection('portfolio');
+// Sort by pubDate (newest first)
+const sortedPortfolioEntries = portfolioEntries.sort((a, b) => {
+	return new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime();
+});
 ---
 
 <BaseLayout title={title} description={description} pubDate={new Date()} updatedDate={new Date()}>
@@ -20,7 +24,7 @@ const portfolioEntries = await getCollection('portfolio');
 
 		<section class="portfolio-grid">
 			{
-				portfolioEntries.map(entry => (
+				sortedPortfolioEntries.map(entry => (
 					<a href={`/portfolio/${entry.id}`} class="portfolio-item">
 						<div class="portfolio-card">
 							{entry.data.heroImage && (

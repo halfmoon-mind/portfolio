@@ -1,7 +1,7 @@
 ---
 title: 'Nightary'
 description: '수면 상태를 배터리 형태로 보여주는 수면 측정 트래커'
-pubDate: '2025-04-17'
+pubDate: '2023-12-29'
 startDate: '2023-12'
 endDate: '2024-01'
 heroImage: '/assets/nightary.png'
