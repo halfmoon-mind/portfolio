@@ -33,4 +33,17 @@ const portfolio = defineCollection({
   }),
 });
 
-export const collections = { blog, portfolio };
+const til = defineCollection({
+  // Load Markdown and MDX files in the `src/content/til/` directory.
+  loader: glob({ base: './src/content/til', pattern: '**/*.{md,mdx}' }),
+  // Type-check frontmatter using a schema
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    // Transform string to Date object
+    pubDate: z.coerce.date(),
+    tags: z.array(z.string()).optional(),
+  }),
+});
+
+export const collections = { blog, portfolio, til };

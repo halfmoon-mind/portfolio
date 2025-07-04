@@ -1,0 +1,53 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import BlogPost from '../../layouts/BlogPost.astro';
+import { render } from 'astro:content';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('til');
+	return posts.map((post) => ({
+		params: { slug: post.id },
+		props: post,
+	}));
+}
+type Props = CollectionEntry<'til'>;
+
+const post = Astro.props;
+const { Content } = await render(post);
+---
+
+<head>
+  <BaseHead title={post.data.title} description={post.data.description} />
+</head>
+<BlogPost {...post.data}>
+	<Content />
+	
+	<div class="til-navigation mt-8">
+		<a href="/til" class="back-link">← TIL 목록으로 돌아가기</a>
+	</div>
+</BlogPost>
+
+<style>
+	.til-navigation {
+		text-align: center;
+		margin-top: 2rem;
+		padding-top: 2rem;
+		border-top: 1px solid #e5e5e5;
+	}
+	
+	.back-link {
+		color: rgb(var(--accent));
+		text-decoration: none;
+		font-weight: 500;
+		padding: 0.5rem 1rem;
+		border: 1px solid rgb(var(--accent));
+		border-radius: 6px;
+		transition: all 0.2s ease;
+	}
+	
+	.back-link:hover {
+		background: rgb(var(--accent));
+		color: white;
+	}
+</style> 
