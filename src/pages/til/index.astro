@@ -94,6 +94,12 @@ const posts = (await getCollection('til')).sort(
 				font-weight: 500;
 			}
 			
+			.tag.more-tags {
+				background-color: #e3f2fd;
+				color: #1976d2;
+				border-color: #bbdefb;
+			}
+			
 			@media (max-width: 768px) {
 				main {
 					padding: 16px 12px;
@@ -128,9 +134,12 @@ const posts = (await getCollection('til')).sort(
 								</span>
 								{post.data.tags && post.data.tags.length > 0 && (
 									<div class="tags">
-										{post.data.tags.map((tag) => (
+										{post.data.tags.slice(0, 2).map((tag) => (
 											<span class="tag">{tag}</span>
 										))}
+										{post.data.tags.length > 2 && (
+											<span class="tag more-tags">+{post.data.tags.length - 3}</span>
+										)}
 									</div>
 								)}
 							</a>
