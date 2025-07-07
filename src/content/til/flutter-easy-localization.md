@@ -1,0 +1,17 @@
+---
+title: 'Flutter에서 국제화를 위해 easy_localization 사용시 주의점'
+description: 'Flutter 앱에서 easy_localization 패키지를 사용한 국제화 구현 시 주의해야 할 점과 자동화 스크립트 활용법'
+pubDate: 2025-07-07
+tags: ['Flutter', 'Localization', 'Internationalization', 'easy_localization', 'i18n']
+---
+
+## 오늘 배운 것
+Flutter에서 국제화 혹은 현지화를 하려면 여러가지 방법이 있다.<br>
+그 중 하나는 [easy_localization](https://pub.dev/packages/easy_localization)을 사용하면 비교적 간편하게 국제화를 설정할 수 있다.<br>
+왜냐하면 국제화에 필요한 텍스트를 모두 json 형태로 key, value만 설정하면 자동으로 해당 값으로 설정되기 때문이다. 또한 필요한 국제화 걸려고 하는 텍스트에 `.tr()` 메소드만 뒤에 붙여주면 자동으로 국제화가 설정되게 된다.<br>
+또한 `flutter pub run easy_localization:generate -f keys -o locale_keys.g.dart` 명령을 사용하면, 현재 json 파일에 올라간 key가 자동으로 등록된다.<br>
+여기서 `flutter pub run easy_localization:generate -S assets/translations -f keys -o locale_keys.g.dart`와 같이 위치도 설정해주면 더 정확하게 할 수 있다.<br>
+기존 작업자가 국제화를 위해서 translations 폴더가 아니라 localization 폴더에 넣어 놓고, 각 텍스트를 수동으로 하나하나 키 값을 추가하면서 관리하고 있었는데, 해당 방식 보다는 자동화된 script를 사용하는 방식으로 변경하였다.<br>
+해당 방식의 장점은 새로운 키만 추가하고 스크립트만 돌리면 자동으로 간편하게 키가 추가되는 방식이라 꽤나 쓸만 한 것 같다.<br>
+
+단, 단점으로는 기본 언어를 en, 지역화를 ko 언어를 추가한 경우에 ko.json 파일에 key를 추가하더라도 자동 생성되는 텍스트에는 기본 언어에 들어가 있는 것만 추가되는 것이 아니기 때문에 잘못하면 없는 텍스트를 참조하여 지역화가 걸린 텍스트가 아닌 key 값이 실제 화면에 노출되는 사례가 나올 수도 있을 것 같아서 주의가 필요하다.
