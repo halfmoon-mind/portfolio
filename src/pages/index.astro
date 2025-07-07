@@ -18,6 +18,13 @@ const portfolios = (await getCollection('portfolio')).sort(
 
 const latestPortfolios = portfolios.slice(0, 3); // 최근 3개 포트폴리오 표시
 
+// TIL 항목도 가져오기
+const tils = (await getCollection('til')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const latestTils = tils.slice(0, 3); // 최근 3개 TIL 표시
+
 // 홈페이지의 OG 이미지 경로 설정
 const heroImage = "/og-image.png";
 
@@ -35,7 +42,7 @@ const heroImage = "/og-image.png";
 		</p>
 
 		<section>
-			<h2>최신 글</h2>
+			<h2>최근 글</h2>
 			<ul class="card-grid">
 				{latestPosts.map((post) => (
 					<li class="card">
@@ -59,7 +66,7 @@ const heroImage = "/og-image.png";
 		</section>
 
 		<section>
-			<h2>최신 포트폴리오</h2>
+			<h2>최근 포트폴리오</h2>
 			<ul class="card-grid">
 				{latestPortfolios.map((portfolio) => (
 					<li class="card">
@@ -77,6 +84,40 @@ const heroImage = "/og-image.png";
 			</ul>
 			<div class="more-link">
 				<a href="/portfolio">포트폴리오 더 보기 →</a>
+			</div>
+		</section>
+
+		<section>
+			<h2>최근 TIL</h2>
+			<ul class="til-list">
+				{latestTils.map((til) => (
+					<li class="til-item">
+						<a href={`/til/${til.id}`} class="til-link">
+							<div class="til-content">
+								<h4 class="til-title">{til.data.title}</h4>
+								<p class="til-description">{til.data.description}</p>
+								<div class="til-meta">
+									<span class="til-date">
+										<FormattedDate date={til.data.pubDate} />
+									</span>
+									{til.data.tags && til.data.tags.length > 0 && (
+										<div class="til-tags">
+											{til.data.tags.slice(0, 3).map((tag) => (
+												<span class="til-tag">{tag}</span>
+											))}
+											{til.data.tags.length > 3 && (
+												<span class="til-tag more-tags">+{til.data.tags.length - 3}</span>
+											)}
+										</div>
+									)}
+								</div>
+							</div>
+						</a>
+					</li>
+				))}
+			</ul>
+			<div class="more-link">
+				<a href="/til">TIL 더 보기 →</a>
 			</div>
 		</section>
 	</div>
@@ -162,6 +203,92 @@ const heroImage = "/og-image.png";
 			font-size: 0.9em;
 			color: #666;
 		}
+
+		/* TIL 스타일 */
+		.til-list {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+		
+		.til-item {
+			margin-bottom: 1em;
+		}
+		
+		.til-link {
+			display: block;
+			text-decoration: none;
+			color: inherit;
+			border: 1px solid #eee;
+			border-radius: 8px;
+			padding: 1.5em;
+			background: #fff;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+			transition: transform 0.2s ease, box-shadow 0.2s ease;
+		}
+		
+		.til-link:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+		}
+		
+		.til-content {
+			width: 100%;
+		}
+		
+		.til-title {
+			margin: 0 0 0.5em 0;
+			font-size: 1.1em;
+			font-weight: 600;
+			line-height: 1.4;
+			color: #333;
+		}
+		
+		.til-description {
+			margin: 0 0 1em 0;
+			font-size: 0.9em;
+			color: #666;
+			line-height: 1.5;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+		}
+		
+		.til-meta {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			gap: 0.5em;
+		}
+		
+		.til-date {
+			font-size: 0.8em;
+			color: #888;
+		}
+		
+		.til-tags {
+			display: flex;
+			gap: 0.3em;
+			flex-wrap: wrap;
+		}
+		
+		.til-tag {
+			background-color: #f6f8fa;
+			color: #656d76;
+			border: 1px solid #d1d9e0;
+			border-radius: 12px;
+			padding: 2px 8px;
+			font-size: 11px;
+			font-weight: 500;
+		}
+		
+		.til-tag.more-tags {
+			background-color: #e3f2fd;
+			color: #1976d2;
+			border-color: #bbdefb;
+		}
 		
 		.more-link {
 			margin-top: 1em;
@@ -182,6 +309,11 @@ const heroImage = "/og-image.png";
 			
 			.image-container {
 				height: 180px;
+			}
+			
+			.til-meta {
+				flex-direction: column;
+				align-items: flex-start;
 			}
 		}
 		
