@@ -1,6 +1,6 @@
 ---
 title: 'Flutter에서 공유 시, iPad OS에서 공유가 실행되지 않는 문제'
-description: 'Astro에서 Content Collections을 사용하여 타입 안전한 콘텐츠 관리하는 방법을 배웠다.'
+description: 'Flutter에서 파일 혹은 텍스트 공유 시, iPad OS에서 에러가 발생하면서 정상적으로 공유가 되지 않았다. 그래서 Apple 심사에서 반려되었는데 해당 문제를 찾은 경험을 공유해본다.'
 pubDate: 2025-07-04
 tags: ['flutter', 'share_plus']
 ---
