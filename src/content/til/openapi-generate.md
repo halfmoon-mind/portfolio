@@ -2,6 +2,7 @@
 title: 'OpenAPI를 사용해 API 자동 생성 시 주의점'
 description: 'OpenAPI Generator를 사용하여 API 자동 생성을 하면 서버에서 설정한 Swagger 문서와 동일한 스펙으로 데이터를 모델 및 API Endpoint를 사용할 수 있다. 사용하면서 느꼈던 문제점들을 공유해본다.'
 pubDate: 2025-09-23
+heroImage: '/openapi_generator.png'
 tags: ['flutter', 'OpenAPI', 'Auto Generation']
 ---
 
