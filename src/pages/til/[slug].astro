@@ -18,7 +18,7 @@ const { Content } = await render(post);
 ---
 
 <head>
-  <BaseHead title={post.data.title} description={post.data.description} />
+  <BaseHead title={post.data.title} description={post.data.description} image={post.data.heroImage} />
 </head>
 <BlogPost {...post.data}>
 	<Content />

@@ -43,6 +43,7 @@ const til = defineCollection({
     // Transform string to Date object
     pubDate: z.coerce.date(),
     tags: z.array(z.string()).optional(),
+    heroImage: z.string().optional(),
   }),
 });
 
