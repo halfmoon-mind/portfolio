@@ -1,0 +1,45 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import ClipPost from '../../layouts/ClipPost.astro';
+
+export async function getStaticPaths() {
+  const clips = await getCollection('clips');
+  return clips.map((clip) => ({
+    params: { slug: clip.id },
+    props: clip,
+  }));
+}
+
+type Props = CollectionEntry<'clips'>;
+const clip = Astro.props;
+const { Content } = await render(clip);
+---
+
+<ClipPost {...clip.data}>
+  <Content />
+  <div class="back-link-wrap">
+    <a href="/clips" class="back-link">← 클립 목록으로 돌아가기</a>
+  </div>
+</ClipPost>
+
+<style>
+  .back-link-wrap {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e5e5e5;
+  }
+  .back-link {
+    color: rgb(var(--accent));
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgb(var(--accent));
+    border-radius: 6px;
+    transition: all 0.2s ease;
+  }
+  .back-link:hover {
+    background: rgb(var(--accent));
+    color: white;
+  }
+</style>
