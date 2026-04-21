@@ -39,6 +39,7 @@ yarn astro [command]
 - **blog/**: 블로그 포스트 (Markdown/MDX)
 - **portfolio/**: 포트폴리오 프로젝트 (Markdown/MDX)
 - **til/**: Today I Learned 항목 (Markdown/MDX)
+- **clips/**: 읽은 글 + 코멘트 형태의 공유 포스트 (Markdown/MDX)
 
 각 컬렉션은 `src/content.config.ts`에서 정의된 스키마로 타입이 검증됩니다.
 
@@ -69,6 +70,20 @@ yarn astro [command]
   tags?: string[]
   githubUrl?: string
   liveUrl?: string
+}
+```
+
+**Clips:**
+```typescript
+{
+  title: string          // 클립 제목 (내가 붙이는 헤드라인)
+  description: string    // 요약 (리스트/RSS/OG용)
+  pubDate: Date
+  sourceUrl: string      // 원본 아티클 URL (필수)
+  sourceTitle?: string   // 자동 스크래핑 실패 시 수동 지정
+  quote?: string         // 원문에서 인상 깊었던 인용문
+  tags?: string[]
+  heroImage?: string     // 자동 og:image 덮어쓰기용
 }
 ```
 
@@ -109,6 +124,29 @@ yarn astro [command]
 2. 새 블로그/포트폴리오/TIL 작성 시 해당 컬렉션의 frontmatter 스키마를 반드시 준수
 3. 이미지 파일은 `public/` 디렉토리에 배치
 4. Hero 이미지는 최대 높이 500px로 표시됨
+
+## Clips 작성 워크플로
+
+Clips는 "외부 아티클 링크 + 내 코멘트" 포맷이며, 원본 글의 OG 이미지/제목/설명은 **빌드가 아닌 로컬 스크립트**로 스크래핑해 `src/data/clips-cache.json`에 저장한다.
+
+```bash
+# 1. src/content/clips/<slug>.md 작성 (frontmatter에 sourceUrl 반드시 포함)
+# 2. 캐시 갱신 (새 URL만 스크래핑, 이미 있는 URL은 건드리지 않음)
+yarn clips:refresh
+
+# 강제로 전체 재스크래핑
+yarn clips:refresh --force
+
+# 3. 로컬 확인
+yarn dev
+
+# 4. 커밋 (클립 파일 + 캐시 JSON을 함께 커밋해야 배포에 반영됨)
+git add src/content/clips/<slug>.md src/data/clips-cache.json
+git commit -m "feat(clips): ..."
+```
+
+- 빌드(`yarn build`)는 캐시를 **읽기만** 한다 → Netlify 배포 시 외부 네트워크 호출 없음.
+- 캐시에 URL이 없는 상태로 배포해도 빌드는 성공하며, 해당 클립은 썸네일 플레이스홀더로 렌더된다. 이후 `yarn clips:refresh`로 캐시 채우고 다시 커밋하면 정상화.
 
 ## 글로벌 상수
 
