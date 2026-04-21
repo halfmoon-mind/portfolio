@@ -1,1 +1,8 @@
-{}
+{
+  "https://www.latent.space/p/reviews-dead": {
+    "ogImage": "https://substackcdn.com/image/fetch/$s_!FNKE!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc28f86d4-01ff-4bce-b152-33d4d9f82683_1958x1082.png",
+    "ogTitle": "How to Kill the Code Review",
+    "ogDescription": "Human-written code died in 2025. Code reviews will die in 2026.",
+    "fetchedAt": "2026-04-21T10:51:09.204Z"
+  }
+}
