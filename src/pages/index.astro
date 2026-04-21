@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
+import { getClipMetadata, getSourceDomain } from '../utils/clips-metadata';
 
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
@@ -24,6 +25,20 @@ const tils = (await getCollection('til')).sort(
 );
 
 const latestTils = tils.slice(0, 3); // 최근 3개 TIL 표시
+
+// Clips 항목도 가져오기
+const clips = (await getCollection('clips')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const latestClips = clips.slice(0, 3).map((clip) => {
+	const meta = getClipMetadata(clip.data.sourceUrl);
+	return {
+		clip,
+		thumb: clip.data.heroImage ?? meta?.ogImage ?? null,
+		domain: getSourceDomain(clip.data.sourceUrl),
+	};
+});
 
 // 홈페이지의 OG 이미지 경로 설정
 const heroImage = "/og-image.png";
@@ -118,6 +133,35 @@ const heroImage = "/og-image.png";
 			</ul>
 			<div class="more-link">
 				<a href="/til">TIL 더 보기 →</a>
+			</div>
+		</section>
+
+		<section>
+			<h2>최근 Clips</h2>
+			<ul class="card-grid">
+				{latestClips.map(({ clip, thumb, domain }) => (
+					<li class="card">
+						<a href={`/clips/${clip.id}`}>
+							<div class="image-container clip-thumb">
+								{thumb ? (
+									<img src={thumb} alt=""/>
+								) : (
+									<span class="clip-placeholder">{domain.charAt(0).toUpperCase()}</span>
+								)}
+							</div>
+							<div class="content">
+								<div class="clip-domain">🔗 {domain}</div>
+								<h4 class="title">{clip.data.title}</h4>
+								<p class="date">
+									<FormattedDate date={clip.data.pubDate} />
+								</p>
+							</div>
+						</a>
+					</li>
+				))}
+			</ul>
+			<div class="more-link">
+				<a href="/clips">Clips 더 보기 →</a>
 			</div>
 		</section>
 	</div>
@@ -288,6 +332,23 @@ const heroImage = "/og-image.png";
 			background-color: #e3f2fd;
 			color: #1976d2;
 			border-color: #bbdefb;
+		}
+
+		.clip-thumb {
+			background: linear-gradient(135deg, #eef2f7, #dfe7f0);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.clip-placeholder {
+			font-size: 3rem;
+			font-weight: 700;
+			color: #8b95a1;
+		}
+		.clip-domain {
+			font-size: 0.8em;
+			color: #656d76;
+			margin-bottom: 0.3em;
 		}
 		
 		.more-link {
