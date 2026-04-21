@@ -47,4 +47,18 @@ const til = defineCollection({
   }),
 });
 
-export const collections = { blog, portfolio, til };
+const clips = defineCollection({
+  loader: glob({ base: './src/content/clips', pattern: '**/*.{md,mdx}' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    sourceUrl: z.string().url(),
+    sourceTitle: z.string().optional(),
+    quote: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+    heroImage: z.string().optional(),
+  }),
+});
+
+export const collections = { blog, portfolio, til, clips };
