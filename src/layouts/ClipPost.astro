@@ -1,0 +1,179 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import { getClipMetadata, getSourceDomain } from '../utils/clips-metadata';
+
+type Props = CollectionEntry<'clips'>['data'];
+const { title, description, pubDate, sourceUrl, sourceTitle, quote, tags, heroImage } = Astro.props;
+
+const meta = getClipMetadata(sourceUrl);
+const displayHero = heroImage ?? meta?.ogImage;
+const displaySourceTitle = sourceTitle ?? meta?.ogTitle ?? sourceUrl;
+const displaySourceDescription = meta?.ogDescription;
+const sourceDomain = getSourceDomain(sourceUrl);
+
+const currentUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  image: displayHero ? new URL(displayHero, Astro.site).toString() : undefined,
+  datePublished: pubDate.toISOString(),
+  author: { '@type': 'Person', name: '심상현' },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': currentUrl },
+  isBasedOn: { '@type': 'CreativeWork', url: sourceUrl },
+};
+---
+
+<html lang="ko">
+  <head>
+    <BaseHead title={title} description={description} image={displayHero} article={true} />
+    <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <article>
+        {displayHero && (
+          <div class="hero-banner">
+            <img src={displayHero} alt="" />
+          </div>
+        )}
+        <div class="prose">
+          <a class="source-card" href={sourceUrl} target="_blank" rel="noopener noreferrer">
+            <div class="source-card-label">📰 원본 아티클</div>
+            <div class="source-card-title">{displaySourceTitle}</div>
+            {displaySourceDescription && (
+              <div class="source-card-desc">{displaySourceDescription}</div>
+            )}
+            <div class="source-card-domain">{sourceDomain} ↗</div>
+          </a>
+
+          <header class="clip-header">
+            <h1>{title}</h1>
+            <div class="clip-meta">
+              <FormattedDate date={pubDate} />
+              {tags && tags.length > 0 && (
+                <ul class="clip-tags">
+                  {tags.map((tag) => <li class="clip-tag">#{tag}</li>)}
+                </ul>
+              )}
+            </div>
+          </header>
+
+          {quote && <blockquote class="clip-quote">{quote}</blockquote>}
+
+          <div class="clip-body">
+            <slot />
+          </div>
+        </div>
+      </article>
+    </main>
+    <Footer />
+
+    <style>
+      main {
+        width: calc(100% - 2em);
+        max-width: 100%;
+        margin: 0;
+      }
+      .hero-banner {
+        max-width: 1020px;
+        margin: 1em auto 0;
+        padding: 0 1em;
+      }
+      .hero-banner img {
+        width: 100%;
+        max-height: 400px;
+        object-fit: cover;
+        border-radius: 12px;
+        display: block;
+      }
+      .prose {
+        width: 720px;
+        max-width: calc(100% - 2em);
+        margin: auto;
+        padding: 1em;
+        color: rgb(var(--gray-dark));
+      }
+      .source-card {
+        display: block;
+        margin: 1em 0 2em;
+        padding: 1.25em;
+        border: 1px solid #d1d9e0;
+        border-radius: 12px;
+        background: #f6f8fa;
+        text-decoration: none;
+        color: inherit;
+        transition: border-color 0.2s ease, transform 0.2s ease;
+      }
+      .source-card:hover {
+        border-color: var(--accent, #0077cc);
+        transform: translateY(-2px);
+      }
+      .source-card-label {
+        font-size: 0.85em;
+        color: #656d76;
+        margin-bottom: 0.4em;
+      }
+      .source-card-title {
+        font-weight: 600;
+        font-size: 1.05em;
+        margin-bottom: 0.3em;
+      }
+      .source-card-desc {
+        font-size: 0.9em;
+        color: #656d76;
+        line-height: 1.5;
+        margin-bottom: 0.5em;
+      }
+      .source-card-domain {
+        font-size: 0.85em;
+        color: var(--accent, #0077cc);
+      }
+      .clip-header h1 {
+        margin: 0 0 0.5em;
+      }
+      .clip-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5em 1em;
+        align-items: center;
+        color: rgb(var(--gray));
+        margin-bottom: 1.5em;
+      }
+      .clip-tags {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 0.4em;
+        flex-wrap: wrap;
+      }
+      .clip-tag {
+        background-color: #f6f8fa;
+        color: #656d76;
+        border: 1px solid #d1d9e0;
+        border-radius: 12px;
+        padding: 2px 8px;
+        font-size: 0.75em;
+        font-weight: 500;
+      }
+      .clip-quote {
+        border-left: 4px solid var(--accent, #0077cc);
+        padding: 0.5em 1em;
+        margin: 1.5em 0;
+        background: #f6f8fa;
+        font-style: italic;
+        color: #333;
+      }
+      .clip-body {
+        line-height: 1.7;
+      }
+    </style>
+  </body>
+</html>
