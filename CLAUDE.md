@@ -6,23 +6,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 이 프로젝트는 Astro 기반의 개인 포트폴리오 블로그 사이트입니다. Netlify를 통해 배포되며, 블로그, 포트폴리오, TIL(Today I Learned) 세 가지 주요 컨텐츠 섹션을 제공합니다.
 
+## 패키지 매니저
+
+이 프로젝트는 **yarn**을 사용합니다 (`yarn.lock` 존재). `npm`/`pnpm` 명령을 사용하지 말고 항상 `yarn`으로 통일해주세요.
+
 ## 개발 명령어
 
 ```bash
 # 의존성 설치
-npm install
+yarn install
+
+# 새 패키지 추가
+yarn add <package>
+yarn add -D <package>   # devDependency
 
 # 개발 서버 실행 (localhost:4321)
-npm run dev
+yarn dev
 
 # 프로덕션 빌드
-npm run build
+yarn build
 
 # 빌드 결과 로컬 미리보기
-npm run preview
+yarn preview
 
 # Astro CLI 직접 실행
-npm run astro [command]
+yarn astro [command]
 ```
 
 ## 프로젝트 구조
