@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "clips:refresh": "node scripts/refresh-clips-cache.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.2.4",
@@ -17,6 +18,8 @@
     "astro": "^5.7.3"
   },
   "devDependencies": {
+    "gray-matter": "^4.0.3",
+    "open-graph-scraper": "^6.11.0",
     "prettier": "^3.5.3"
   }
 }
