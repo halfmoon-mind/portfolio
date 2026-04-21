@@ -127,26 +127,45 @@ yarn astro [command]
 
 ## Clips 작성 워크플로
 
-Clips는 "외부 아티클 링크 + 내 코멘트" 포맷이며, 원본 글의 OG 이미지/제목/설명은 **빌드가 아닌 로컬 스크립트**로 스크래핑해 `src/data/clips-cache.json`에 저장한다.
+Clips는 "외부 아티클 링크 + 내 코멘트" 포맷이며, 원본 글의 OG 이미지/제목/설명은 **Netlify 빌드 시 자동 스크래핑**되어 `src/data/clips-cache.json` 에 저장된다. 작성자는 보통 로컬 스크립트를 직접 돌릴 필요가 없다.
+
+### 기본 경로 (Keystatic admin UI 사용)
+
+1. `halfmoon.day/keystatic` 접속 → `Clips` → `Create`
+2. `sourceUrl` 을 포함해 필드 입력 후 `Save`
+3. GitHub 에 `.mdx` 가 commit → Netlify 가 자동 빌드 (`yarn clips:refresh && astro build`) → 배포
+
+로컬 터미널 작업 없음.
+
+### 수동 경로 (로컬에서 직접 작성하거나 캐시 강제 갱신이 필요할 때)
 
 ```bash
-# 1. src/content/clips/<slug>.md 작성 (frontmatter에 sourceUrl 반드시 포함)
-# 2. 캐시 갱신 (새 URL만 스크래핑, 이미 있는 URL은 건드리지 않음)
+# 1. src/content/clips/<slug>.md 또는 .mdx 직접 작성 (sourceUrl 필수)
+# 2. 캐시 갱신 (새 URL만 스크래핑)
 yarn clips:refresh
 
-# 강제로 전체 재스크래핑
+# 강제 전체 재스크래핑
 yarn clips:refresh --force
 
 # 3. 로컬 확인
 yarn dev
 
-# 4. 커밋 (클립 파일 + 캐시 JSON을 함께 커밋해야 배포에 반영됨)
-git add src/content/clips/<slug>.md src/data/clips-cache.json
+# 4. 커밋
+git add src/content/clips/<slug>.{md,mdx} src/data/clips-cache.json
 git commit -m "feat(clips): ..."
 ```
 
-- 빌드(`yarn build`)는 캐시를 **읽기만** 한다 → Netlify 배포 시 외부 네트워크 호출 없음.
-- 캐시에 URL이 없는 상태로 배포해도 빌드는 성공하며, 해당 클립은 썸네일 플레이스홀더로 렌더된다. 이후 `yarn clips:refresh`로 캐시 채우고 다시 커밋하면 정상화.
+### 스크래핑 실패 처리
+
+스크래핑이 실패하면 (사이트 봇 차단, URL 사망 등) 해당 clip 은 썸네일 placeholder 로 렌더된다. 해결:
+
+- Keystatic 에서 해당 clip 을 열고 `sourceTitle` / `heroImage` 필드를 수동 입력 → `Save`
+- 다음 배포부터 수동 값이 사용됨 (캐시 우선순위는 frontmatter 수동값 > 스크래핑값)
+
+### 캐시 관리
+
+- `src/data/clips-cache.json` 은 계속 git 에 커밋되어 관리된다. 빌드는 새 URL 만 추가 스크래핑(증분) 하므로 반복 빌드가 느려지지 않는다.
+- 빌드가 네트워크 호출을 포함하므로, 외부 사이트가 느리면 Netlify 빌드 시간이 일시적으로 늘어날 수 있다.
 
 ## 글로벌 상수
 
