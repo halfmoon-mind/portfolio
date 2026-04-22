@@ -1,9 +1,17 @@
 import { config, fields, collection } from '@keystatic/core';
 
+const isLocal = import.meta.env.DEV;
+
 export default config({
-  storage: {
-    kind: 'local',
-  },
+  storage: isLocal
+    ? { kind: 'local' }
+    : {
+        kind: 'github',
+        repo: {
+          owner: 'halfmoon-mind',
+          name: 'portfolio',
+        },
+      },
 
   collections: {
     blog: collection({
