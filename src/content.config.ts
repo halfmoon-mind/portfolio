@@ -12,6 +12,7 @@ const blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     heroImage: z.string().optional(),
+    tags: z.array(z.string()).optional(),
   }),
 });
 
@@ -30,6 +31,13 @@ const portfolio = defineCollection({
     tags: z.array(z.string()).optional(),
     githubUrl: z.string().optional(),
     liveUrl: z.string().optional(),
+    webUrl: z.string().optional(),
+    storeUrl: z.string().optional(),
+    youtubeUrl: z.string().optional(),
+    iosUrl: z.string().optional(),
+    androidUrl: z.string().optional(),
+    slackUrl: z.string().optional(),
+    docUrl: z.string().optional(),
   }),
 });
 
