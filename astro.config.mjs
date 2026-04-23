@@ -12,4 +12,9 @@ export default defineConfig({
   site: 'https://halfmoon.day/',
   integrations: [mdx(), sitemap(), react(), keystatic()],
   adapter: netlify(),
+  vite: {
+    server: {
+      allowedHosts: ['.ngrok-free.app', '.ngrok.app'],
+    },
+  },
 });
