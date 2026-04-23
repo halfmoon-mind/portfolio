@@ -11,6 +11,7 @@ const { title, description, pubDate, sourceUrl, sourceTitle, quote, tags, heroIm
 
 const meta = getClipMetadata(sourceUrl);
 const displayHero = heroImage ?? meta?.ogImage;
+const ogImage = heroImage ?? '/clips.png';
 const displaySourceTitle = sourceTitle ?? meta?.ogTitle ?? sourceUrl;
 const displaySourceDescription = meta?.ogDescription;
 const sourceDomain = getSourceDomain(sourceUrl);
@@ -31,7 +32,7 @@ const articleSchema = {
 
 <html lang="ko">
   <head>
-    <BaseHead title={title} description={description} image={displayHero} article={true} />
+    <BaseHead title={title} description={description} image={ogImage} article={true} />
     <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
   </head>
   <body>
