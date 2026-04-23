@@ -4,5 +4,11 @@
     "ogTitle": "How to Kill the Code Review",
     "ogDescription": "Human-written code died in 2025. Code reviews will die in 2026.",
     "fetchedAt": "2026-04-21T10:51:09.204Z"
+  },
+  "https://codex.epril.com/claude-session-context-handoff-4-layer-strategy": {
+    "ogImage": "https://image.codex.epril.com/covers/d7b527d0-7ac0-4543-87be-185bd5a49d5d.jpg",
+    "ogTitle": "Claude 세션 간 Context Handoff: 맥락을 잃지 않는 4계층 전략",
+    "ogDescription": "Claude 세션 전환 시 맥락 손실을 방지하기 위한 체계적인 4계층 전략",
+    "fetchedAt": "2026-04-23T01:53:37.504Z"
   }
 }
