@@ -31,6 +31,18 @@ const cards = clips.map((clip) => {
     <main>
       <h1 class="section-title">Clips</h1>
       <p class="section-intro">읽은 글과 그 위에 남기는 짧은 코멘트.</p>
+      <div class="slack-cta">
+        <a class="slack-install" href="/api/slack/install" aria-label="Add to Slack">
+          <svg class="slack-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122.8 122.8" aria-hidden="true">
+            <path d="M25.8 77.6c0 7.1-5.8 12.9-12.9 12.9S0 84.7 0 77.6s5.8-12.9 12.9-12.9h12.9zm6.5 0c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9v32.3c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9z" fill="#e01e5a"/>
+            <path d="M45.2 25.8c-7.1 0-12.9-5.8-12.9-12.9S38.1 0 45.2 0s12.9 5.8 12.9 12.9v12.9zm0 6.5c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9H12.9C5.8 58.1 0 52.3 0 45.2s5.8-12.9 12.9-12.9z" fill="#36c5f0"/>
+            <path d="M97 45.2c0-7.1 5.8-12.9 12.9-12.9s12.9 5.8 12.9 12.9-5.8 12.9-12.9 12.9H97zm-6.5 0c0 7.1-5.8 12.9-12.9 12.9s-12.9-5.8-12.9-12.9V12.9C64.7 5.8 70.5 0 77.6 0s12.9 5.8 12.9 12.9z" fill="#2eb67d"/>
+            <path d="M77.6 97c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9-12.9-5.8-12.9-12.9V97zm0-6.5c-7.1 0-12.9-5.8-12.9-12.9s5.8-12.9 12.9-12.9h32.3c7.1 0 12.9 5.8 12.9 12.9s-5.8 12.9-12.9 12.9z" fill="#ecb22e"/>
+          </svg>
+          <span>Add to Slack</span>
+        </a>
+        <p class="slack-cta-note">설치하면 새 Clip이 올라올 때 지정한 채널로 알림이 갑니다.</p>
+      </div>
       <ul class="clip-grid">
         {cards.map(({ clip, thumb, domain }) => (
           <li class="clip-card">
@@ -79,7 +91,43 @@ const cards = clips.map((clip) => {
       .section-intro {
         color: #656d76;
         margin-top: 0;
+        margin-bottom: 1em;
+      }
+      .slack-cta {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.75em 1em;
         margin-bottom: 1.5em;
+      }
+      .slack-install {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5em;
+        padding: 0.55em 1em;
+        background: #ffffff;
+        color: #1f2328;
+        border: 1px solid #d1d9e0;
+        border-radius: 6px;
+        font-size: 0.95em;
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      }
+      .slack-install:hover {
+        transform: translateY(-1px);
+        border-color: #b8c0c9;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+      }
+      .slack-logo {
+        width: 20px;
+        height: 20px;
+      }
+      .slack-cta-note {
+        margin: 0;
+        font-size: 0.85em;
+        color: #656d76;
       }
       .clip-grid {
         list-style: none;
