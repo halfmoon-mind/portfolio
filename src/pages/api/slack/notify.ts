@@ -88,13 +88,12 @@ export const POST: APIRoute = async ({ url }) => {
     return buildClipMessage({
       slug: c.id,
       title: c.data.title,
-      description: c.data.description,
+      body: c.body ?? '',
       sourceUrl: c.data.sourceUrl,
       sourceTitle:
         c.data.sourceTitle ?? meta?.ogTitle ?? getSourceDomain(c.data.sourceUrl),
       quote: c.data.quote,
       tags: c.data.tags,
-      heroImage: c.data.heroImage ?? meta?.ogImage,
       pubDate: c.data.pubDate.toISOString(),
       siteUrl,
     });

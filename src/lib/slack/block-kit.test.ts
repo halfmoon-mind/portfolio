@@ -4,7 +4,7 @@ import { buildClipMessage, type ClipInput } from './block-kit';
 const sample: ClipInput = {
   slug: 'foo-bar',
   title: 'On code review',
-  description: 'Short summary.',
+  body: 'Body paragraph one.\n\nBody paragraph two.',
   sourceUrl: 'https://example.com/a',
   sourceTitle: 'Example Post',
   pubDate: '2026-04-22T00:00:00.000Z',
@@ -41,16 +41,34 @@ describe('buildClipMessage', () => {
     expect(raw).toContain('&amp;');
   });
 
-  it('omits image accessory when heroImage is absent', () => {
+  it('never attaches an image accessory', () => {
     const out = buildClipMessage(sample);
     const raw = JSON.stringify(out.blocks);
     expect(raw.includes('"type":"image"')).toBe(false);
   });
 
-  it('includes accessory image when heroImage is present', () => {
-    const out = buildClipMessage({ ...sample, heroImage: 'https://ex.com/i.png' });
+  it('renders the clip body in the main section', () => {
+    const out = buildClipMessage(sample);
     const raw = JSON.stringify(out.blocks);
-    expect(raw).toContain('https://ex.com/i.png');
+    expect(raw).toContain('Body paragraph one.');
+    expect(raw).toContain('Body paragraph two.');
+  });
+
+  it('truncates bodies that exceed Slack section limits with an ellipsis', () => {
+    const longBody = 'ㄱ'.repeat(5000);
+    const out = buildClipMessage({ ...sample, body: longBody });
+    const section = (out.blocks[1] as { text: { text: string } }).text.text;
+    // `*<title>*\n` prefix adds ~`title.length + 3` chars; body itself must
+    // be kept under the 2800-char budget and end with an ellipsis.
+    expect(section.length).toBeLessThanOrEqual(2800 + 'On code review'.length + 3);
+    expect(section.endsWith('…')).toBe(true);
+  });
+
+  it('escapes control chars inside the body', () => {
+    const out = buildClipMessage({ ...sample, body: 'Watch out for <!channel> & co.' });
+    const raw = JSON.stringify(out.blocks);
+    expect(raw).toContain('&lt;!channel&gt;');
+    expect(raw).toContain('&amp;');
   });
 
   it('preserves tag order', () => {

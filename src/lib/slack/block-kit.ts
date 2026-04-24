@@ -3,12 +3,11 @@ import { escapeSlackText } from './escape';
 export type ClipInput = {
   slug: string;
   title: string;
-  description: string;
+  body: string;
   sourceUrl: string;
   sourceTitle?: string;
   quote?: string;
   tags?: string[];
-  heroImage?: string;
   pubDate: string; // ISO
   siteUrl: string; // e.g. https://halfmoon.day (no trailing slash)
 };
@@ -18,9 +17,17 @@ export type SlackMessage = {
   blocks: unknown[];
 };
 
+const BODY_CHAR_BUDGET = 2800;
+
+function truncateBody(body: string): string {
+  const trimmed = body.trim();
+  if (trimmed.length <= BODY_CHAR_BUDGET) return trimmed;
+  return trimmed.slice(0, BODY_CHAR_BUDGET - 1).trimEnd() + '…';
+}
+
 export function buildClipMessage(clip: ClipInput): SlackMessage {
   const safeTitle = escapeSlackText(clip.title);
-  const safeDescription = escapeSlackText(clip.description);
+  const safeBody = escapeSlackText(truncateBody(clip.body));
   const safeQuote = clip.quote ? escapeSlackText(clip.quote) : undefined;
   const sourceLabel = escapeSlackText(clip.sourceTitle ?? clip.sourceUrl);
   const clipUrl = `${clip.siteUrl.replace(/\/$/, '')}/clips/${clip.slug}`;
@@ -30,20 +37,11 @@ export function buildClipMessage(clip: ClipInput): SlackMessage {
       type: 'header',
       text: { type: 'plain_text', text: '🌓 New clip on Half to Full', emoji: true },
     },
+    {
+      type: 'section',
+      text: { type: 'mrkdwn', text: `*${safeTitle}*\n${safeBody}` },
+    },
   ];
-
-  const mainSection: Record<string, unknown> = {
-    type: 'section',
-    text: { type: 'mrkdwn', text: `*${safeTitle}*\n${safeDescription}` },
-  };
-  if (clip.heroImage) {
-    mainSection.accessory = {
-      type: 'image',
-      image_url: clip.heroImage,
-      alt_text: safeTitle,
-    };
-  }
-  blocks.push(mainSection);
 
   if (safeQuote) {
     blocks.push({
