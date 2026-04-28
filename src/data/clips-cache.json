@@ -20,5 +20,11 @@
   "https://toss.tech/article/harness-for-team-productivity": {
     "failed": true,
     "fetchedAt": "2026-04-23T09:13:43.104Z"
+  },
+  "https://martinfowler.com/fragments/2026-04-02.html": {
+    "ogImage": "https://martinfowler.com/logo-sq.png",
+    "ogTitle": "Fragments: April  2",
+    "ogDescription": "fragments 02 Apr 2026",
+    "fetchedAt": "2026-04-28T15:46:55.578Z"
   }
 }
