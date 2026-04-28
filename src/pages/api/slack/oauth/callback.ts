@@ -15,6 +15,15 @@ type OAuthResponse = {
   };
 };
 
+function escapeHtml(value: string): string {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
 function safeEqual(a: string, b: string): boolean {
   const ab = Buffer.from(a);
   const bb = Buffer.from(b);
@@ -72,15 +81,16 @@ export const GET: APIRoute = async ({ cookies, url }) => {
     installed_at: new Date().toISOString(),
   });
 
-  const channel = json.incoming_webhook.channel;
+  const channel = escapeHtml(json.incoming_webhook.channel);
   return new Response(
     `<!doctype html>
 <meta charset="utf-8" />
 <title>Installed · Half to Full</title>
 <style>body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:40rem;margin:4rem auto;padding:0 1rem;line-height:1.6}</style>
-<h1>🌓 Installed!</h1>
+<h1>Installed</h1>
 <p>New clips will appear in <strong>${channel}</strong>.</p>
-<p><a href="https://halfmoon.day/clips">Browse existing clips →</a></p>`,
-    { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } },
+<p>You can remove this app from Slack app management at any time.</p>
+<p><a href="https://halfmoon.day/clips">Browse existing clips</a> · <a href="https://halfmoon.day/clips/slack/support">Support</a> · <a href="https://halfmoon.day/clips/slack/privacy">Privacy Policy</a></p>`,
+    { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
   );
 };

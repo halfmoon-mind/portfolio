@@ -24,6 +24,11 @@ const today = new Date();
 			>
 		</a>
 	</div>
+	<div class="footer-links">
+		<a href="/clips/slack/privacy">Privacy</a>
+		<a href="/clips/slack/terms">Terms</a>
+		<a href="/clips/slack/support">Support</a>
+	</div>
 </footer>
 <style>
 	footer {
@@ -43,6 +48,21 @@ const today = new Date();
 		color: rgb(var(--gray));
 	}
 	.social-links a:hover {
+		color: rgb(var(--gray-dark));
+	}
+	.footer-links {
+		display: flex;
+		justify-content: center;
+		gap: 1em;
+		flex-wrap: wrap;
+		margin-top: 1em;
+		font-size: 0.9em;
+	}
+	.footer-links a {
+		color: rgb(var(--gray));
+		text-decoration: none;
+	}
+	.footer-links a:hover {
 		color: rgb(var(--gray-dark));
 	}
 </style>
