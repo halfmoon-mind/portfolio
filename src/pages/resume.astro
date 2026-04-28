@@ -1,2128 +1,281 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE_TITLE } from '../consts';
+import {
+	education,
+	experiences,
+	openSourceProjects,
+	resumeIntro,
+	resumeProfile,
+	skillCategories,
+	talks,
+} from '../data/resume';
+import '../styles/resume.css';
 
 const title = `Resume | ${SITE_TITLE}`;
 const description = '심상현의 이력서';
+
+const getLinkTarget = (href: string) => (href.startsWith('http') ? '_blank' : undefined);
+const getLinkRel = (href: string) => (href.startsWith('http') ? 'noopener noreferrer' : undefined);
+const getIconClass = (label: string, href: string) => {
+	if (href.startsWith('mailto:')) return 'fa-regular fa-envelope';
+	if (href.includes('github.com')) return 'fa-brands fa-github';
+	if (href.includes('apps.apple.com')) return 'fa-brands fa-apple';
+	if (href.includes('play.google.com')) return 'fa-brands fa-android';
+	if (href.includes('youtube.com')) return 'fa-brands fa-youtube';
+	if (href.endsWith('.pdf') || label.includes('발표자료')) return 'fa-regular fa-file-pdf';
+	return 'fa-solid fa-globe';
+};
 ---
 
-<BaseLayout title={title} description={description} pubDate={new Date()} updatedDate={new Date()}>
-	<!-- Font Awesome CDN 추가 -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-	<!-- html2pdf 라이브러리 추가 -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-	
+<BaseLayout title={title} description={description}>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+	<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
 	<div class="resume-container">
-		<!-- PDF 저장 버튼 -->
-		<div class="print-controls">
-			<button id="savePdfBtn" class="pdf-button">
-				<i class="fa-solid fa-file-pdf"></i> PDF로 저장하기
-			</button>
-			<div id="pdfStatus" class="pdf-status" style="display: none;">
-				<i class="fa-solid fa-spinner fa-spin"></i> PDF 생성 중...
-			</div>
+		<div class="print-controls" aria-live="polite">
+			<button id="savePdfBtn" class="pdf-button" type="button">PDF로 저장하기</button>
+			<p id="pdfStatus" class="pdf-status" hidden>PDF 생성 중...</p>
 		</div>
-		<!-- 프로필 헤더 영역 -->
-		<div class="resume-header">
-			<div class="hero-section">
-				<div class="profile-info">
-					<div class="profile-image-wrapper">
-						<img src="/profile.jpg" alt="심상현 프로필 이미지" class="profile-image" />
-					</div>
-					<div class="profile-details">
-						<h1 class="name">심상현</h1>
-						<p class="job-title">Software Engineer</p>
-						<div class="contact-info">
-							<a href="mailto:simsanghyeon00@gmail.com" class="contact-item">
-								<i class="fa-regular fa-envelope icon"></i>
-								<span>simsanghyeon00@gmail.com</span>
-							</a>
-							<a href="https://github.com/halfmoon-mind" target="_blank" rel="noopener noreferrer" class="contact-item">
-								<i class="fa-brands fa-github icon"></i>
-								<span>github.com/halfmoon-mind</span>
-							</a>
-						</div>
-					</div>
-				</div>
-				
-				<!-- 소개 정보 -->
-				<div class="intro-container">
-					<div class="section-title">
-						<h2>소개</h2>
-						<div class="title-line"></div>
-					</div>
-					<div class="intro-content">
-						<p class="intro-text">
-							<span class="highlight">Flutter Engineer</span>로 2년간 근무하면서 3개의 프로덕션 서비스를 배포 및 유지보수 하고 있습니다.
-Flutter 뿐 아니라 다양한 분야의 지식을 배우면서 <span class="highlight">엔지니어링 퀄리티</span>를 높이고 있습니다.
-엔지니어로서의 관점 뿐만 아니라 <span class="highlight">비즈니스의 본질</span>을 이해하고 유연하게 문제를 해결합니다.
-						</p>
-						<p class="intro-text">
-							일상생활 속의 불편함을 인지하고 이를 기술로서 풀어내는 <span class="highlight">제너럴리스트</span>입니다.
-또한 <span class="highlight">AI</span>를 적극적으로 활용하여 Product에 빠르게 <span class="highlight">비즈니스 임팩트</span>를 낼 수 있는 방안을 항상 고민하고 적극적으로 제시하는 <span class="highlight">Product Engineer</span>입니다.
-						</p>
+
+		<header class="resume-header">
+			<div class="profile-info">
+				<img src={resumeProfile.image} alt={`${resumeProfile.name} 프로필 이미지`} class="profile-image" />
+				<div class="profile-details">
+					<h1 class="name">{resumeProfile.name}</h1>
+					<p class="job-title">{resumeProfile.title}</p>
+					<div class="contact-info">
+						{
+							resumeProfile.contacts.map((contact) => (
+								<a
+									href={contact.href}
+									target={getLinkTarget(contact.href)}
+									rel={getLinkRel(contact.href)}
+									class="contact-item"
+								>
+									<i class={`${getIconClass(contact.label, contact.href)} icon`} aria-hidden="true"></i>
+									{contact.label}
+								</a>
+							))
+						}
 					</div>
 				</div>
 			</div>
-		</div>
 
+			<section class="intro-container" aria-labelledby="intro-title">
+				<div class="section-title">
+					<h2 id="intro-title">소개</h2>
+					<div class="title-line"></div>
+				</div>
+				<div class="intro-content">
+					{resumeIntro.map((paragraph) => <p class="intro-text" set:html={paragraph} />)}
+				</div>
+			</section>
+		</header>
 
-		<div class="resume-section">
-			<h2>경력</h2>
+		<section class="resume-section" aria-labelledby="experience-title">
+			<h2 id="experience-title">경력</h2>
 			<div class="section-content career-timeline">
-				<!-- 어터 -->
-				<div class="experience-item">
-					<div class="experience-header">
-						<h3>Flutter Mobile Engineer</h3>
-						<p class="period">2023년 10월 - 현재</p>
-					</div>
-					<p class="position">어터</p>
-
-					<!-- 프로젝트 1 -->
-					<div class="project-subsection">
-						<h4>[비공개] - 영화 커뮤니티</h4>
-						<ul class="responsibilities">
-							<li>
-								프로젝트 내 <span class="highlight">유일 앱 개발자</span>로 프로젝트 내 모든 기능 구현
-							</li>
-							<li>
-								<span class="highlight">앱인앱 구조</span>로 커뮤니티 내 숏드라마 서비스 구현하여 2가지(<span class="highlight">Bloc+GoRouter, GetX</span>) 상태 관리를 동시에 사용할 수 있도록 구현
-							</li>
-							<li>
-								cursor와 같은 <span class="highlight">AI Agent</span>를 적극적으로 활용하여 빠르게 프로젝트를 구축
-							</li>
-							<li>
-								커뮤니티 내 게시글 뷰어, 게시글 작성을 위한 <span class="highlight">html 에디터</span> 기능 구현
-							</li>
-						</ul>
-					</div>
-
-					<!-- 프로젝트 2 -->
-					<div class="project-subsection">
-						<h4>슈룹 - 숏폼 드라마 플랫폼</h4>
-						<ul class="responsibilities">
-							<li>
-								<span class="highlight">DRM</span> 적용된 <span class="highlight">HLS/DASH 스트리밍</span> 방식 동영상 플레이어 개발하고, 불안정한 네트워크 환경에서 적절하게 화면이 보여질 수 있도록 지속적으로 기능 개선
-							</li>
-							<li>
-								전세계 스토어 대상으로 배포하여 <span class="highlight">다국어 지원</span> 어플리케이션 개발 경험
-							</li>
-							<li>
-								유저가 인앱결제를 시도 할 때, 서버가 응답하지 않을 경우를 대비해 1분마다 <span class="highlight">영수증 검증 처리 재시도</span>하면서 유저와 인증 정보를 <span class="highlight">Sentry</span> 서버에 로그로 남기겨 CS 대응에 수월하도록 처리
-							</li>
-						</ul>
-					</div>
-
-					<!-- 프로젝트 3 -->
-					<div class="project-subsection">
-						<h4>모픽 - 웹소설 콘텐츠 플랫폼</h4>
-						<div class="project-links">
-							<a href="https://mofic.io" target="_blank" rel="noopener noreferrer" class="link-button">
-								<i class="fa-solid fa-globe icon"></i> 웹사이트
-							</a>
-							<a href="https://apps.apple.com/kr/app/%EB%AA%A8%ED%94%BD-%EB%8D%94-%EB%A7%8E%EC%9D%80-%EC%86%8C%EC%84%A4-%EC%86%8D%EC%9C%BC%EB%A1%9C/id6469601198" target="_blank" rel="noopener noreferrer" class="link-button">
-								<i class="fa-brands fa-apple icon"></i> AppStore
-							</a>
-							<a href="https://play.google.com/store/apps/details?id=com.toodat.android&hl=ko" target="_blank" rel="noopener noreferrer" class="link-button">
-								<i class="fa-brands fa-android icon"></i> PlayStore
-							</a>
-						</div>
-						<ul class="responsibilities">
-							<li>
-								<span class="highlight">Fastlane</span>을 활용한 <span class="highlight">CI/CD 파이프라인</span> 구축하여 배포 소요 시간 <span class="highlight">60% (6분) 감소</span>
-							</li>
-							<li>
-								<span class="highlight">Amplitude</span>를 활용하여 유저 사용시간 분석하고, 야간 시간대 유저 참여를 높이기 위해 주도적으로 <span class="highlight">다크모드</span>의 기능 우선순위를 조정하여 개발
-							</li>
-							<li>
-								기능 추가 이후 야간 시간대 기존와 대비하여 유저 session <span class="highlight">35% 증가</span>
-							</li>
-							<li>
-								팀 내 모바일 엔지니어링을 주도하며 <span class="highlight">Clean Architecture</span>, <span class="highlight">MVVM</span> 구조를 설계하여 앱을 제작
-							</li>
-							<li>
-								Geek News, Toss Tech와 같은 뉴스레터, 테크블로그를 읽고 기존 앱 아키텍쳐를 변경에 용이하게 개선
-							</li>
-							<li>
-								<span class="highlight">Sentry</span>를 로그 레벨과 <span class="highlight">Stack Trace</span>, <span class="highlight">Routing history</span>를 적극적으로 활용하여 Sentry 도입 이후 버그 픽스 소요 시간 <span class="highlight">30% 단축</span>
-							</li>
-							<li>
-								신속한 비즈니스 검증 및 요구사항 수정을 빠르게 반영하기 위해 <span class="highlight">Server Driven UI</span>를 적용
-							</li>
-							<li>
-								앱 배포 없이 <span class="highlight">Admin 페이지</span>에서 손쉽게 메인페이지의 화면 구성을 수정할 수 있도록 구현
-							</li>
-							<li>
-								Flutter에서 지원하는 적절한 epub 파일 뷰어 패키지가 없어 <span class="highlight">웹소설 뷰어 패키지</span> 제작하여 초기에 만든 웹뷰를 활용한 epub.js 뷰어보다 로딩 속도 <span class="highlight">40% 감소</span>
-							</li>
-							<li>
-								앱 리브랜딩 경험으로 하드 코딩된 데이터 제거하고, 관리 포인트를 각 페이지가 아니라 <span class="highlight">하나의 모듈</span>에서 관리하도록 설정
-							</li>
-						</ul>
-					</div>
-				</div>
-
-				<!-- 허슬러즈 -->
-				<div class="experience-item">
-					<div class="experience-header">
-						<h3>Software Engineer</h3>
-						<p class="period">2022년 4월 - 2023년 5월 (1년 1개월)</p>
-					</div>
-					<p class="position">허슬러즈</p>
-					<div class="project-subsection">
-						<h4>게더링 - 소셜 공유 캘린더 플랫폼</h4>
-						<div class="project-links">
-							<a href="https://apps.apple.com/kr/app/%EA%B2%8C%EB%8D%94%EB%A7%81-%ED%95%A8%EA%BB%98-%EC%93%B0%EB%8A%94-%EA%B3%B5%EC%9C%A0-%EC%BA%98%EB%A6%B0%EB%8D%94/id1643475991" target="_blank" rel="noopener noreferrer" class="link-button">
-								<i class="fa-brands fa-apple icon"></i> AppStore
-							</a>
-							<a href="https://play.google.com/store/apps/details?id=day.gathering.app&hl=ko" target="_blank" rel="noopener noreferrer" class="link-button">
-								<i class="fa-brands fa-android icon"></i> PlayStore
-							</a>
-						</div>
-						<ul class="responsibilities">
-							<li>
-								<span class="highlight">일간/주간/월간</span> 커스텀 캘린더 제작
-							</li>
-							<li>
-								기존에 모든 반복 일정이 각각 다른 일정으로 처리되는 것에 불편함을 느껴 <span class="highlight">반복 일정 관리 알고리즘</span> 개발
-							</li>
-							<li>
-								DB 레코드 <span class="highlight">40% 감소</span>
-							</li>
-							<li>
-								그룹 서비스(그룹 일정 추가, 게시글) <span class="highlight">Full Stack</span> 개발 (Node.js, Flutter)
-							</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="resume-section">
-			<h2>기술 스택</h2>
-			<div class="section-content skills">
-				<div class="skill-category">
-					<h3>프론트엔드</h3>
-					<ul>
-						<li>React.js / Next.js</li>
-						<li>HTML / CSS / JavaScript / TypeScript</li>
-						<li>Tailwind CSS</li>
-					</ul>
-				</div>
-				<div class="skill-category">
-					<h3>모바일</h3>
-					<ul>
-						<li>Flutter</li>
-						<li>SwiftUI</li>
-						<li>Bloc / GetX / Provider</li>
-						<li>Clean Architecture / MVVM</li>
-					</ul>
-				</div>
-				<div class="skill-category">
-					<h3>기타</h3>
-					<ul>
-						<li>AWS (EC2, S3, Lambda 등)</li>
-						<li>Amplitude / Google Analytics / Appsflyer</li>
-						<li>Sentry</li>
-						<li>CI/CD (Fastlane)</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
-		<div class="resume-section">
-			<h2>발표</h2>
-			<div class="section-content">
-				<div class="talks-container">
-					<div class="talk-item">
-						<div class="talk-year">2025</div>
-						<div class="talk-content">
-							<h3 class="talk-title">스타트업에서 AI와 함께 살아남기</h3>
-							<a href="https://archive-halfmoon-mind.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%B3%E1%84%90%E1%85%A1%E1%84%90%E1%85%B3%E1%84%8B%E1%85%A5%E1%86%B8%E1%84%8B%E1%85%A6%E1%84%89%E1%85%A5+AI%E1%84%8B%E1%85%AA+%E1%84%92%E1%85%A1%E1%86%B7%E1%84%81%E1%85%A6+%E1%84%89%E1%85%A1%E1%86%AF%E1%84%8B%E1%85%A1%E1%84%82%E1%85%A1%E1%86%B7%E1%84%80%E1%85%B5.pdf" target="_blank" rel="noopener noreferrer" class="talk-link">
-								<i class="fa-regular fa-file-pdf icon"></i> 발표자료
-							</a>
-						</div>
-					</div>
-					
-					<div class="talk-item">
-						<div class="talk-year">2025</div>
-						<div class="talk-content">
-							<h3 class="talk-title">YourSSU 홈커밍 - 주니어와 취준생에게 전하는 Flutter 사용 경험</h3>
-						</div>
-					</div>
-					
-					<div class="talk-item">
-						<div class="talk-year">2024</div>
-						<div class="talk-content">
-							<h3 class="talk-title">GDXC - 과거의 나, 현재의 나</h3>
-						</div>
-					</div>
-					
-					<div class="talk-item">
-						<div class="talk-year">2024</div>
-						<div class="talk-content">
-							<h3 class="talk-title">GDSC 2024 Final Event - 학교에서 배운 내용으로 현업에서 써먹기</h3>
-							<a href="https://archive-halfmoon-mind.s3.ap-northeast-2.amazonaws.com/EDDY_3%E1%84%80%E1%85%B5_GDSC_FinalEvent.pdf" target="_blank" rel="noopener noreferrer" class="talk-link">
-								<i class="fa-regular fa-file-pdf icon"></i> 발표자료
-							</a>
-						</div>
-					</div>
-					
-					<div class="talk-item">
-						<div class="talk-year">2024</div>
-						<div class="talk-content">
-							<h3 class="talk-title">SSU DEVCON - Flutter로 다채로운 이벤트 페이지 구축하기</h3>
-							<div class="talk-links">
-								<a href="https://archive-halfmoon-mind.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%AE%E1%86%BC%E1%84%89%E1%85%B5%E1%86%AFDEVCON+-+%E1%84%89%E1%85%B5%E1%86%B7%E1%84%89%E1%85%A1%E1%86%BC%E1%84%92%E1%85%A7%E1%86%AB+%E1%84%87%E1%85%A1%E1%86%AF%E1%84%91%E1%85%AD.pdf" target="_blank" rel="noopener noreferrer" class="talk-link">
-									<i class="fa-regular fa-file-pdf icon"></i> 발표자료
-								</a>
-								<a href="https://www.youtube.com/watch?v=JpzyT2XPNqw&ab_channel=GDSCSoongsil" target="_blank" rel="noopener noreferrer" class="talk-link">
-									<i class="fa-brands fa-youtube icon"></i> 유튜브
-								</a>
+				{
+					experiences.map((experience) => (
+						<article class="experience-item">
+							<div class="experience-header">
+								<h3>{experience.role}</h3>
+								<p class="period">{experience.period}</p>
 							</div>
-						</div>
-					</div>
-					
-					<div class="talk-item">
-						<div class="talk-year">2023</div>
-						<div class="talk-content">
-							<h3 class="talk-title">GDSC SSUMall Seminar - 플러터, 어디까지 배워볼래?</h3>
-							<a href="https://archive-halfmoon-mind.s3.ap-northeast-2.amazonaws.com/%E1%84%91%E1%85%B3%E1%86%AF%E1%84%85%E1%85%A5%E1%84%90%E1%85%A5_%E1%84%8B%E1%85%A5%E1%84%83%E1%85%B5%E1%84%81%E1%85%A1%E1%84%8C%E1%85%B5_%E1%84%87%E1%85%A2%E1%84%8B%E1%85%AF%E1%84%87%E1%85%A9%E1%86%AF%E1%84%85%E1%85%A2.pdf" target="_blank" rel="noopener noreferrer" class="talk-link">
-								<i class="fa-regular fa-file-pdf icon"></i> 발표자료
-							</a>
-						</div>
-					</div>
-				</div>
+							<p class="position">{experience.company}</p>
+
+							{experience.projects.map((project) => (
+								<section class="project-subsection">
+									<h4>{project.name}</h4>
+									{project.links.length > 0 && (
+										<div class="project-links">
+											{project.links.map((link) => (
+												<a
+													href={link.href}
+													target={getLinkTarget(link.href)}
+													rel={getLinkRel(link.href)}
+													class="link-button"
+												>
+													<i class={`${getIconClass(link.label, link.href)} icon`} aria-hidden="true"></i>
+													{link.label}
+												</a>
+											))}
+										</div>
+									)}
+									<ul class="responsibilities">
+										{project.responsibilities.map((item) => <li set:html={item} />)}
+									</ul>
+								</section>
+							))}
+						</article>
+					))
+				}
 			</div>
-		</div>
+		</section>
 
+		<section class="resume-section" aria-labelledby="skills-title">
+			<h2 id="skills-title">기술 스택</h2>
+			<div class="section-content skills">
+				{
+					skillCategories.map((category) => (
+						<section class="skill-category">
+							<h3>{category.name}</h3>
+							<ul>
+								{category.items.map((item) => <li>{item}</li>)}
+							</ul>
+						</section>
+					))
+				}
+			</div>
+		</section>
 
-		<div class="resume-section education-section">
-			<div class="section-header">
-				<h2 class="section-title">학력</h2>
+		<section class="resume-section" aria-labelledby="talks-title">
+			<h2 id="talks-title">발표</h2>
+			<div class="section-content talks-container">
+				{
+					talks.map((talk) => (
+						<article class="talk-item">
+							<div class="talk-year">{talk.year}</div>
+							<div class="talk-content">
+								<h3 class="talk-title">{talk.title}</h3>
+								{talk.links.length > 0 && (
+									<div class="talk-links">
+										{talk.links.map((link) => (
+											<a
+												href={link.href}
+												target={getLinkTarget(link.href)}
+												rel={getLinkRel(link.href)}
+												class="talk-link"
+											>
+												<i class={`${getIconClass(link.label, link.href)} icon`} aria-hidden="true"></i>
+												{link.label}
+											</a>
+										))}
+									</div>
+								)}
+							</div>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<section class="resume-section education-section" aria-labelledby="education-title">
+			<div class="section-title">
+				<h2 id="education-title">학력</h2>
 				<div class="title-line"></div>
 			</div>
 			<div class="education-card">
 				<div class="education-details">
-					<h3>숭실대학교</h3>
-					<p>컴퓨터학부</p>
-					<p>2019.03 - 2025.02</p>
+					<h3>{education.school}</h3>
+					<p>{education.department}</p>
+					<p>{education.period}</p>
 				</div>
 			</div>
-		</div>
+		</section>
 
-		<div class="resume-section">
-			<h2>오픈소스</h2>
+		<section class="resume-section" aria-labelledby="opensource-title">
+			<h2 id="opensource-title">오픈소스</h2>
 			<div class="section-content opensource-projects">
-				<div class="project-card">
-					<div class="project-header">
-						<h3>Awesome Articles</h3>
-						<span class="project-badge">2025년 1월 - 현재</span>
-					</div>
-					<a href="https://github.com/yourssu/awesome-articles" target="_blank" rel="noopener noreferrer" class="project-link">
-						<i class="fa-solid fa-link icon"></i> github.com/yourssu/awesome-articles
-					</a>
-					<ul class="project-features">
-						<li>
-							iOS, Android, 프론트엔드, 백엔드, 엔지니어링 등 <span class="highlight">다양한 분야의 아티클</span>을 분류하여 체계적으로 아카이빙하는 오픈소스 프로젝트
-						</li>
-						<li>
-							다양한 개발자들이 함께 좋은 아티클을 공유하고 토론하며 전반적인 <span class="highlight">엔지니어링 수준</span>을 높이는 지식 공유 플랫폼
-						</li>
-						<li>
-							<span class="highlight">MIT 라이선스</span>로 운영되어 누구나 자유롭게 기여하고 활용할 수 있는 환경 구축
-						</li>
-						<li>
-							<span class="highlight">Github Discussion</span>을 통해 의견 교환을 하고, 정기적으로 의견과 링크를 취합하여 업데이트
-						</li>
-					</ul>
-				</div>
-
-				<div class="project-card">
-					<div class="project-header">
-						<h3>YDS (YourSSU Design System)</h3>
-						<span class="project-badge">2023년 4월 - 2024년 1월</span>
-					</div>
-					<a href="https://github.com/yourssu/YDS-iOS" target="_blank" rel="noopener noreferrer" class="project-link">
-						<i class="fa-solid fa-link icon"></i> github.com/yourssu/YDS-iOS
-					</a>
-					<ul class="project-features">
-						<li>
-							YourSSU에서 개발한 YourSSU Design System(YDS)의 <span class="highlight">iOS 파트</span> 구현
-						</li>
-						<li>
-							기존 <span class="highlight">UIKit</span>으로만 구현되어 있는 디자인시스템을 <span class="highlight">SwiftUI</span>로 구현
-						</li>
-						<li>
-							디자인 시스템 메인테이너로서 사용자인 개발자들에게 어떠한 <span class="highlight">DX</span>를 제공하면 좋을지에 대한 고민
-						</li>
-					</ul>
-				</div>
-
-				<div class="project-card">
-					<div class="project-header">
-						<h3>Style Parser</h3>
-						<span class="project-badge">2024년 6월 - 2024년 7월</span>
-					</div>
-					<a href="https://github.com/halfmoon-mind/style-parser" target="_blank" rel="noopener noreferrer" class="project-link">
-						<i class="fa-solid fa-link icon"></i> github.com/halfmoon-mind/style-parser
-					</a>
-					<ul class="project-features">
-						<li>
-							html 형태와 epub 파싱 데이터를 위한 <span class="highlight">스타일 파서</span> 패키지
-						</li>
-						<li>
-							파싱한 스타일을 기반으로 TextSpan을 구현하여, 텍스트 페이지네이션와 같은 유저의 기호에 따라 화면을 구현하도록 유도
-						</li>
-					</ul>
-				</div>
+				{
+					openSourceProjects.map((project) => (
+						<article class="project-card">
+							<div class="project-header">
+								<h3>{project.name}</h3>
+								<span class="project-badge">{project.period}</span>
+							</div>
+							<a href={project.url} target="_blank" rel="noopener noreferrer" class="project-link">
+								<i class={`${getIconClass(project.name, project.url)} icon`} aria-hidden="true"></i>
+								{project.url.replace('https://', '')}
+							</a>
+							<ul class="project-features">
+								{project.features.map((feature) => <li set:html={feature} />)}
+							</ul>
+						</article>
+					))
+				}
 			</div>
-		</div>
+		</section>
 	</div>
 </BaseLayout>
 
-<!-- PDF 변환 스크립트 추가 -->
 <script>
-	document.addEventListener('DOMContentLoaded', function() {
-		const savePdfBtn = document.getElementById('savePdfBtn');
-		const printBtn = document.getElementById('printBtn');
-		const pdfStatus = document.getElementById('pdfStatus');
-		
-		// PDF 저장 버튼 기능
-		if (savePdfBtn && pdfStatus) {
-			savePdfBtn.addEventListener('click', async function() {
-				try {
-					// PDF 저장 버튼 숨기고 로딩 표시
-					savePdfBtn.style.display = 'none';
-					if (printBtn) printBtn.style.display = 'none';
-					pdfStatus.style.display = 'flex';
-					
-					// 이력서 컨테이너에 컴팩트 클래스 추가
-					const resumeContainer = document.querySelector('.resume-container');
-					if (resumeContainer) {
-						resumeContainer.classList.add('print-compact');
-						
-						// 이미지 로딩 완료 대기
-						await Promise.all(
-							Array.from(resumeContainer.querySelectorAll('img'))
-								.filter(img => !img.complete)
-								.map(img => new Promise(resolve => {
-									img.onload = img.onerror = resolve;
-								}))
-						);
-						
-						// PDF 옵션 설정
-						const opt = {
-							margin: [5, 5, 5, 5], // 상하좌우 마진 최소화
-							filename: '심상현_이력서.pdf',
-							image: { type: 'jpeg', quality: 0.98 },
-							html2canvas: { 
-								scale: 2, 
-								useCORS: true, 
-								logging: false,
-								letterRendering: true, // 텍스트 렌더링 품질 향상
-								allowTaint: true // 다양한 소스의 이미지 허용
-							},
-							jsPDF: { 
-								format: 'a4', 
-								orientation: 'portrait', 
-								unit: 'mm',
-								compress: true // PDF 파일 크기 최적화
-							}
-						};
-						
-						// PDF 생성 (html2pdf는 CDN을 통해 로드된 전역 함수입니다)
-						// @ts-ignore
-						await window.html2pdf().from(resumeContainer).set(opt).save();
-						
-						// PDF 생성 후 클래스 제거 및 버튼 다시 표시
-						resumeContainer.classList.remove('print-compact');
-					}
-				} catch (error) {
-					console.error('PDF 생성 중 오류 발생:', error);
-				} finally {
-					// 상태 복원
-					if (pdfStatus) pdfStatus.style.display = 'none';
-					if (savePdfBtn) savePdfBtn.style.display = 'block';
-					if (printBtn) printBtn.style.display = 'block';
+	const savePdfBtn = document.querySelector<HTMLButtonElement>('#savePdfBtn');
+	const pdfStatus = document.querySelector<HTMLParagraphElement>('#pdfStatus');
+	const resumeContainer = document.querySelector<HTMLElement>('.resume-container');
+
+	const waitForImages = async (container: HTMLElement) => {
+		const pendingImages = Array.from(container.querySelectorAll('img')).filter((img) => !img.complete);
+
+		await Promise.all(
+			pendingImages.map(
+				(img) =>
+					new Promise<void>((resolve) => {
+						img.addEventListener('load', () => resolve(), { once: true });
+						img.addEventListener('error', () => resolve(), { once: true });
+					}),
+			),
+		);
+	};
+
+	const showPdfStatus = (message: string, state: 'loading' | 'error') => {
+		if (!pdfStatus) return;
+
+		pdfStatus.textContent = message;
+		pdfStatus.dataset.state = state;
+		pdfStatus.hidden = false;
+	};
+
+	if (savePdfBtn && pdfStatus && resumeContainer) {
+		savePdfBtn.addEventListener('click', async () => {
+			let failed = false;
+
+			savePdfBtn.hidden = true;
+			showPdfStatus('PDF 생성 중...', 'loading');
+			resumeContainer.classList.add('print-compact');
+
+			try {
+				await waitForImages(resumeContainer);
+
+				const html2pdf = (window as any).html2pdf;
+				if (typeof html2pdf !== 'function') {
+					throw new Error('html2pdf 라이브러리를 불러오지 못했습니다.');
 				}
-			});
-		}
-		
-		// 인쇄 버튼 기능
-		if (printBtn) {
-			printBtn.addEventListener('click', function() {
-				const resumeContainer = document.querySelector('.resume-container');
-				if (resumeContainer) {
-					// 인쇄용 컴팩트 스타일 적용
-					resumeContainer.classList.add('print-compact');
-					
-					// 브라우저 인쇄 다이얼로그 표시
-					window.print();
-					
-					// 인쇄 다이얼로그가 닫힌 후에 스타일 복원 (약간의 지연 후)
-					setTimeout(() => {
-						resumeContainer.classList.remove('print-compact');
-					}, 1000);
+
+				await html2pdf()
+					.from(resumeContainer)
+					.set({
+						margin: [5, 5, 5, 5],
+						filename: '심상현_이력서.pdf',
+						image: { type: 'jpeg', quality: 0.98 },
+						html2canvas: {
+							scale: 2,
+							useCORS: true,
+							logging: false,
+							letterRendering: true,
+							allowTaint: true,
+						},
+						jsPDF: {
+							format: 'a4',
+							orientation: 'portrait',
+							unit: 'mm',
+							compress: true,
+						},
+					})
+					.save();
+			} catch (error) {
+				failed = true;
+				console.error('PDF 생성 중 오류 발생:', error);
+				showPdfStatus('PDF 생성에 실패했습니다. 브라우저 인쇄 기능을 사용해주세요.', 'error');
+			} finally {
+				resumeContainer.classList.remove('print-compact');
+				savePdfBtn.hidden = false;
+
+				if (!failed) {
+					pdfStatus.hidden = true;
 				}
-			});
-		}
-	});
+			}
+		});
+	}
 </script>
-
-<style>
-	/* PDF 버튼 스타일 */
-	.print-controls {
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-		margin-bottom: 1rem;
-		gap: 1rem;
-	}
-	
-	.pdf-button {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		background-color: #3182ce;
-		color: white;
-		border: none;
-		border-radius: 4px;
-		padding: 0.5rem 1rem;
-		font-size: 1rem;
-		cursor: pointer;
-		transition: background-color 0.2s;
-	}
-	
-	.pdf-button:hover {
-		background-color: #2c5282;
-	}
-	
-	.print-button {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		background-color: #38a169;
-		color: white;
-		border: none;
-		border-radius: 4px;
-		padding: 0.5rem 1rem;
-		font-size: 1rem;
-		cursor: pointer;
-		transition: background-color 0.2s;
-	}
-	
-	.print-button:hover {
-		background-color: #2f855a;
-	}
-	
-	.pdf-status {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		font-size: 0.9rem;
-		color: #555;
-		animation: pulse 1.5s infinite;
-	}
-	
-	@keyframes pulse {
-		0% { opacity: 0.6; }
-		50% { opacity: 1; }
-		100% { opacity: 0.6; }
-	}
-	
-	/* PDF 출력용 컴팩트 스타일 */
-	.print-compact {
-		/* 전체 패딩 및 마진 최소화 */
-		padding: 0.1rem !important;
-		margin: 0 !important;
-		box-shadow: none !important;
-		font-size: 8px !important; /* 기본 폰트 크기 축소 */
-		line-height: 1.2 !important; /* 줄 간격 축소 */
-	}
-	
-	.print-compact .print-controls {
-		display: none !important;
-	}
-	
-	.print-compact .resume-header {
-		margin-bottom: 0.3rem !important;
-	}
-	
-	.print-compact .hero-section {
-		gap: 0.3rem !important;
-	}
-	
-	.print-compact .profile-info {
-		flex-direction: row !important;
-		gap: 0.5rem !important;
-		align-items: center !important;
-	}
-	
-	.print-compact .profile-image-wrapper {
-		flex-shrink: 0;
-	}
-
-	.print-compact .profile-image {
-		width: 70px !important;
-		height: 70px !important;
-		border-width: 1px !important;
-		box-shadow: none !important;
-	}
-	
-	.print-compact .name {
-		font-size: 1.3rem !important;
-		margin-bottom: 0.1rem !important;
-		background: none !important; /* 배경 그라데이션 제거 */
-		-webkit-background-clip: initial !important; /* 텍스트 클리핑 제거 */
-		-webkit-text-fill-color: #333 !important; /* 텍스트 색상 복원 */
-		color: #333 !important; /* 텍스트 색상 설정 */
-	}
-	
-	.print-compact .job-title {
-		font-size: 0.8rem !important;
-		margin: 0 0 0.2rem !important;
-	}
-	
-	.print-compact .contact-info {
-		gap: 0.3rem !important;
-		flex-wrap: wrap !important; /* 공간 부족 시 줄바꿈 */
-	}
-	
-	.print-compact .contact-item {
-		padding: 0.1rem 0.3rem !important;
-		font-size: 0.65rem !important; /* 글자 크기 더 축소 */
-		border-radius: 3px !important;
-	}
-	
-	.print-compact .contact-item .icon {
-		font-size: 0.7rem !important;
-		margin-right: 0.15rem !important;
-	}
-
-	.print-compact .intro-container {
-		padding: 0.3rem !important;
-		margin-top: 0.3rem !important;
-		background-color: var(--bg-card) !important;
-		border: 1px solid #eee !important;
-		border-radius: 4px !important;
-		box-shadow: none !important;
-	}
-	
-	.print-compact .section-title {
-		margin-bottom: 0.3rem !important;
-	}
-
-	.print-compact .section-title h2 {
-		font-size: 0.9rem !important;
-		padding-right: 0.5rem !important;
-	}
-
-	.print-compact .title-line {
-		height: 1px !important;
-	}
-	
-	.print-compact .intro-content {
-		line-height: 1.3 !important;
-	}
-
-	.print-compact .intro-text {
-		margin-bottom: 0.2rem !important;
-		font-size: 0.7rem !important; /* 글자 크기 더 축소 */
-	}
-	
-	.print-compact .resume-section {
-		margin-bottom: 0.3rem !important;
-	}
-	
-	.print-compact .resume-section h2 {
-		font-size: 1rem !important;
-		margin-bottom: 0.3rem !important;
-		padding-bottom: 0.1rem !important;
-		border-bottom: none !important; /* 하단 선 제거 */
-	}
-
-	.print-compact .resume-section h2:after {
-		bottom: -2px !important; /* 위치 조정 */
-		height: 1px !important; /* 선 두께 축소 */
-	}
-	
-	.print-compact .section-content {
-		padding: 0 !important;
-	}
-	
-	/* 경력 */
-	.print-compact .career-timeline::before {
-		left: -4px !important; /* 위치 조정 */
-		width: 1px !important; /* 두께 축소 */
-	}
-	.print-compact .experience-item {
-		margin-bottom: 0.3rem !important;
-		padding-left: 0.5rem !important; /* 패딩 축소 */
-	}
-	.print-compact .experience-item:before {
-		left: -8px !important; /* 위치 조정 */
-		width: 8px !important;
-		height: 8px !important;
-		box-shadow: none !important;
-		display: none !important; /* bullet point 숨김 */
-	}
-	
-	.print-compact .experience-header {
-		margin-bottom: 0.05rem !important; /* 0.1rem에서 0.05rem으로 여백 더 줄임 */
-	}
-	.print-compact .experience-header h3 {
-		font-size: 0.85rem !important;
-	}
-	
-	.print-compact .period {
-		font-size: 0.65rem !important;
-		padding: 0.1rem 0.3rem !important;
-		margin-top: 0 !important;
-	}
-	
-	.print-compact .position {
-		font-size: 0.75rem !important;
-		margin: 0.1rem 0 0.2rem !important;
-	}
-	
-	.print-compact .project-subsection {
-		padding: 0.3rem !important;
-		margin-bottom: 0.3rem !important;
-		border-radius: 4px !important;
-		box-shadow: none !important;
-		border: none !important; /* 테두리 제거 */
-		background-color: #fdfdfd !important; /* 약간의 배경색 구분 */
-	}
-	
-	.print-compact .project-subsection h4 {
-		font-size: 0.8rem !important;
-		margin: 0 0 0.2rem !important;
-		padding-bottom: 0.1rem !important;
-		border-bottom: 1px solid #eee !important;
-	}
-
-	.print-compact .project-links {
-		gap: 0.2rem !important;
-		margin-bottom: 0.2rem !important;
-	}
-	.print-compact .link-button {
-		padding: 0.1rem 0.3rem !important;
-		font-size: 0.65rem !important;
-		border-radius: 2px !important;
-	}
-	.print-compact .link-button .icon {
-		font-size: 0.7rem !important;
-		margin-right: 0.1rem !important;
-	}
-	
-	.print-compact .responsibilities {
-		margin: 0 !important;
-	}
-	.print-compact .responsibilities li {
-		margin-bottom: 0.1rem !important;
-		font-size: 0.7rem !important;
-		line-height: 1.25 !important;
-		padding-left: 0.7rem !important; /* 들여쓰기 축소 */
-	}
-	.print-compact .responsibilities li:before {
-		left: 0.1rem !important; /* 점 위치 조정 */
-		top: 0.6em !important; /* 점 위치 조정 */
-		width: 3px !important; /* 점 크기 축소 */
-		height: 3px !important;
-	}
-	
-	/* 기술 스택 */
-	.print-compact .skills {
-		display: grid !important;
-		grid-template-columns: repeat(3, 1fr) !important; /* 3열 유지 */
-		gap: 0.3rem !important;
-	}
-	
-	.print-compact .skill-category {
-		padding: 0.3rem !important;
-		border-radius: 4px !important;
-		box-shadow: none !important;
-		border: 1px solid #eee !important;
-	}
-	.print-compact .skill-category::before { display: none !important; } /* 장식 제거 */
-	
-	.print-compact .skill-category h3 {
-		font-size: 0.8rem !important;
-		margin: 0 0 0.2rem !important;
-		padding-bottom: 0.1rem !important;
-		border-bottom: 1px solid #eee !important;
-	}
-	.print-compact .skill-category h3:after { display: none !important; } /* 장식 제거 */
-	
-	.print-compact .skill-category ul {
-		margin: 0 !important;
-	}
-	.print-compact .skill-category li {
-		margin-bottom: 0.1rem !important;
-		padding: 0.1rem 0.2rem 0.1rem 0.8rem !important; /* 패딩 축소 */
-		font-size: 0.7rem !important;
-		background: none !important; /* 배경 제거 */
-	}
-	.print-compact .skill-category li:before {
-		left: 0.2rem !important; /* 점 위치 조정 */
-		width: 3px !important; /* 점 크기 축소 */
-		height: 3px !important;
-	}
-	
-	/* 발표 */
-	.print-compact .talks-container {
-		display: grid !important;
-		grid-template-columns: 1fr !important; /* 1열로 변경 */
-		gap: 0.2rem !important;
-	}
-	
-	.print-compact .talk-item {
-		padding: 0.2rem !important;
-		border-radius: 4px !important;
-		box-shadow: none !important;
-		border: 1px solid #eee !important;
-		align-items: center !important;
-	}
-	
-	.print-compact .talk-year {
-		width: 30px !important;
-		height: 30px !important;
-		font-size: 0.7rem !important;
-		margin-right: 0.5rem !important;
-	}
-	
-	.print-compact .talk-content {
-		flex-grow: 1;
-	}
-	.print-compact .talk-title {
-		font-size: 0.75rem !important;
-		margin: 0 0 0.1rem !important;
-	}
-	
-	.print-compact .talk-links {
-		gap: 0.3rem !important;
-		margin-top: 0.1rem !important;
-	}
-	.print-compact .talk-link {
-		font-size: 0.65rem !important;
-		margin-top: 0 !important;
-	}
-	.print-compact .talk-link .icon {
-		font-size: 0.7rem !important;
-		margin-right: 0.1rem !important;
-	}
-	
-	/* 학력 */
-	.print-compact .education-section {
-		margin-bottom: 0.3rem !important; /* 여백 동일하게 */
-	}
-	.print-compact .education-card {
-		padding: 0.3rem !important;
-		border-radius: 4px !important;
-		box-shadow: none !important;
-		border: 1px solid #eee !important;
-	}
-	
-	.print-compact .education-details h3 {
-		font-size: 0.85rem !important;
-		margin: 0 0 0.1rem !important;
-	}
-	
-	.print-compact .education-details p {
-		margin: 0 0 0.1rem;
-		font-size: 0.7rem !important;
-	}
-	
-	.print-compact .education-details p:last-child {
-		margin-bottom: 0;
-	}
-	
-	/* 오픈소스 */
-	.print-compact .opensource-projects {
-		display: grid !important;
-		grid-template-columns: 1fr !important; /* 1열로 변경 */
-		gap: 0.3rem !important;
-	}
-	
-	.print-compact .project-card {
-		padding: 0.3rem !important;
-		border-radius: 4px !important;
-		box-shadow: none !important;
-		border: 1px solid #eee !important;
-	}
-	.print-compact .project-card::after { display: none !important; } /* 장식 제거 */
-	
-	.print-compact .project-header {
-		margin-bottom: 0.2rem !important;
-	}
-	.print-compact .project-header h3 {
-		font-size: 0.8rem !important;
-	}
-	
-	.print-compact .project-badge {
-		font-size: 0.6rem !important;
-		padding: 0.1rem 0.3rem !important;
-		border-radius: 2px !important;
-	}
-	
-	.print-compact .project-link {
-		font-size: 0.7rem !important;
-		margin-bottom: 0.2rem !important;
-	}
-	.print-compact .project-link .icon {
-		font-size: 0.75rem !important;
-		margin-right: 0.1rem !important;
-	}
-	
-	.print-compact .project-features {
-		margin: 0 !important;
-	}
-	.print-compact .project-features li {
-		margin-bottom: 0.1rem !important;
-		font-size: 0.7rem !important;
-		line-height: 1.25 !important;
-		padding-left: 0.7rem !important;
-	}
-	.print-compact .project-features li:before {
-		left: 0.1rem !important;
-		top: 0.6em !important;
-		width: 3px !important;
-		height: 3px !important;
-	}
-
-	/* 링크 색상 및 밑줄 제거 */
-	.print-compact a, .print-compact a:hover {
-		color: inherit !important;
-		text-decoration: none !important;
-	}
-	.print-compact .highlight {
-		font-weight: 600 !important; /* 하이라이트는 유지 */
-		background: none !important;
-		padding: 0 !important;
-		border-radius: 0 !important;
-	}
-	
-	/* 인쇄 미디어 쿼리 추가 */
-	@media print {
-		body {
-			margin: 0 !important;
-			padding: 0 !important;
-			background: white !important;
-			font-size: 8px !important; /* 기본 폰트 크기 */
-			line-height: 1.2 !important; /* 줄 간격 */
-		}
-		
-		.resume-container {
-			padding: 0.1rem !important; /* 컴팩트 스타일과 동일하게 적용 */
-			margin: 0 !important;
-			box-shadow: none !important;
-			max-width: 100% !important;
-			width: 100% !important;
-			border-radius: 0 !important;
-		}
-		
-		.print-controls {
-			display: none !important;
-		}
-		
-		/* .print-compact 스타일과 동일한 규칙 적용 (중복 제거 대신 명시적으로 유지) */
-		.resume-container .resume-header { margin-bottom: 0.3rem !important; }
-		.resume-container .hero-section { gap: 0.3rem !important; }
-		.resume-container .profile-info { flex-direction: row !important; gap: 0.5rem !important; align-items: center !important; }
-		.resume-container .profile-image-wrapper { flex-shrink: 0; }
-		.resume-container .profile-image { width: 70px !important; height: 70px !important; border-width: 1px !important; box-shadow: none !important; }
-		.resume-container .name { 
-			font-size: 1.3rem !important; 
-			margin-bottom: 0.1rem !important; 
-			background: none !important; /* 배경 그라데이션 제거 */
-			-webkit-background-clip: initial !important; /* 텍스트 클리핑 제거 */
-			-webkit-text-fill-color: #333 !important; /* 텍스트 색상 복원 */
-			color: #333 !important; /* 텍스트 색상 설정 */
-		}
-		.resume-container .job-title { font-size: 0.8rem !important; margin: 0 0 0.2rem !important; }
-		.resume-container .contact-info { gap: 0.3rem !important; flex-wrap: wrap !important; }
-		.resume-container .contact-item { padding: 0.1rem 0.3rem !important; font-size: 0.65rem !important; border-radius: 3px !important; }
-		.resume-container .contact-item .icon { font-size: 0.7rem !important; margin-right: 0.15rem !important; }
-		.resume-container .intro-container { padding: 0.3rem !important; margin-top: 0.3rem !important; border: 1px solid #eee !important; background-color: #ffffff !important; border-radius: 4px !important; }
-		.resume-container .intro-container::before { display: none !important; }
-		.resume-container .section-title { margin-bottom: 0.3rem !important; }
-		.resume-container .section-title h2 { font-size: 0.9rem !important; padding-right: 0.5rem !important; }
-		.resume-container .title-line { height: 1px !important; }
-		.resume-container .intro-content { line-height: 1.3 !important; }
-		.resume-container .intro-text { margin-bottom: 0.2rem !important; font-size: 0.7rem !important; }
-		.resume-container .resume-section { margin-bottom: 0.3rem !important; }
-		.resume-container .resume-section h2 { font-size: 1rem !important; margin-bottom: 0.3rem !important; padding-bottom: 0.1rem !important; border-bottom: none !important; }
-		.resume-container .resume-section h2:after { bottom: -2px !important; height: 1px !important; }
-		.resume-container .section-content { padding: 0 !important; }
-		.resume-container .career-timeline::before { left: -4px !important; width: 1px !important; }
-		.resume-container .experience-item { margin-bottom: 0.3rem !important; padding-left: 0.5rem !important; }
-		.resume-container .experience-item:before { 
-			left: -8px !important; 
-			width: 8px !important; 
-			height: 8px !important; 
-			box-shadow: none !important; 
-			display: none !important; /* bullet point 숨김 */
-		}
-		.resume-container .experience-header { 
-			margin-bottom: 0.05rem !important; /* 0.1rem에서 0.05rem으로 여백 더 줄임 */
-			flex-direction: row !important; 
-			justify-content: space-between !important; 
-			align-items: center !important;
-		} /* 가로 정렬 강제 */
-		.resume-container .experience-header h3 { font-size: 0.85rem !important; }
-		.resume-container .period { font-size: 0.65rem !important; padding: 0.1rem 0.3rem !important; margin-top: 0 !important; }
-		.resume-container .position { font-size: 0.75rem !important; margin: 0.1rem 0 0.2rem !important; }
-		.resume-container .project-subsection { padding: 0.3rem !important; margin-bottom: 0.3rem !important; border-radius: 4px !important; box-shadow: none !important; border: none !important; background-color: #fdfdfd !important; }
-		.resume-container .project-subsection h4 { font-size: 0.8rem !important; margin: 0 0 0.2rem !important; padding-bottom: 0.1rem !important; border-bottom: 1px solid #eee !important; }
-		.resume-container .project-links { gap: 0.2rem !important; margin-bottom: 0.2rem !important; }
-		.resume-container .link-button { padding: 0.1rem 0.3rem !important; font-size: 0.65rem !important; border-radius: 2px !important; }
-		.resume-container .link-button .icon { font-size: 0.7rem !important; margin-right: 0.1rem !important; }
-		.resume-container .responsibilities { margin: 0 !important; }
-		.resume-container .responsibilities li { margin-bottom: 0.1rem !important; font-size: 0.7rem !important; line-height: 1.25 !important; padding-left: 0.7rem !important; }
-		.resume-container .responsibilities li:before { left: 0.1rem !important; top: 0.6em !important; width: 3px !important; height: 3px !important; }
-		.resume-container .skills { display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 0.3rem !important; }
-		.resume-container .skill-category { padding: 0.3rem !important; border-radius: 4px !important; box-shadow: none !important; border: 1px solid #eee !important; }
-		.resume-container .skill-category::before { display: none !important; }
-		.resume-container .skill-category h3 { font-size: 0.8rem !important; margin: 0 0 0.2rem !important; padding-bottom: 0.1rem !important; border-bottom: 1px solid #eee !important; }
-		.resume-container .skill-category h3:after { display: none !important; }
-		.resume-container .skill-category ul { margin: 0 !important; }
-		.resume-container .skill-category li { margin-bottom: 0.1rem !important; padding: 0.1rem 0.2rem 0.1rem 0.8rem !important; font-size: 0.7rem !important; background: none !important; }
-		.resume-container .skill-category li:before { left: 0.2rem !important; width: 3px !important; height: 3px !important; }
-		.resume-container .talks-container { display: grid !important; grid-template-columns: 1fr !important; gap: 0.2rem !important; }
-		.resume-container .talk-item { padding: 0.2rem !important; border-radius: 4px !important; box-shadow: none !important; border: 1px solid #eee !important; align-items: center !important; }
-		.resume-container .talk-year { width: 30px !important; height: 30px !important; font-size: 0.7rem !important; margin-right: 0.5rem !important; }
-		.resume-container .talk-content { flex-grow: 1; }
-		.resume-container .talk-title { font-size: 0.75rem !important; margin: 0 0 0.1rem !important; }
-		.resume-container .talk-links { gap: 0.3rem !important; margin-top: 0.1rem !important; }
-		.resume-container .talk-link { font-size: 0.65rem !important; margin-top: 0 !important; }
-		.resume-container .talk-link .icon { font-size: 0.7rem !important; margin-right: 0.1rem !important; }
-		.resume-container .education-section { margin-bottom: 0.3rem !important; }
-		.resume-container .education-card { padding: 0.3rem !important; border-radius: 4px !important; box-shadow: none !important; border: 1px solid #eee !important; }
-		.resume-container .education-details h3 { font-size: 0.85rem !important; margin: 0 0 0.1rem !important; }
-		.resume-container .education-details p { margin: 0 0 0.1rem; font-size: 0.7rem !important; }
-		.resume-container .education-details p:last-child { margin-bottom: 0; }
-		.resume-container .opensource-projects { display: grid !important; grid-template-columns: 1fr !important; gap: 0.3rem !important; }
-		.resume-container .project-card { padding: 0.3rem !important; border-radius: 4px !important; box-shadow: none !important; border: 1px solid #eee !important; }
-		.resume-container .project-card::after { display: none !important; }
-		.resume-container .project-header { margin-bottom: 0.2rem !important; }
-		.resume-container .project-header h3 { font-size: 0.8rem !important; }
-		.resume-container .project-badge { font-size: 0.6rem !important; padding: 0.1rem 0.3rem !important; border-radius: 2px !important; }
-		.resume-container .project-link { font-size: 0.7rem !important; margin-bottom: 0.2rem !important; }
-		.resume-container .project-link .icon { font-size: 0.75rem !important; margin-right: 0.1rem !important; }
-		.resume-container .project-features { margin: 0 !important; }
-		.resume-container .project-features li { margin-bottom: 0.1rem !important; font-size: 0.7rem !important; line-height: 1.25 !important; padding-left: 0.7rem !important; }
-		.resume-container .project-features li:before { left: 0.1rem !important; top: 0.6em !important; width: 3px !important; height: 3px !important; }
-
-		/* 링크 색상 및 밑줄 제거 */
-		.resume-container a, .resume-container a:hover {
-			color: inherit !important;
-			text-decoration: none !important;
-		}
-		.resume-container .highlight {
-			font-weight: 600 !important; /* 하이라이트는 유지 */
-			background: none !important;
-			padding: 0 !important;
-			border-radius: 0 !important;
-		}
-		
-		/* 페이지 나눔 방지 */
-		.resume-section, .experience-item, .project-subsection, .skill-category, 
-		.talk-item, .education-card, .project-card {
-			page-break-inside: avoid !important;
-			break-inside: avoid !important;
-		}
-		
-		/* 링크 URL 표시하지 않음 */
-		a[href]::after {
-			content: none !important;
-		}
-		
-		/* 배경색과 그림자 강제 표시 */
-		* {
-			-webkit-print-color-adjust: exact !important;
-			print-color-adjust: exact !important;
-			box-shadow: none !important; /* 그림자 제거 */
-		}
-	}
-</style>
-
-<style>
-	/* Resume_example.tsx 스타일 적용 */
-	.text-center {
-		text-align: center;
-	}
-	
-	.mb-8 {
-		margin-bottom: 2rem;
-	}
-	
-	.mt-2 {
-		margin-top: 0.5rem;
-	}
-	
-	.mt-3 {
-		margin-top: 0.75rem;
-	}
-	
-	.mt-4 {
-		margin-top: 1rem;
-	}
-	
-	.mt-8 {
-		margin-top: 2rem;
-	}
-	
-	.grid {
-		display: grid;
-	}
-	
-	.gap-4 {
-		gap: 1rem;
-	}
-	
-	.gap-6 {
-		gap: 1.5rem;
-	}
-	
-	.space-y-3 > * + * {
-		margin-top: 0.75rem;
-	}
-	
-	.space-x-3 {
-		column-gap: 0.75rem;
-	}
-	
-	.flex {
-		display: flex;
-	}
-	
-	.justify-center {
-		justify-content: center;
-	}
-	
-	.items-center {
-		align-items: center;
-	}
-	
-	.text-xs {
-		font-size: 0.75rem;
-	}
-	
-	.text-sm {
-		font-size: 0.875rem;
-		color: #555;
-	}
-	
-	.text-4xl {
-		font-size: 2.25rem;
-	}
-	
-	.font-medium {
-		font-weight: 500;
-	}
-	
-	.font-bold {
-		font-weight: 700;
-	}
-	
-	.uppercase {
-		text-transform: uppercase;
-	}
-	
-	.tracking-widest {
-		letter-spacing: 0.1em;
-	}
-	
-	.whitespace-pre-line {
-		white-space: pre-line;
-	}
-	
-	.leading-relaxed {
-		line-height: 1.625;
-	}
-	
-	.section-label {
-		color: #777;
-	}
-	
-	.text-emoji {
-		color: #666;
-	}
-	
-	.text-emoji-sm {
-		color: #666;
-		font-size: 0.875rem;
-		margin-right: 0.25rem;
-	}
-	
-	.text-gray-500 {
-		color: #6b7280;
-	}
-	
-	.hover-link {
-		color: #0077cc;
-		transition: color 0.2s, text-decoration 0.2s;
-	}
-	
-	.hover-link:hover {
-		color: #005fa3;
-		text-decoration: underline;
-	}
-	
-	.hover-link-sm {
-		color: #0077cc;
-		transition: color 0.2s, text-decoration 0.2s;
-		font-size: 0.75rem;
-	}
-	
-	.hover-link-sm:hover {
-		color: #005fa3;
-		text-decoration: underline;
-	}
-	
-	.contact-info-inline {
-		font-size: 0.75rem;
-		color: #6b7280;
-	}
-	
-	/* 기존 스타일 오버라이드 */
-	.resume-header {
-		border-bottom: none;
-		margin-bottom: 3rem;
-	}
-	
-	.profile-image-container {
-		display: flex;
-		justify-content: center;
-		margin-bottom: 1rem;
-	}
-	
-	.profile-image {
-		width: 160px;
-		height: 160px;
-		border-radius: 50%;
-		object-fit: cover;
-		border: 3px solid #f0f0f0;
-		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	}
-	
-	.resume-container {
-		max-width: 900px;
-		margin: 0 auto;
-		padding: 1.5rem;
-		background-color: white;
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-		border-radius: 8px;
-	}
-
-	.resume-section {
-		margin-bottom: 1.5rem;
-	}
-
-	.resume-section h2 {
-		border-bottom: 2px solid #f0f0f0;
-		padding-bottom: 0.4rem;
-		font-size: 1.5rem;
-		color: #444;
-	}
-
-	.section-content {
-		padding: 0.75rem 0;
-	}
-
-	.skills {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-		gap: 1.5rem;
-	}
-
-	.skill-category {
-		background-color: var(--bg-card);
-		border-radius: 8px;
-		padding: 1.5rem;
-		box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
-		border: 1px solid var(--border-color);
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
-		position: relative;
-		overflow: hidden;
-	}
-
-	.skill-category::before {
-		content: '';
-		position: absolute;
-		top: 0;
-		right: 0;
-		width: 30px;
-		height: 30px;
-		background-color: var(--primary-color);
-		opacity: 0.1;
-		border-radius: 0 0 0 30px;
-		transition: all 0.3s ease;
-	}
-
-	.skill-category:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
-	}
-
-	.skill-category:hover::before {
-		width: 60px;
-		height: 60px;
-		opacity: 0.15;
-	}
-
-	.skill-category h3 {
-		font-size: 1.1rem;
-		font-weight: 600;
-		color: var(--text-color);
-		margin: 0 0 1rem;
-		padding-bottom: 0.7rem;
-		border-bottom: 1px solid var(--border-color);
-		position: relative;
-	}
-
-	.skill-category h3:after {
-		content: '';
-		position: absolute;
-		left: 0;
-		bottom: -1px;
-		width: 50px;
-		height: 2px;
-		background-color: var(--primary-color);
-	}
-
-	.skill-category ul {
-		list-style-type: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	.skill-category li {
-		position: relative;
-		padding-left: 1.2rem;
-		margin-bottom: 0.8rem;
-		background-color: var(--bg-light);
-		padding: 0.5rem 1rem 0.5rem 2rem;
-		border-radius: 4px;
-		font-weight: 500;
-		line-height: 1.5;
-	}
-
-	.skill-category li:before {
-		content: '';
-		position: absolute;
-		left: 0.8rem;
-		top: 50%;
-		transform: translateY(-50%);
-		width: 5px;
-		height: 5px;
-		border-radius: 50%;
-		background-color: var(--primary-color);
-	}
-
-	.experience-item, .education-item, .project-item {
-		margin-bottom: 1.5rem;
-	}
-
-	.experience-header, .education-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: baseline;
-	}
-
-	.experience-header h3, .education-header h3, .project-item h3 {
-		margin: 0;
-		color: #333;
-	}
-
-	.period {
-		color: #666;
-		font-style: italic;
-	}
-
-	.position {
-		color: #555;
-		font-weight: 500;
-		margin: 0.5rem 0;
-	}
-
-	.responsibilities {
-		margin-top: 0.5rem;
-	}
-
-	.responsibilities li {
-		position: relative;
-		padding-left: 1.5rem;
-		margin-bottom: 0.8rem;
-		line-height: 1.6;
-	}
-
-	.responsibilities li:last-child {
-		margin-bottom: 0;
-	}
-
-	.responsibilities li:before {
-		content: '';
-		position: absolute;
-		left: 0.25rem;
-		top: 0.75em;
-		width: 5px;
-		height: 5px;
-		border-radius: 50%;
-		background-color: var(--primary-color);
-	}
-
-	.project-item p {
-		margin: 0.5rem 0;
-	}
-
-	.certification-list {
-		list-style-type: none;
-		padding: 0;
-	}
-
-	.certification-list li {
-		background-color: #f8f8f8;
-		padding: 0.75rem 1rem;
-		border-radius: 4px;
-		margin-bottom: 0.5rem;
-		font-weight: 500;
-	}
-
-	a {
-		color: #0077cc;
-		text-decoration: none;
-	}
-
-	a:hover {
-		text-decoration: underline;
-	}
-
-	@media (max-width: 768px) {
-		.profile-section {
-			flex-direction: column;
-			align-items: flex-start;
-		}
-
-		.profile-image {
-			margin-bottom: 1rem;
-		}
-
-		.skills {
-			grid-template-columns: 1fr;
-		}
-
-		.experience-header, .education-header {
-			flex-direction: column;
-		}
-
-		.period {
-			margin-top: 0.25rem;
-		}
-	}
-
-	.job-title {
-		margin: 0.2rem 0 !important;
-		padding: 0 !important;
-		font-weight: 500;
-	}
-</style>
-
-<style>
-	/* 새로운 스타일 */
-	:root {
-		--primary-color: #61dafb;
-		--accent-color: #1A73E8;
-		--text-color: #333;
-		--text-light: #666;
-		--bg-light: #f8f9fa;
-		--bg-card: #ffffff;
-		--border-color: #eaeaea;
-		--hover-color: #0077cc;
-		--shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-	}
-	
-	.resume-container {
-		max-width: 900px;
-		margin: 2rem auto;
-		padding: 1.75rem;
-		background-color: var(--bg-card);
-		box-shadow: var(--shadow);
-		border-radius: 12px;
-		color: var(--text-color);
-		font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-	}
-
-	/* 헤더 영역 스타일 */
-	.resume-header {
-		margin-bottom: 2.5rem;
-	}
-
-	.hero-section {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-	}
-
-	.profile-info {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		text-align: center;
-	}
-
-	@media (min-width: 768px) {
-		.profile-info {
-			flex-direction: row;
-			text-align: left;
-			gap: 2.5rem;
-			align-items: center;
-		}
-	}
-
-	.profile-image-wrapper {
-		flex-shrink: 0;
-		position: relative;
-	}
-
-	.profile-image-wrapper::after {
-		content: '';
-		position: absolute;
-		bottom: 0;
-		right: 0;
-		width: 20px;
-		height: 20px;
-		background-color: var(--primary-color);
-		border-radius: 50%;
-		border: 3px solid var(--bg-card);
-		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	}
-
-	.profile-image {
-		width: 180px;
-		height: 180px;
-		border-radius: 50%;
-		object-fit: cover;
-		border: 4px solid var(--bg-card);
-		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-		transition: transform 0.3s ease;
-	}
-
-	.profile-image:hover {
-		transform: scale(1.03);
-	}
-
-	.profile-details {
-		flex-grow: 1;
-		margin-top: 1.5rem;
-	}
-
-	@media (min-width: 768px) {
-		.profile-details {
-			margin-top: 0;
-		}
-	}
-
-	.name {
-		font-size: 2.5rem;
-		font-weight: 700;
-		margin: 0;
-		background: linear-gradient(90deg, var(--primary-color), #4facfe);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		letter-spacing: -0.02em;
-	}
-
-	.job-title {
-		font-size: 1.2rem;
-		color: var(--text-light);
-		margin: 0.5rem 0 1.2rem;
-		letter-spacing: 0.05em;
-		font-weight: 500;
-	}
-
-	.contact-info {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 1rem;
-		justify-content: center;
-	}
-
-	@media (min-width: 768px) {
-		.contact-info {
-			justify-content: flex-start;
-		}
-	}
-
-	.contact-item {
-		display: flex;
-		align-items: center;
-		background-color: var(--bg-light);
-		padding: 0.6rem 1rem;
-		border-radius: 50px;
-		font-size: 0.9rem;
-		color: var(--text-light);
-		text-decoration: none;
-		transition: all 0.2s ease;
-	}
-
-	.contact-item:hover {
-		background-color: var(--primary-color);
-		color: white;
-		transform: translateY(-2px);
-		text-decoration: none;
-	}
-
-	.icon {
-		margin-right: 0.5rem;
-		font-size: 1rem;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 1.2rem;
-		transition: transform 0.2s ease;
-	}
-
-	.contact-item:hover .icon {
-		transform: scale(1.1);
-	}
-
-	/* 소개 영역 스타일 */
-	.intro-container {
-		background-color: var(--bg-card);
-		border-radius: 12px;
-		padding: 1.5rem;
-		box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
-		position: relative;
-		border: 1px solid var(--border-color);
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
-	}
-
-	.intro-container:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
-	}
-
-	.intro-container::before {
-		display: none;
-	}
-
-	.section-title {
-		position: relative;
-		margin-bottom: 1.5rem;
-		display: flex;
-		align-items: center;
-	}
-
-	.section-title h2 {
-		font-size: 1.5rem;
-		margin: 0;
-		padding-right: 1rem;
-		color: var(--text-color);
-		font-weight: 600;
-	}
-
-	.title-line {
-		flex-grow: 1;
-		height: 2px;
-		background: var(--border-color); /* 회색 선으로 대체 */
-	}
-
-	.intro-content {
-		font-size: 1rem;
-		line-height: 1.8;
-	}
-
-	.intro-text {
-		margin-bottom: 1rem;
-		word-break: keep-all;
-	}
-
-	.intro-text:last-child {
-		margin-bottom: 0;
-	}
-
-	.highlight {
-		font-weight: 600;
-	}
-
-	/* 경력 섹션 스타일 */
-	.resume-section {
-		margin-bottom: 2rem;
-	}
-
-	.resume-section h2 {
-		font-size: 1.7rem;
-		font-weight: 600;
-		color: var(--text-color);
-		margin-bottom: 1.2rem;
-		position: relative;
-		display: inline-block;
-	}
-
-	.resume-section h2:after {
-		content: '';
-		position: absolute;
-		left: 0;
-		bottom: -8px;
-		width: 100%;
-		height: 3px;
-		background: linear-gradient(90deg, var(--primary-color), transparent);
-		border-radius: 2px;
-	}
-
-	.section-content {
-		position: relative;
-	}
-
-	.career-timeline {
-		position: relative;
-	}
-
-	.career-timeline::before {
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 10px;
-		height: calc(100% - 10px);
-		width: 2px;
-		background: linear-gradient(to bottom, var(--primary-color), transparent);
-	}
-
-	.experience-item {
-		position: relative;
-		margin-bottom: 2rem;
-		padding-left: 1.5rem;
-	}
-
-	.experience-item:last-child {
-		margin-bottom: 0;
-	}
-
-	.experience-item:before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: -8px;
-		width: 16px;
-		height: 16px;
-		border-radius: 50%;
-		background-color: var(--primary-color);
-		box-shadow: 0 0 0 4px rgba(97, 218, 251, 0.15);
-	}
-
-	.experience-header {
-		display: flex;
-		flex-direction: column;
-		margin-bottom: 0.3rem; /* 0.5rem에서 0.3rem으로 여백 줄임 */
-	}
-
-	@media (min-width: 768px) {
-		.experience-header {
-			flex-direction: row;
-			justify-content: space-between;
-			
-			align-items: center !important;
-		}
-	}
-
-	.experience-header h3 {
-		font-size: 1.3rem;
-		font-weight: 600;
-		color: var(--text-color);
-		margin: 0;
-	}
-
-	.period {
-		font-size: 0.9rem;
-		color: var(--text-light);
-		background-color: var(--bg-light);
-		padding: 0.3rem 0.8rem 0 0.8rem;
-		border-radius: 20px;
-		display: inline-block;
-		margin-top: 0.5rem;
-		margin-bottom: 0;
-	}
-
-	@media (min-width: 768px) {
-		.period {
-			margin-top: 0;
-		}
-	}
-
-	.position {
-		font-size: 1.1rem;
-		color: var(--primary-color);
-		font-weight: 500;
-		margin: 0.5rem 0 1.2rem;
-	}
-
-	.project-subsection {
-		background-color: var(--bg-card);
-		border: 1px solid var(--border-color);
-		border-radius: 8px;
-		padding: 1.2rem;
-		margin-bottom: 1.2rem;
-		box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
-	}
-
-	.project-subsection:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
-	}
-
-	.project-subsection:last-child {
-		margin-bottom: 0;
-	}
-
-	.project-subsection h4 {
-		font-size: 1.1rem;
-		font-weight: 600;
-		color: var(--text-color);
-		margin: 0 0 1rem;
-		padding-bottom: 0.7rem;
-		border-bottom: 1px solid var(--border-color);
-	}
-
-	.project-links {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
-		margin-bottom: 1rem;
-	}
-
-	.link-button {
-		display: inline-flex;
-		align-items: center;
-		padding: 0.3rem 0.8rem;
-		background-color: var(--bg-light);
-		border-radius: 4px;
-		font-size: 0.85rem;
-		color: var(--text-light);
-		text-decoration: none;
-		transition: all 0.2s ease;
-	}
-
-	.link-button:hover {
-		background-color: var(--primary-color);
-		color: white;
-		transform: translateY(-1px);
-		text-decoration: none;
-	}
-
-	.link-button:hover .icon {
-		transform: scale(1.1);
-	}
-
-	.responsibilities {
-		list-style-type: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	.responsibilities li {
-		position: relative;
-		padding-left: 1.5rem;
-		margin-bottom: 0.8rem;
-		line-height: 1.6;
-	}
-
-	.responsibilities li:last-child {
-		margin-bottom: 0;
-	}
-
-	.responsibilities li:before {
-		content: '';
-		position: absolute;
-		left: 0.25rem;
-		top: 0.75em;
-		width: 5px;
-		height: 5px;
-		border-radius: 50%;
-		background-color: var(--primary-color);
-	}
-
-	/* 발표 섹션 스타일 */
-	.talks-container {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
-
-	.talk-item {
-		display: flex;
-		padding: 0.8rem;
-		background-color: var(--bg-card);
-		border-radius: 8px;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-		border: 1px solid var(--border-color);
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
-	}
-	
-	.talk-item:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
-	}
-
-	.talk-year {
-		flex-shrink: 0;
-		width: 60px;
-		height: 60px;
-		background: linear-gradient(135deg, var(--primary-color), #4facfe);
-		color: white;
-		border-radius: 50%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-weight: 600;
-		font-size: 1.1rem;
-		margin-right: 1.5rem;
-	}
-
-	.talk-content {
-		flex-grow: 1;
-	}
-
-	.talk-title {
-		font-size: 1.05rem;
-		font-weight: 600;
-		margin: 0 0 0.5rem;
-		color: var(--text-color);
-	}
-
-	.talk-links {
-		display: flex;
-		gap: 1rem;
-		margin-top: 0.5rem;
-	}
-
-	.talk-link {
-		display: inline-flex;
-		align-items: center;
-		font-size: 0.9rem;
-		color: var(--hover-color);
-		text-decoration: none;
-		margin-top: 0.5rem;
-		transition: color 0.2s;
-	}
-
-	.talk-link:hover {
-		color: var(--primary-color);
-		text-decoration: none;
-	}
-
-	.talk-link:hover .icon {
-		transform: scale(1.1);
-	}
-
-	/* 교육 섹션 스타일 */
-	.education-card {
-		display: flex;
-		background-color: var(--bg-card);
-		border-radius: 8px;
-		padding: 1.2rem;
-		box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
-		border: 1px solid var(--border-color);
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
-	}
-	
-	.education-card:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
-	}
-
-	.education-details {
-		flex-grow: 1;
-	}
-
-	.education-details h3 {
-		font-size: 1.2rem;
-		font-weight: 600;
-		margin: 0 0 0.5rem;
-		color: var(--text-color);
-	}
-
-	.education-details p {
-		margin: 0 0 0.3rem;
-	}
-
-	.education-details p:last-child {
-		margin-bottom: 0;
-	}
-
-	.education-details p:last-child {
-		margin-bottom: 0;
-	}
-
-	.education-department {
-		font-size: 1rem;
-		color: var(--text-light);
-		margin: 0 0 0.7rem;
-	}
-
-	.education-period {
-		display: flex;
-		align-items: center;
-		font-size: 0.9rem;
-		color: var(--text-light);
-	}
-	
-	/* 오픈소스 섹션 스타일 */
-	.opensource-projects {
-		display: grid;
-		grid-template-columns: 1fr;
-		gap: 1.2rem;
-	}
-
-	@media (min-width: 768px) {
-		.opensource-projects {
-			grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-		}
-	}
-
-	.project-card {
-		background-color: var(--bg-card);
-		border-radius: 8px;
-		padding: 1.2rem;
-		box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
-		border: 1px solid var(--border-color);
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
-		position: relative;
-		overflow: hidden;
-	}
-
-	.project-card::after {
-		content: '';
-		position: absolute;
-		top: 0;
-		right: 0;
-		width: 0;
-		height: 0;
-		border-style: solid;
-		border-width: 0 40px 40px 0;
-		border-color: transparent var(--primary-color) transparent transparent;
-		opacity: 0.2;
-		transition: all 0.3s ease;
-	}
-
-	.project-card:hover {
-		transform: translateY(-2px);
-		box-shadow: 0 8px 15px rgba(0, 0, 0, 0.05);
-	}
-
-	.project-card:hover::after {
-		border-width: 0 60px 60px 0;
-		opacity: 0.3;
-	}
-
-	.project-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin-bottom: 1rem;
-	}
-
-	.project-header h3 {
-		font-size: 1.1rem;
-		font-weight: 600;
-		margin: 0;
-		color: var(--text-color);
-	}
-
-	.project-badge {
-		font-size: 0.8rem;
-		background-color: var(--bg-light);
-		padding: 0.25rem 0.7rem;
-		border-radius: 20px;
-		color: var(--text-light);
-	}
-
-	.project-link {
-		display: inline-flex;
-		align-items: center;
-		font-size: 0.9rem;
-		color: var(--hover-color);
-		text-decoration: none;
-		margin-bottom: 1rem;
-		transition: color 0.2s;
-	}
-
-	.project-link:hover {
-		color: var(--primary-color);
-		text-decoration: none;
-	}
-
-	.project-link:hover .icon {
-		transform: scale(1.1);
-	}
-
-	.project-features {
-		list-style-type: none;
-		padding: 0;
-		margin: 0;
-	}
-
-	.project-features li {
-		position: relative;
-		padding-left: 1.5rem;
-		margin-bottom: 0.8rem;
-		line-height: 1.6;
-	}
-
-	.project-features li:last-child {
-		margin-bottom: 0;
-	}
-
-	.project-features li:before {
-		content: '';
-		position: absolute;
-		left: 0.25rem;
-		top: 0.75em;
-		width: 5px;
-		height: 5px;
-		border-radius: 50%;
-		background-color: var(--primary-color);
-	}
-
-	/* 액센트 클래스 추가 (필요시 사용) */
-	.accent {
-		color: var(--accent-color);
-		font-weight: 600;
-	}
-
-	.accent-bg {
-		background: rgba(26, 115, 232, 0.1);
-		padding: 0.1em 0.3em;
-		border-radius: 3px;
-	}
-
-	/* 브랜드 아이콘 색상 */
-	.fa-github {
-		color: #333;
-	}
-	
-	.fa-apple {
-		color: #555;
-	}
-	
-	.fa-android {
-		color: #3DDC84;
-	}
-	
-	.fa-youtube {
-		color: #FF0000;
-	}
-	
-	.contact-item:hover .fa-github,
-	.contact-item:hover .fa-envelope {
-		color: white;
-	}
-	
-	.link-button:hover .fa-apple,
-	.link-button:hover .fa-android,
-	.link-button:hover .fa-globe {
-		color: white;
-	}
-</style> 

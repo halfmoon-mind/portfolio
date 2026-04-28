@@ -1,0 +1,884 @@
+.resume-container {
+  --resume-accent: #61dafb;
+  --resume-accent-strong: #1a73e8;
+  --resume-link: #0077cc;
+  --resume-link-hover: #005fa3;
+  --resume-text: #333333;
+  --resume-muted: #666666;
+  --resume-soft: #f8f9fa;
+  --resume-border: #eaeaea;
+  --resume-card: #ffffff;
+  --resume-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.75rem;
+  color: var(--resume-text);
+  background: var(--resume-card);
+  border-radius: 12px;
+  box-shadow: var(--resume-shadow);
+  font-family:
+    'Pretendard',
+    -apple-system,
+    BlinkMacSystemFont,
+    system-ui,
+    Roboto,
+    sans-serif;
+  letter-spacing: 0;
+}
+
+.resume-container * {
+  box-sizing: border-box;
+}
+
+.print-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.pdf-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.5rem;
+  padding: 0.55rem 1rem;
+  color: #ffffff;
+  background: #3182ce;
+  border: 0;
+  border-radius: 6px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.pdf-button:hover {
+  background: #2c5282;
+  transform: translateY(-1px);
+}
+
+.pdf-button:focus-visible {
+  outline: 3px solid rgba(49, 130, 206, 0.25);
+  outline-offset: 2px;
+}
+
+.pdf-status {
+  margin: 0;
+  color: var(--resume-muted);
+  font-size: 0.9rem;
+}
+
+.pdf-status[data-state='loading'] {
+  animation: resume-pulse 1.4s ease-in-out infinite;
+}
+
+.pdf-status[data-state='error'] {
+  color: #b42318;
+  animation: none;
+}
+
+@keyframes resume-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.resume-header {
+  display: grid;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.profile-info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.profile-image {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border: 4px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.profile-details {
+  min-width: 0;
+}
+
+.name {
+  margin: 0;
+  background: linear-gradient(90deg, var(--resume-accent), #4facfe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 2.5rem;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.job-title {
+  margin: 0.5rem 0 1.2rem;
+  color: var(--resume-muted);
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.contact-item,
+.link-button,
+.talk-link,
+.project-link {
+  color: var(--resume-link);
+  text-decoration: none;
+}
+
+.contact-item,
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.1rem;
+  padding: 0.6rem 1rem;
+  background: var(--resume-soft);
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.3;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.contact-item:hover,
+.link-button:hover {
+  color: #ffffff;
+  background: var(--resume-accent);
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  margin-right: 0.5rem;
+  font-size: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.contact-item:hover .icon,
+.link-button:hover .icon,
+.talk-link:hover .icon,
+.project-link:hover .icon {
+  transform: scale(1.1);
+}
+
+.fa-github {
+  color: #333333;
+}
+
+.fa-apple {
+  color: #555555;
+}
+
+.fa-android {
+  color: #3ddc84;
+}
+
+.fa-youtube {
+  color: #ff0000;
+}
+
+.contact-item:hover .fa-github,
+.contact-item:hover .fa-envelope,
+.link-button:hover .fa-apple,
+.link-button:hover .fa-android,
+.link-button:hover .fa-globe {
+  color: #ffffff;
+}
+
+.talk-link:hover,
+.project-link:hover {
+  color: var(--resume-link-hover);
+  text-decoration: underline;
+}
+
+.intro-container,
+.skill-category,
+.project-subsection,
+.talk-item,
+.education-card,
+.project-card {
+  background: var(--resume-card);
+  border: 1px solid var(--resume-border);
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+}
+
+.intro-container {
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-title h2,
+.resume-section h2 {
+  margin: 0;
+  color: var(--resume-text);
+  font-size: 1.5rem;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.title-line {
+  flex: 1;
+  height: 2px;
+  background: var(--resume-border);
+}
+
+.intro-content {
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.intro-text {
+  margin: 0 0 1rem;
+  color: var(--resume-text);
+  font-size: 1rem;
+  line-height: 1.75;
+  word-break: keep-all;
+}
+
+.intro-text:last-child {
+  margin-bottom: 0;
+}
+
+.highlight {
+  color: inherit;
+  font-weight: 600;
+}
+
+.resume-section {
+  margin-bottom: 2rem;
+}
+
+.resume-section > h2 {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.45rem;
+}
+
+.resume-section > h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--resume-accent), rgba(29, 78, 216, 0));
+  border-radius: 999px;
+}
+
+.section-content {
+  position: relative;
+}
+
+.career-timeline {
+  padding-left: 1.35rem;
+}
+
+.career-timeline::before {
+  content: '';
+  position: absolute;
+  top: 0.35rem;
+  bottom: 0.35rem;
+  left: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--resume-accent), transparent);
+  border-radius: 999px;
+}
+
+.experience-item {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.experience-item:last-child {
+  margin-bottom: 0;
+}
+
+.experience-item::before {
+  content: '';
+  position: absolute;
+  top: 0.25rem;
+  left: -1.75rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  background: var(--resume-card);
+  border: 3px solid var(--resume-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(97, 218, 251, 0.15);
+}
+
+.experience-header,
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.experience-header h3,
+.project-header h3 {
+  margin: 0;
+  color: var(--resume-text);
+  font-size: 1.18rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.period,
+.project-badge {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0.25rem 0.65rem;
+  color: var(--resume-muted);
+  background: var(--resume-soft);
+  border: 1px solid var(--resume-border);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.position {
+  margin: 0.35rem 0 0.8rem;
+  color: var(--resume-accent);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.project-subsection {
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.project-subsection:last-child {
+  margin-bottom: 0;
+}
+
+.project-subsection h4 {
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.6rem;
+  color: var(--resume-text);
+  border-bottom: 1px solid var(--resume-border);
+  font-size: 1rem;
+  line-height: 1.35;
+  font-weight: 600;
+}
+
+.project-links,
+.talk-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.responsibilities,
+.project-features,
+.skill-category ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.responsibilities li,
+.project-features li,
+.skill-category li {
+  position: relative;
+  margin-bottom: 0.65rem;
+  padding-left: 1.1rem;
+  color: var(--resume-text);
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+.responsibilities li:last-child,
+.project-features li:last-child,
+.skill-category li:last-child {
+  margin-bottom: 0;
+}
+
+.responsibilities li::before,
+.project-features li::before,
+.skill-category li::before {
+  content: '';
+  position: absolute;
+  top: 0.72em;
+  left: 0.1rem;
+  width: 0.35rem;
+  height: 0.35rem;
+  background: var(--resume-accent);
+  border-radius: 50%;
+}
+
+.skills {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.skill-category {
+  padding: 1rem;
+}
+
+.skill-category h3 {
+  margin: 0 0 0.8rem;
+  padding-bottom: 0.55rem;
+  color: var(--resume-text);
+  border-bottom: 1px solid var(--resume-border);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.talks-container {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.talk-item {
+  display: grid;
+  grid-template-columns: 3.2rem 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem;
+}
+
+.talk-year {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--resume-accent), var(--resume-accent-strong));
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.talk-title {
+  margin: 0;
+  color: var(--resume-text);
+  font-size: 1rem;
+  line-height: 1.45;
+  font-weight: 800;
+}
+
+.talk-links {
+  margin: 0.45rem 0 0;
+}
+
+.talk-link,
+.project-link {
+  display: inline-flex;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.education-section .section-title {
+  margin-bottom: 1rem;
+}
+
+.education-card {
+  padding: 1rem;
+}
+
+.education-details h3 {
+  margin: 0 0 0.45rem;
+  color: var(--resume-text);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.education-details p {
+  margin: 0 0 0.25rem;
+  color: var(--resume-muted);
+  font-size: 0.98rem;
+}
+
+.education-details p:last-child {
+  margin-bottom: 0;
+}
+
+.opensource-projects {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.project-card {
+  padding: 1rem;
+}
+
+.project-card .project-header {
+  margin-bottom: 0.7rem;
+}
+
+.project-link {
+  margin-bottom: 0.75rem;
+  word-break: break-word;
+}
+
+@media (max-width: 760px) {
+  .resume-container {
+    margin: 1rem auto;
+    padding: 1rem;
+  }
+
+  .profile-info {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .profile-image {
+    justify-self: center;
+    width: 112px;
+    height: 112px;
+  }
+
+  .name {
+    font-size: 2rem;
+  }
+
+  .contact-info {
+    justify-content: center;
+  }
+
+  .experience-header,
+  .project-header {
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .period,
+  .project-badge {
+    align-self: flex-start;
+  }
+
+  .skills,
+  .opensource-projects {
+    grid-template-columns: 1fr;
+  }
+}
+
+.print-compact {
+  max-width: 100%;
+  margin: 0;
+  padding: 0.2rem;
+  border: 0;
+  box-shadow: none;
+  font-size: 8px;
+  line-height: 1.25;
+}
+
+.print-compact .print-controls {
+  display: none;
+}
+
+.print-compact .resume-header {
+  gap: 0.35rem;
+  margin-bottom: 0.45rem;
+}
+
+.print-compact .profile-info {
+  grid-template-columns: auto 1fr;
+  gap: 0.6rem;
+  text-align: left;
+}
+
+.print-compact .profile-image {
+  width: 70px;
+  height: 70px;
+  border-width: 1px;
+  box-shadow: none;
+}
+
+.print-compact .name {
+  font-size: 1.3rem;
+}
+
+.print-compact .job-title {
+  margin: 0.1rem 0 0.25rem;
+  font-size: 0.8rem;
+}
+
+.print-compact .contact-info {
+  justify-content: flex-start;
+  gap: 0.25rem;
+}
+
+.print-compact .contact-item,
+.print-compact .link-button {
+  min-height: auto;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  font-size: 0.65rem;
+}
+
+.print-compact .intro-container,
+.print-compact .skill-category,
+.print-compact .project-subsection,
+.print-compact .talk-item,
+.print-compact .education-card,
+.print-compact .project-card {
+  border: 1px solid #eeeeee;
+  box-shadow: none;
+}
+
+.print-compact .intro-container,
+.print-compact .skill-category,
+.print-compact .project-subsection,
+.print-compact .education-card,
+.print-compact .project-card {
+  padding: 0.3rem;
+}
+
+.print-compact .section-title {
+  gap: 0.4rem;
+  margin-bottom: 0.3rem;
+}
+
+.print-compact .section-title h2,
+.print-compact .resume-section h2 {
+  font-size: 0.95rem;
+}
+
+.print-compact .intro-content {
+  gap: 0.2rem;
+}
+
+.print-compact .intro-text {
+  font-size: 0.7rem;
+  line-height: 1.32;
+}
+
+.print-compact .resume-section {
+  margin-bottom: 0.35rem;
+}
+
+.print-compact .resume-section > h2 {
+  margin-bottom: 0.35rem;
+  padding-bottom: 0.1rem;
+}
+
+.print-compact .resume-section > h2::after {
+  height: 1px;
+}
+
+.print-compact .career-timeline {
+  padding-left: 0.45rem;
+}
+
+.print-compact .career-timeline::before,
+.print-compact .experience-item::before {
+  display: none;
+}
+
+.print-compact .experience-item {
+  margin-bottom: 0.35rem;
+}
+
+.print-compact .experience-header {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.print-compact .experience-header h3,
+.print-compact .project-header h3,
+.print-compact .education-details h3 {
+  font-size: 0.82rem;
+}
+
+.print-compact .period,
+.print-compact .project-badge {
+  padding: 0.1rem 0.3rem;
+  font-size: 0.62rem;
+}
+
+.print-compact .position {
+  margin: 0.1rem 0 0.25rem;
+  font-size: 0.72rem;
+}
+
+.print-compact .project-subsection {
+  margin-bottom: 0.25rem;
+}
+
+.print-compact .project-subsection h4,
+.print-compact .skill-category h3 {
+  margin-bottom: 0.2rem;
+  padding-bottom: 0.15rem;
+  font-size: 0.76rem;
+}
+
+.print-compact .project-links,
+.print-compact .talk-links {
+  gap: 0.25rem;
+  margin-bottom: 0.2rem;
+}
+
+.print-compact .responsibilities li,
+.print-compact .project-features li,
+.print-compact .skill-category li {
+  margin-bottom: 0.1rem;
+  padding-left: 0.65rem;
+  font-size: 0.68rem;
+  line-height: 1.28;
+}
+
+.print-compact .responsibilities li::before,
+.print-compact .project-features li::before,
+.print-compact .skill-category li::before {
+  top: 0.6em;
+  width: 3px;
+  height: 3px;
+}
+
+.print-compact .skills {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.3rem;
+}
+
+.print-compact .talks-container {
+  gap: 0.2rem;
+}
+
+.print-compact .talk-item {
+  grid-template-columns: 30px 1fr;
+  gap: 0.5rem;
+  padding: 0.2rem;
+}
+
+.print-compact .talk-year {
+  width: 30px;
+  height: 30px;
+  font-size: 0.68rem;
+}
+
+.print-compact .talk-title,
+.print-compact .talk-link,
+.print-compact .project-link,
+.print-compact .education-details p {
+  font-size: 0.68rem;
+}
+
+.print-compact .opensource-projects {
+  grid-template-columns: 1fr;
+  gap: 0.25rem;
+}
+
+.print-compact .project-card .project-header {
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 0.15rem;
+}
+
+.print-compact .project-link {
+  margin-bottom: 0.15rem;
+}
+
+.print-compact a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.print-compact .highlight {
+  color: inherit;
+  font-weight: 800;
+}
+
+@media print {
+  body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+  }
+
+  body > header,
+  body > footer {
+    display: none;
+  }
+
+  main {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+  }
+
+  .resume-container {
+    max-width: 100%;
+    margin: 0;
+    padding: 0.2rem;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .print-controls {
+    display: none;
+  }
+
+  .resume-section,
+  .experience-item,
+  .project-subsection,
+  .skill-category,
+  .talk-item,
+  .education-card,
+  .project-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  a[href]::after {
+    content: none;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    box-shadow: none !important;
+  }
+}
