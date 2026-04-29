@@ -3,28 +3,36 @@
     "ogImage": "https://substackcdn.com/image/fetch/$s_!FNKE!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc28f86d4-01ff-4bce-b152-33d4d9f82683_1958x1082.png",
     "ogTitle": "How to Kill the Code Review",
     "ogDescription": "Human-written code died in 2025. Code reviews will die in 2026.",
-    "fetchedAt": "2026-04-21T10:51:09.204Z"
+    "fetchedAt": "2026-04-29T04:50:36.034Z"
   },
   "https://codex.epril.com/claude-session-context-handoff-4-layer-strategy": {
     "ogImage": "https://image.codex.epril.com/covers/d7b527d0-7ac0-4543-87be-185bd5a49d5d.jpg",
     "ogTitle": "Claude 세션 간 Context Handoff: 맥락을 잃지 않는 4계층 전략",
     "ogDescription": "Claude 세션 전환 시 맥락 손실을 방지하기 위한 체계적인 4계층 전략",
-    "fetchedAt": "2026-04-23T01:53:37.504Z"
+    "fetchedAt": "2026-04-29T04:50:34.896Z"
   },
   "https://evan-moon.github.io/2026/04/18/developers-who-stopped-growing-in-ai-era/": {
     "ogImage": "https://evan-moon.github.io/static/786f9e0aaeb612cee954951add7dff31/d803c/thumbnail.png",
     "ogTitle": "AI 코딩 시대, 더이상 성장하지 않는 개발자들",
     "ogDescription": "AI를 많이 쓸수록 AI를 잘 쓰기 어려워진다. 이건 마치 직관에 반하는 말처럼 들리지만, 필자는 이것이 사실이라고 생각한다. 요즘 너도 나도 AI FOMO에 빠져 열심히 AI를 잘 쓰기 위해 노력하고 있지만, 우리는 “AI를 잘 쓴다”는 것이 무엇인지부터 생각해볼 필요가 있다. 에이전트 오케스트레이션이나 하네스 엔지니어링 같은 방법론은 결국 도구가 발전하면 누구나 따라가게 되는 시대의 흐름이다. 하지만 진짜 차별점은 다른 데 있다. 필자는 이것이 바로 AI의 출력물이 좋은지 나쁜지를 판단하고, 잘못된 방향을 교정하고, 더 나은 결과를 끌어낼 수 있는 역량이라고 생각한다. 그리고 아이러니하게도 이 능력은 우리가 AI에 의존할수록 약화된다.",
-    "fetchedAt": "2026-04-23T09:13:43.020Z"
+    "fetchedAt": "2026-04-29T04:50:34.957Z"
   },
   "https://toss.tech/article/harness-for-team-productivity": {
-    "failed": true,
-    "fetchedAt": "2026-04-23T09:13:43.104Z"
+    "ogImage": "https://static.toss.im/assets/tech-blog/og-image/techblog-og.png",
+    "ogTitle": "Software 3.0 시대, Harness를 통한 조직 생산성 저점 높이기",
+    "ogDescription": "개인의 '슈퍼'를 넘어 팀의 '표준'으로",
+    "fetchedAt": "2026-04-29T04:50:37.985Z"
   },
   "https://martinfowler.com/fragments/2026-04-02.html": {
     "ogImage": "https://martinfowler.com/logo-sq.png",
     "ogTitle": "Fragments: April  2",
     "ogDescription": "fragments 02 Apr 2026",
-    "fetchedAt": "2026-04-28T15:46:55.578Z"
+    "fetchedAt": "2026-04-29T04:50:35.557Z"
+  },
+  "https://tech.kakao.com/posts/820": {
+    "ogImage": "https://img1.kakaocdn.net/thumb/U896x0/?fname=https%3A%2F%2Ft1.kakaocdn.net%2Fkakao_tech%2Fmedia%2Faec7e17c019d00001.png",
+    "ogTitle": "카카오톡 예약하기에서 그려 본 캘린더 - tech.kakao.com",
+    "ogDescription": "안녕하세요 저는 카카오톡 예약하기라는 서비스에서 FE 개발을 담당하고 있는 Joy...",
+    "fetchedAt": "2026-04-29T04:50:36.143Z"
   }
 }
