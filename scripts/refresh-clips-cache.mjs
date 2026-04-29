@@ -55,18 +55,34 @@ function normalizeImageUrl(maybe, baseUrl) {
   }
 }
 
-async function scrape(sourceUrl) {
+async function fetchHtml(sourceUrl) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 10000);
   try {
-    const { result } = await ogs({
-      url: sourceUrl,
-      timeout: 10000,
-      fetchOptions: {
-        headers: {
-          'User-Agent':
-            'Mozilla/5.0 (compatible; halfmoon.day clips-cache-refresh)',
-        },
+    const res = await fetch(sourceUrl, {
+      signal: controller.signal,
+      redirect: 'follow',
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (compatible; halfmoon.day clips-cache-refresh)',
+        Accept:
+          'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'ko-KR,ko;q=0.9,en;q=0.8',
       },
     });
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status} ${res.statusText}`);
+    }
+    return await res.text();
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function scrape(sourceUrl) {
+  try {
+    const html = await fetchHtml(sourceUrl);
+    const { result } = await ogs({ html });
     const ogImageRaw =
       result.ogImage?.[0]?.url ?? result.twitterImage?.[0]?.url;
     return {
@@ -76,7 +92,8 @@ async function scrape(sourceUrl) {
       fetchedAt: new Date().toISOString(),
     };
   } catch (err) {
-    const message = err && err.message ? err.message : String(err);
+    const message =
+      err?.result?.error || err?.message || String(err);
     console.warn(`  ⚠ failed to scrape ${sourceUrl}: ${message}`);
     return {
       failed: true,
