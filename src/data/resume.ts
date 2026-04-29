@@ -85,7 +85,7 @@ export const experiences: ResumeExperience[] = [
   {
     role: 'Flutter Mobile Engineer',
     company: '어터',
-    period: '2023년 10월 - 2025년 5월',
+    period: '2023년 10월 - 2025년 6월',
     projects: [
       {
         name: '[비공개] - 영화 커뮤니티',
