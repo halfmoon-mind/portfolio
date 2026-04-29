@@ -103,9 +103,11 @@ const getIconClass = (label: string, href: string) => {
 											))}
 										</div>
 									)}
-									<ul class="responsibilities">
-										{project.responsibilities.map((item) => <li set:html={item} />)}
-									</ul>
+									{project.responsibilities.length > 0 && (
+										<ul class="responsibilities">
+											{project.responsibilities.map((item) => <li set:html={item} />)}
+										</ul>
+									)}
 								</section>
 							))}
 						</article>
