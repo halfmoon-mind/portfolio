@@ -52,15 +52,40 @@ export const resumeProfile = {
 };
 
 export const resumeIntro = [
-  `<span class="highlight">Flutter Engineer</span>로 2년간 근무하면서 3개의 프로덕션 서비스를 배포 및 유지보수 하고 있습니다. Flutter 뿐 아니라 다양한 분야의 지식을 배우면서 <span class="highlight">엔지니어링 퀄리티</span>를 높이고 있습니다. 엔지니어로서의 관점 뿐만 아니라 <span class="highlight">비즈니스의 본질</span>을 이해하고 유연하게 문제를 해결합니다.`,
+  `<span class="highlight">Flutter Mobile Engineer</span>로 4년차를 맞이하며 여러 프로덕션 서비스를 배포 및 유지보수 하고 있습니다. Flutter 뿐 아니라 다양한 분야의 지식을 배우면서 <span class="highlight">엔지니어링 퀄리티</span>를 높이고 있습니다. 엔지니어로서의 관점 뿐만 아니라 <span class="highlight">비즈니스의 본질</span>을 이해하고 유연하게 문제를 해결합니다.`,
   `일상생활 속의 불편함을 인지하고 이를 기술로서 풀어내는 <span class="highlight">제너럴리스트</span>입니다. 또한 <span class="highlight">AI</span>를 적극적으로 활용하여 Product에 빠르게 <span class="highlight">비즈니스 임팩트</span>를 낼 수 있는 방안을 항상 고민하고 적극적으로 제시하는 <span class="highlight">Product Engineer</span>입니다.`,
 ];
 
 export const experiences: ResumeExperience[] = [
   {
     role: 'Flutter Mobile Engineer',
+    company: 'Playtag',
+    period: '2025년 6월 - 현재',
+    projects: [
+      {
+        name: '스토리라인 - AI 행동 분석 솔루션',
+        links: [
+          {
+            label: 'AppStore',
+            href: 'https://apps.apple.com/us/app/storyline-ai-insight/id6445879562',
+          },
+          {
+            label: 'PlayStore',
+            href: 'https://play.google.com/store/apps/details?id=com.playtag.storyline',
+          },
+        ],
+        responsibilities: [
+          `<span class="highlight">AI 기반 아동 행동 분석 솔루션</span>의 iOS/Android Flutter 앱 개발 및 운영`,
+          `교사와 보호자가 아동의 활동 기록, 놀이 참여도, 사회적 상호작용을 확인하는 <span class="highlight">교육 도메인</span>의 모바일 경험 개선`,
+          `글로벌 교육기관 사용 환경을 고려해 <span class="highlight">다국어 처리</span>를 진행하고, 언어별 문구와 화면 흐름을 안정적으로 관리`,
+        ],
+      },
+    ],
+  },
+  {
+    role: 'Flutter Mobile Engineer',
     company: '어터',
-    period: '2023년 10월 - 현재',
+    period: '2023년 10월 - 2025년 5월',
     projects: [
       {
         name: '[비공개] - 영화 커뮤니티',

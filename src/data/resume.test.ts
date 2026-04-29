@@ -36,8 +36,24 @@ describe('resume data', () => {
     );
     expect(experiences[0]).toMatchObject({
       role: 'Flutter Mobile Engineer',
+      company: 'Playtag',
+      period: '2025년 6월 - 현재',
+    });
+    expect(experiences[0].projects[0]).toMatchObject({
+      name: '스토리라인 - AI 행동 분석 솔루션',
+      links: expect.arrayContaining([
+        expect.objectContaining({ href: 'https://apps.apple.com/us/app/storyline-ai-insight/id6445879562' }),
+        expect.objectContaining({ href: 'https://play.google.com/store/apps/details?id=com.playtag.storyline' }),
+      ]),
+      responsibilities: expect.arrayContaining([
+        expect.stringContaining('AI 기반 아동 행동 분석 솔루션'),
+        expect.stringContaining('다국어 처리'),
+      ]),
+    });
+    expect(experiences[1]).toMatchObject({
+      role: 'Flutter Mobile Engineer',
       company: '어터',
-      period: '2023년 10월 - 현재',
+      period: '2023년 10월 - 2025년 5월',
     });
   });
 
