@@ -1,9 +1,10 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { primaryVariants } from '../utils/language';
 
 export async function GET(context) {
-	const blogPosts = await getCollection('blog');
+	const blogPosts = primaryVariants(await getCollection('blog'));
 	const clips = await getCollection('clips');
 
 	const items = [

@@ -3,6 +3,7 @@ import { type CollectionEntry, getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import BlogPost from '../../layouts/BlogPost.astro';
 import { render } from 'astro:content';
+import { getTranslation } from '../../utils/language';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
@@ -15,14 +16,15 @@ type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
 const { Content } = await render(post);
+const translation = getTranslation(post, await getCollection('blog'));
 ---
 
 <head>
   <BaseHead title={post.data.title} description={post.data.description} image={post.data.heroImage} />
 </head>
-<BlogPost {...post.data}>
+<BlogPost {...post.data} translation={translation}>
 	<Content />
-	
+
 	<div class="giscus-container mt-10">
 		<script src="https://giscus.app/client.js"
 			data-repo="halfmoon-mind/portfolio"
@@ -35,7 +37,7 @@ const { Content } = await render(post);
 			data-emit-metadata="0"
 			data-input-position="bottom"
 			data-theme="light"
-			data-lang="ko"
+			data-lang={post.data.lang}
 			crossorigin="anonymous"
 			async>
 		</script>

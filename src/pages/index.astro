@@ -3,10 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
 import { getClipMetadata, getSourceDomain } from '../utils/clips-metadata';
+import { primaryVariants } from '../utils/language';
 
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
-const posts = (await getCollection('blog')).sort(
+const posts = primaryVariants(await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 

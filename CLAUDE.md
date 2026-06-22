@@ -54,6 +54,8 @@ yarn astro [command]
   updatedDate?: Date (blog only)
   heroImage?: string (blog only)
   tags?: string[] (til only)
+  lang?: 'ko' | 'en' (blog only, 기본값 'ko')
+  translationKey?: string (blog only, ko/en 번역 쌍을 잇는 공유 키)
 }
 ```
 

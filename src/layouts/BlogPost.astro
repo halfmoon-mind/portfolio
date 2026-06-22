@@ -5,9 +5,20 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<'blog'>['data'] & {
+	translation?: CollectionEntry<'blog'> | null;
+};
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, lang = 'ko', translation } = Astro.props;
+
+const LANG_LABEL = { ko: '한국어', en: 'English' } as const;
+// 번역본이 있을 때만 토글 노출. KO를 항상 왼쪽으로 고정.
+const langVariants = translation
+	? [
+			{ code: lang, href: null as string | null },
+			{ code: translation.data.lang ?? 'en', href: `/blog/${translation.id}/` },
+		].sort((a, b) => (a.code === b.code ? 0 : a.code === 'ko' ? -1 : 1))
+	: [];
 
 // 현재 URL 생성
 const currentUrl = new URL(Astro.url.pathname, Astro.site).toString();
@@ -23,6 +34,7 @@ const articleSchema = {
 	"@type": "BlogPosting",
 	"headline": title,
 	"description": description,
+	"inLanguage": lang === 'en' ? 'en' : 'ko',
 	"image": heroImage ? new URL(heroImage, Astro.site).toString() : "",
 	"datePublished": formatISODate(pubDate),
 	"dateModified": updatedDate ? formatISODate(updatedDate) : formatISODate(pubDate),
@@ -45,7 +57,7 @@ const articleSchema = {
 };
 ---
 
-<html lang="ko">
+<html lang={lang}>
 	<head>
 		<BaseHead title={title} description={description} image={heroImage} article={true} />
 		<style>
@@ -89,6 +101,25 @@ const articleSchema = {
 			.last-updated-on {
 				font-style: italic;
 			}
+			.lang-switch {
+				display: flex;
+				gap: 0.5em;
+				justify-content: flex-end;
+				margin-bottom: 0.5em;
+				font-size: 0.9em;
+			}
+			.lang-switch a {
+				color: rgb(var(--gray));
+				text-decoration: none;
+			}
+			.lang-switch a:hover {
+				color: rgb(var(--accent));
+				text-decoration: underline;
+			}
+			.lang-switch [aria-current] {
+				font-weight: 700;
+				color: rgb(var(--black));
+			}
 		</style>
 		<!-- Schema.org 구조화된 데이터 -->
 		<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
@@ -102,6 +133,17 @@ const articleSchema = {
 					{heroImage && <img width={1020} height={510} src={heroImage} alt={title} style="max-height: 500px; object-fit: cover;" />}
 				</div>
 				<div class="prose">
+					{langVariants.length > 0 && (
+						<nav class="lang-switch" aria-label="언어 선택">
+							{langVariants.map((v) =>
+								v.href ? (
+									<a href={v.href} hreflang={v.code} lang={v.code}>{LANG_LABEL[v.code]}</a>
+								) : (
+									<span aria-current="true" lang={v.code}>{LANG_LABEL[v.code]}</span>
+								)
+							)}
+						</nav>
+					)}
 					<div class="title">
 						<div class="date">
 							<FormattedDate date={pubDate} />
