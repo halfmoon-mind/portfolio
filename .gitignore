@@ -27,3 +27,7 @@ pnpm-debug.log*
 
 # netlify dev generated
 deno.lock
+
+# local claude config & scratch
+.claude/settings.json
+_workspace/
