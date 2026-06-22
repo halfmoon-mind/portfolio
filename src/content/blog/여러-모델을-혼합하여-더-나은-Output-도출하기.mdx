@@ -1,0 +1,50 @@
+---
+title: '여러 모델을 혼합하여 더 나은 Output 도출하기'
+description: 'OpenRouter의 "Fusion beats Frontier"를 읽고, 여러 모델을 합의시키는 개발용 council을 직접 만들어봤다.'
+pubDate: '2026-06-22'
+heroImage: '/fusion-council-hero.png'
+tags: ['AI', 'LLM', 'Claude Code', 'OpenRouter', 'Developer Tools']
+---
+
+## Fusion이 Frontier를 이긴다
+
+OpenRouter 블로그에서 [Fusion beats Frontier](https://openrouter.ai/blog/announcements/fusion-beats-frontier/)라는 글을 읽었다. 요지는 단순하다. 여러 모델의 출력을 judge 모델로 합성하면 가장 좋은 단일 모델(frontier) 하나보다 나은 결과가 나온다는 것이다.
+
+수치가 흥미로웠다. 글에 따르면,
+
+- Fable 5 + GPT-5.5를 합성하면 69.0%, Fable 5 단독은 65.3%.
+- 가장 인상적이었던 건 *같은* 모델끼리 묶어도 올랐다는 점이다. Opus 4.8을 자기 자신과 짝지었더니 58.8% → 65.5%로 거의 7%p가 뛰었다.
+- 저렴한 모델 패널(Gemini 3 Flash, Kimi, DeepSeek)만으로도 frontier에 근접하면서 비용은 절반.
+
+글에서는 이걸 사람 팀에 비유한다. 복잡한 문제일수록 한 명의 천재보다 서로 다른 관점을 가진 팀이 더 나은 답을 낸다는 것이다. 모델도 마찬가지라는 얘기다.
+
+## 그래서 든 생각
+
+이 실험은 deep research 벤치마크(DRACO) 위에서 한 거다. 그런데 읽으면서 계속 떠오른 건, 내가 매일 하는 일에도 똑같이 적용되지 않을까 하는 생각이었다.
+
+나는 코드를 짜기 전에 "이 설계 괜찮을까?"를 묻고, 짜고 나서 "이 diff에 빠뜨린 건 없나?"를 묻는다. 그런데 보통은 모델 하나에게 묻는다. 그 모델이 놓치면 나도 같이 놓친다. 같은 모델은 같은 맹점을 공유하기 쉬우니까.
+
+architect, skeptic, 테스트 담당, 유지보수 담당처럼 역할이 다른 여러 관점이 같은 계획을 한 번씩 따져보고, 거기에 아예 다른 패밀리의 모델(GPT-5.5)까지 끼워서 합의를 만든다면 어떨까. 적어도 "혼자 봤으면 놓쳤을 것"을 한 겹 더 거를 수 있겠다 싶었다.
+
+## fusion-council
+
+그래서 [fusion-council](https://github.com/halfmoon-mind/fusion-council)을 만들었다. Claude Code 플러그인이고, 커맨드는 두 개다.
+
+- `/fusion-plan` — 코드를 건드리기 전에, 역할이 다른 페르소나(architect / skeptic / test-strategist / maintainer)와 GPT-5.5가 접근 방식을 각자 따져본 뒤 하나의 계획으로 합성한다.
+- `/fusion-review` — 변경을 끝낸 뒤, 같은 council 구조로 실제 diff를 리뷰한다.
+
+설계에서 신경 쓴 건 두 가지다. 첫째, 패널은 **read-only**다. 저장소를 읽고 grep만 할 수 있고, 실제 코드를 고치는 건 메인 세션 한 곳뿐이다. 심의와 실행을 분리했다. 둘째, GPT-5.5(Codex CLI 경유)가 없으면 Claude 단독으로 돌아가되 "다양성이 줄었다"고 보고하게 했다. 외부 모델은 있으면 좋고, 없어도 죽지 않게.
+
+물론 공짜는 아니다. 한 번 물어볼 걸 여러 번 물어보니 호출이 늘고, 비용도 토큰도 더 든다. 하지만 OpenRouter 글에서 내가 가져가고 싶었던 게 정확히 그 트레이드오프다. **비용을 조금 더 쓰는 대신, 혼자서는 못 봤을 판단을 한 겹 더 얻는 것.** 중요한 설계 결정이나 머지 직전의 diff처럼 틀리면 비싼 자리에서는, 그 한 겹이 값을 한다고 본다.
+
+## 기대하는 것, 그리고 묻고 싶은 것
+
+나는 이게 "프론티어 모델 하나면 충분하다"는 통념에 대한 작은 반례라고 생각한다. 비용을 조금 더 들이더라도 더 나은 output을 뽑아낼 방법은 분명히 있고, 나는 그걸 계속 찾아보고 다듬는 중이다.
+
+다만 지금 만든 건 내 손에 맞춘 한 가지 조합일 뿐이다. 나는 **Opus 4.8 + GPT-5.5** 조합으로 council을 꾸렸는데, 이게 정답이라고 생각하진 않는다. 그래서 궁금하다.
+
+- 당신이라면 어떤 모델을 섞겠는가? 더 싼 패널로도 충분할까, 아니면 다른 패밀리를 더 넣어야 할까?
+- 페르소나 구성(architect / skeptic / test / maintainer)은 적절한가? 빠진 관점은 없나?
+- judge가 합성하는 방식 자체를 더 개선할 여지는 없을까?
+
+repo는 [github.com/halfmoon-mind/fusion-council](https://github.com/halfmoon-mind/fusion-council)에 열어뒀다. 직접 써보거나 코드를 보고 "여기 이렇게 하면 더 낫겠다" 싶은 게 있으면 알려주면 좋겠다. 혼자 만든 council보다, 사람들 의견까지 섞인 council이 더 나은 output을 낼 테니까.
