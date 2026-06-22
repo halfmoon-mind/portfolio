@@ -2,15 +2,13 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
-import react from '@astrojs/react';
-import keystatic from '@keystatic/astro';
 
 import netlify from '@astrojs/netlify';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://halfmoon.day/',
-  integrations: [mdx(), sitemap(), react(), keystatic()],
+  integrations: [mdx(), sitemap()],
   adapter: netlify(),
   security: {
     checkOrigin: false,
