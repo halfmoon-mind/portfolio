@@ -8,7 +8,7 @@ tags: ['AI', 'LLM', 'Claude Code', 'OpenRouter', 'Developer Tools']
 
 ## Fusion이 Frontier를 이긴다
 
-OpenRouter 블로그에서 [Fusion beats Frontier](https://openrouter.ai/blog/announcements/fusion-beats-frontier/)라는 글을 읽었다. 요지는 단순하다. 여러 모델의 출력을 judge 모델로 합성하면 가장 좋은 단일 모델(frontier) 하나보다 나은 결과가 나온다는 것이다.
+OpenRouter 블로그에서 [Surpassing Frontier Performance with Fusion](https://openrouter.ai/blog/announcements/fusion-beats-frontier/)라는 글을 읽었다. 요지는 단순하다. 여러 모델의 출력을 judge 모델로 합성하면 가장 좋은 단일 모델(frontier) 하나보다 나은 결과가 나온다는 것이다.
 
 수치가 흥미로웠다. 글에 따르면,
 
@@ -28,7 +28,7 @@ architect, skeptic, 테스트 담당, 유지보수 담당처럼 역할이 다른
 
 ## fusion-council
 
-그래서 [fusion-council](https://github.com/halfmoon-mind/fusion-council)을 만들었다. Claude Code 플러그인이고, 커맨드는 두 개다.
+그래서 [fusion-council](https://github.com/halfmoon-mind/fusion-council)이라는 걸 만들어봤다. Claude Code 플러그인으로 만들었고, 사용하기 쉽게 스킬 2개로 만들었다.
 
 - `/fusion-plan` — 코드를 건드리기 전에, 역할이 다른 페르소나(architect / skeptic / test-strategist / maintainer)와 GPT-5.5가 접근 방식을 각자 따져본 뒤 하나의 계획으로 합성한다.
 - `/fusion-review` — 변경을 끝낸 뒤, 같은 council 구조로 실제 diff를 리뷰한다.
