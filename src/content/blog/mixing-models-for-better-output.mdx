@@ -1,0 +1,52 @@
+---
+title: 'Mixing Multiple Models for a Better Output'
+description: 'After reading OpenRouter''s "Fusion beats Frontier," I built my own development council that makes several models reach consensus.'
+pubDate: '2026-06-22'
+heroImage: '/fusion-council-hero.png'
+tags: ['AI', 'LLM', 'Claude Code', 'OpenRouter', 'Developer Tools']
+lang: en
+translationKey: fusion-council
+---
+
+## Fusion beats Frontier
+
+I came across a piece on the OpenRouter blog called [Surpassing Frontier Performance with Fusion](https://openrouter.ai/blog/announcements/fusion-beats-frontier/). The idea is simple: take the outputs of several models, have a judge model fuse them together, and you end up with something better than the single best model (the frontier) on its own.
+
+The numbers caught my eye. According to the post:
+
+- Fusing Fable 5 + GPT-5.5 hits 69.0%, while Fable 5 alone gets 65.3%.
+- The most striking part was that pairing the *same* model with itself still helped. Pairing Opus 4.8 with itself jumped from 58.8% to 65.5% — nearly 7 percentage points.
+- And a panel of cheaper models alone (Gemini 3 Flash, Kimi, DeepSeek) got close to frontier at half the cost.
+
+The post frames this as an analogy to human teams. The harder the problem, the more a team of differing perspectives tends to outperform a single genius. Models, it argues, are no different.
+
+## Which got me thinking
+
+This experiment was run on a deep research benchmark (DRACO). But the whole time I was reading, what kept coming to mind was whether the same thing applies to what I do every day.
+
+Before I write code, I ask "is this design any good?" After I write it, I ask "did I miss anything in this diff?" The thing is, I usually ask a single model. When that model misses something, I miss it right along with it — because the same model tends to share the same blind spots.
+
+What if several perspectives with genuinely different roles — architect, skeptic, the test person, the maintenance person — each gave the same plan a once-over, and I threw in a model from an entirely different family (GPT-5.5) to build consensus? At the very least, I figured I could filter out one more layer of "things I'd have missed on my own."
+
+## fusion-council
+
+So I built a thing called [fusion-council](https://github.com/halfmoon-mind/fusion-council). I made it as a Claude Code plugin, and to keep it easy to use I shipped it as two skills.
+
+- `/fusion-plan` — before you touch any code, a set of distinct personas (architect / skeptic / test-strategist / maintainer) plus GPT-5.5 each reason through the approach on their own, and then synthesize it all into a single plan.
+- `/fusion-review` — once you've finished a change, the same council structure reviews the actual diff.
+
+Two things I cared about in the design. First, the panel is **read-only**. It can read the repo and grep, nothing more; the only place that actually edits code is the one main session. I deliberately separated deliberation from execution. Second, if GPT-5.5 (via the Codex CLI) isn't available, it falls back to Claude on its own but reports that "diversity was reduced." The external model is nice to have, but its absence shouldn't kill the run.
+
+It isn't free, of course. Asking once becomes asking several times, so you make more calls and spend more on both cost and tokens. But that trade-off is exactly what I wanted to take away from the OpenRouter post. **Spend a little more, and get one more layer of judgment you couldn't have produced on your own.** In the spots where being wrong is expensive — a major design decision, a diff right before a merge — I think that one extra layer earns its keep.
+
+## What I'm hoping for, and what I want to ask
+
+I think of this as a small counterexample to the received wisdom that "one frontier model is all you need." There are clearly ways to draw out a better output even at a bit more cost, and I'm in the middle of hunting for and refining them.
+
+That said, what I've built is just one combination tuned to how I happen to work. I put together the council with an **Opus 4.8 + GPT-5.5** pairing, but I doubt that's the definitive answer. So I'm curious.
+
+- What would you mix? Would a cheaper panel be enough, or should you add more families?
+- Is the persona lineup (architect / skeptic / test / maintainer) the right one? Any perspective that's missing?
+- Is there room to improve the way the judge does the synthesis itself?
+
+The repo is open at [github.com/halfmoon-mind/fusion-council](https://github.com/halfmoon-mind/fusion-council). If you try it out or read the code and think "this'd be better done this way," I'd love to hear it. Because a council shaped by other people's input is bound to produce a better output than one I built alone.
