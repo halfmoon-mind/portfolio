@@ -9,7 +9,7 @@ import netlify from '@astrojs/netlify';
 export default defineConfig({
   site: 'https://halfmoon.day/',
   integrations: [mdx(), sitemap()],
-  adapter: netlify(),
+  adapter: netlify({ edgeMiddleware: true }),
   security: {
     checkOrigin: false,
   },

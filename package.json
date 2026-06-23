@@ -5,7 +5,7 @@
   "homepage": "https://halfmoon.day/",
   "scripts": {
     "dev": "astro dev",
-    "build": "yarn clips:refresh && astro build",
+    "build": "yarn clips:refresh && node scripts/build-translation-map.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "clips:refresh": "node scripts/refresh-clips-cache.mjs",
@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
+    "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
     "netlify-cli": "^25.3.0",
     "open-graph-scraper": "^6.11.0",
