@@ -29,7 +29,7 @@ const switchHref = langAlternate === undefined ? localizePath(Astro.url.pathname
 				<HeaderLink href={localizePath('/til', locale)}>TIL</HeaderLink>
 				<HeaderLink href={localizePath('/clips', locale)}>Clips</HeaderLink>
 				<HeaderLink href={localizePath('/portfolio', locale)}>Portfolio</HeaderLink>
-				<HeaderLink href="/resume">Resume</HeaderLink>
+				<HeaderLink href={localizePath('/resume', locale)}>Resume</HeaderLink>
 			</div>
 		</div>
 		<div class="nav-right">
