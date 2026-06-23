@@ -1,0 +1,386 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import FormattedDate from '../FormattedDate.astro';
+import { getClipMetadata, getSourceDomain } from '../../utils/clips-metadata';
+import { canonicalVariants } from '../../utils/language';
+import { byLocale, baseSlug } from '../../i18n/content';
+import { type Locale, useTranslations, localizePath, siteDescription } from '../../i18n/ui';
+import { SITE_TITLE } from '../../consts';
+
+interface Props {
+	locale?: Locale;
+}
+const { locale = 'ko' } = Astro.props;
+const t = useTranslations(locale);
+
+const latestPosts = canonicalVariants(await getCollection('blog'), locale)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 3);
+
+const latestPortfolios = byLocale(await getCollection('portfolio'), locale)
+	.sort((a, b) => (b.data.pubDate?.valueOf() || 0) - (a.data.pubDate?.valueOf() || 0))
+	.slice(0, 3);
+
+const latestTils = byLocale(await getCollection('til'), locale)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 3);
+
+const latestClips = byLocale(await getCollection('clips'), locale)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 3)
+	.map((clip) => {
+		const meta = getClipMetadata(clip.data.sourceUrl);
+		return {
+			clip,
+			thumb: clip.data.heroImage ?? meta?.ogImage ?? null,
+			domain: getSourceDomain(clip.data.sourceUrl),
+		};
+	});
+
+const heroImage = '/og-image.png';
+const langAlternate = localizePath('/', locale === 'ko' ? 'en' : 'ko');
+---
+
+<BaseLayout title={SITE_TITLE} description={siteDescription(locale)} heroImage={heroImage} locale={locale} langAlternate={langAlternate}>
+	<div class="container">
+		<h1>From Half, To Full</h1>
+		<p>
+			{t('home.bio.1')}
+			<br>
+			{t('home.bio.2')}
+			<br>
+			{t('home.bio.3')}
+		</p>
+
+		<section>
+			<h2>{t('home.recentPosts')}</h2>
+			<ul class="card-grid">
+				{latestPosts.map((post) => (
+					<li class="card">
+						<a href={`/blog/${post.id}`}>
+							<div class="image-container">
+								<img src={post.data.heroImage} alt=""/>
+							</div>
+							<div class="content">
+								<h4 class="title">{post.data.title}</h4>
+								<p class="date">
+									<FormattedDate date={post.data.pubDate} />
+								</p>
+							</div>
+						</a>
+					</li>
+				))}
+			</ul>
+			<div class="more-link">
+				<a href={localizePath('/blog', locale)}>{t('home.morePosts')}</a>
+			</div>
+		</section>
+
+		<section>
+			<h2>{t('home.recentPortfolio')}</h2>
+			<ul class="card-grid">
+				{latestPortfolios.map((portfolio) => (
+					<li class="card">
+						<a href={localizePath(`/portfolio/${baseSlug(portfolio.id)}`, locale)}>
+							<div class="image-container">
+								<img src={portfolio.data.heroImage} alt=""/>
+							</div>
+							<div class="content">
+								<h4 class="title">{portfolio.data.title}</h4>
+								<p class="description">{portfolio.data.description}</p>
+							</div>
+						</a>
+					</li>
+				))}
+			</ul>
+			<div class="more-link">
+				<a href={localizePath('/portfolio', locale)}>{t('home.morePortfolio')}</a>
+			</div>
+		</section>
+
+		<section>
+			<h2>{t('home.recentTil')}</h2>
+			<ul class="til-list">
+				{latestTils.map((til) => (
+					<li class="til-item">
+						<a href={localizePath(`/til/${baseSlug(til.id)}`, locale)} class="til-link">
+							<div class="til-content">
+								<h4 class="til-title">{til.data.title}</h4>
+								<p class="til-description">{til.data.description}</p>
+								<div class="til-meta">
+									<span class="til-date">
+										<FormattedDate date={til.data.pubDate} />
+									</span>
+									{til.data.tags && til.data.tags.length > 0 && (
+										<div class="til-tags">
+											{til.data.tags.slice(0, 3).map((tag) => (
+												<span class="til-tag">{tag}</span>
+											))}
+											{til.data.tags.length > 3 && (
+												<span class="til-tag more-tags">+{til.data.tags.length - 3}</span>
+											)}
+										</div>
+									)}
+								</div>
+							</div>
+						</a>
+					</li>
+				))}
+			</ul>
+			<div class="more-link">
+				<a href={localizePath('/til', locale)}>{t('home.moreTil')}</a>
+			</div>
+		</section>
+
+		<section>
+			<h2>{t('home.recentClips')}</h2>
+			<ul class="card-grid">
+				{latestClips.map(({ clip, thumb, domain }) => (
+					<li class="card">
+						<a href={localizePath(`/clips/${baseSlug(clip.id)}`, locale)}>
+							<div class="image-container clip-thumb">
+								{thumb ? (
+									<img src={thumb} alt=""/>
+								) : (
+									<span class="clip-placeholder">{domain.charAt(0).toUpperCase()}</span>
+								)}
+							</div>
+							<div class="content">
+								<div class="clip-domain">🔗 {domain}</div>
+								<h4 class="title">{clip.data.title}</h4>
+								<p class="date">
+									<FormattedDate date={clip.data.pubDate} />
+								</p>
+							</div>
+						</a>
+					</li>
+				))}
+			</ul>
+			<div class="more-link">
+				<a href={localizePath('/clips', locale)}>{t('home.moreClips')}</a>
+			</div>
+		</section>
+	</div>
+	<style>
+		.container {
+			padding: 1em 0;
+			max-width: 960px;
+			margin: 0 auto;
+		}
+
+		section {
+			margin-top: 2em;
+		}
+
+		section h2 {
+			font-size: 1.5em;
+			margin-bottom: 1em;
+		}
+
+		.card-grid {
+			list-style: none;
+			padding: 0;
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+			gap: 1.5em;
+		}
+
+		.card {
+			border: 1px solid #eee;
+			border-radius: 8px;
+			overflow: hidden;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+			transition: transform 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.card:hover {
+			transform: translateY(-5px);
+			box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+		}
+
+		.card a {
+			text-decoration: none;
+			color: inherit;
+			display: block;
+		}
+
+		.image-container {
+			width: 100%;
+			height: 200px; /* 모든 이미지 높이 동일하게 설정 */
+			overflow: hidden;
+		}
+
+		.card img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover; /* 이미지 비율 유지하면서 컨테이너에 맞춤 */
+			border-radius: 0;
+			box-shadow: none;
+			transition: transform 0.3s ease;
+		}
+
+		.card:hover img {
+			transform: scale(1.05);
+		}
+
+		.content {
+			padding: 1em;
+		}
+
+		.title {
+			margin: 0;
+			font-size: 1.1em;
+			line-height: 1.4em; /* 2줄 높이에 맞게 조정 */
+			height: 2.8em; /* 2줄 높이 (line-height * 2) */
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			margin-bottom: 0.25em; /* 날짜와의 간격 조정 */
+		}
+
+		.date, .description {
+			margin: 0;
+			font-size: 0.9em;
+			color: #666;
+		}
+
+		/* TIL 스타일 */
+		.til-list {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		.til-item {
+			margin-bottom: 1em;
+		}
+
+		.til-link {
+			display: block;
+			text-decoration: none;
+			color: inherit;
+			border: 1px solid #eee;
+			border-radius: 8px;
+			padding: 1.5em;
+			background: #fff;
+			box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+			transition: transform 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.til-link:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+		}
+
+		.til-content {
+			width: 100%;
+		}
+
+		.til-title {
+			margin: 0 0 0.5em 0;
+			font-size: 1.1em;
+			font-weight: 600;
+			line-height: 1.4;
+			color: #333;
+		}
+
+		.til-description {
+			margin: 0 0 1em 0;
+			font-size: 0.9em;
+			color: #666;
+			line-height: 1.5;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+		}
+
+		.til-meta {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			flex-wrap: wrap;
+			gap: 0.5em;
+		}
+
+		.til-date {
+			font-size: 0.8em;
+			color: #888;
+		}
+
+		.til-tags {
+			display: flex;
+			gap: 0.3em;
+			flex-wrap: wrap;
+		}
+
+		.til-tag {
+			background-color: #f6f8fa;
+			color: #656d76;
+			border: 1px solid #d1d9e0;
+			border-radius: 12px;
+			padding: 2px 8px;
+			font-size: 11px;
+			font-weight: 500;
+		}
+
+		.til-tag.more-tags {
+			background-color: #e3f2fd;
+			color: #1976d2;
+			border-color: #bbdefb;
+		}
+
+		.clip-thumb {
+			background: linear-gradient(135deg, #eef2f7, #dfe7f0);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.clip-placeholder {
+			font-size: 3rem;
+			font-weight: 700;
+			color: #8b95a1;
+		}
+		.clip-domain {
+			font-size: 0.8em;
+			color: #656d76;
+			margin-bottom: 0.3em;
+		}
+
+		.more-link {
+			margin-top: 1em;
+			text-align: right;
+		}
+
+		.more-link a {
+			color: var(--accent);
+			text-decoration: none;
+			font-weight: 500;
+		}
+
+		@media (max-width: 768px) {
+			.card-grid {
+				grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+				gap: 1em;
+			}
+
+			.image-container {
+				height: 180px;
+			}
+
+			.til-meta {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+		}
+
+		@media (max-width: 480px) {
+			.card-grid {
+				grid-template-columns: 1fr;
+			}
+		}
+	</style>
+</BaseLayout>

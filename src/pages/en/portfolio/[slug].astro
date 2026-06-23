@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import PortfolioDetail from '../../../components/screens/PortfolioDetail.astro';
+import { byLocale, baseSlug, hasSibling } from '../../../i18n/content';
+import { localizePath } from '../../../i18n/ui';
+
+export async function getStaticPaths() {
+	const all = await getCollection('portfolio');
+	return byLocale(all, 'en').map((entry) => ({
+		params: { slug: baseSlug(entry.id) },
+		props: {
+			entry,
+			langAlternate: hasSibling(all, entry, 'ko')
+				? localizePath(`/portfolio/${baseSlug(entry.id)}`, 'ko')
+				: null,
+		},
+	}));
+}
+
+const { entry, langAlternate } = Astro.props;
+---
+
+<PortfolioDetail entry={entry} locale="en" langAlternate={langAlternate} />

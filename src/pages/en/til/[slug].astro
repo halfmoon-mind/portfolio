@@ -1,18 +1,18 @@
 ---
 import { type CollectionEntry, getCollection } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
+import BlogPost from '../../../layouts/BlogPost.astro';
 import { render } from 'astro:content';
-import { byLocale, baseSlug, hasSibling } from '../../i18n/content';
-import { localizePath, useTranslations } from '../../i18n/ui';
+import { byLocale, baseSlug, hasSibling } from '../../../i18n/content';
+import { localizePath, useTranslations } from '../../../i18n/ui';
 
 export async function getStaticPaths() {
 	const all = await getCollection('til');
-	return byLocale(all, 'ko').map((post) => ({
-		params: { slug: post.id },
+	return byLocale(all, 'en').map((post) => ({
+		params: { slug: baseSlug(post.id) },
 		props: {
 			post,
-			langAlternate: hasSibling(all, post, 'en')
-				? localizePath(`/til/${baseSlug(post.id)}`, 'en')
+			langAlternate: hasSibling(all, post, 'ko')
+				? localizePath(`/til/${baseSlug(post.id)}`, 'ko')
 				: null,
 		},
 	}));
@@ -20,14 +20,14 @@ export async function getStaticPaths() {
 
 const { post, langAlternate } = Astro.props;
 const { Content } = await render(post);
-const t = useTranslations('ko');
+const t = useTranslations('en');
 ---
 
 <BlogPost {...post.data} langAlternate={langAlternate}>
 	<Content />
 
 	<div class="til-navigation mt-8">
-		<a href={localizePath('/til', 'ko')} class="back-link">{t('til.back')}</a>
+		<a href={localizePath('/til', 'en')} class="back-link">{t('til.back')}</a>
 	</div>
 </BlogPost>
 

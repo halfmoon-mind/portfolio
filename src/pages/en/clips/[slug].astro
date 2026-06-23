@@ -1,17 +1,17 @@
 ---
 import { getCollection, render } from 'astro:content';
-import ClipPost from '../../layouts/ClipPost.astro';
-import { byLocale, baseSlug, hasSibling } from '../../i18n/content';
-import { localizePath, useTranslations } from '../../i18n/ui';
+import ClipPost from '../../../layouts/ClipPost.astro';
+import { byLocale, baseSlug, hasSibling } from '../../../i18n/content';
+import { localizePath, useTranslations } from '../../../i18n/ui';
 
 export async function getStaticPaths() {
   const all = await getCollection('clips');
-  return byLocale(all, 'ko').map((clip) => ({
-    params: { slug: clip.id },
+  return byLocale(all, 'en').map((clip) => ({
+    params: { slug: baseSlug(clip.id) },
     props: {
       clip,
-      langAlternate: hasSibling(all, clip, 'en')
-        ? localizePath(`/clips/${baseSlug(clip.id)}`, 'en')
+      langAlternate: hasSibling(all, clip, 'ko')
+        ? localizePath(`/clips/${baseSlug(clip.id)}`, 'ko')
         : null,
     },
   }));
@@ -19,13 +19,13 @@ export async function getStaticPaths() {
 
 const { clip, langAlternate } = Astro.props;
 const { Content } = await render(clip);
-const t = useTranslations('ko');
+const t = useTranslations('en');
 ---
 
 <ClipPost {...clip.data} langAlternate={langAlternate}>
   <Content />
   <div class="back-link-wrap">
-    <a href={localizePath('/clips', 'ko')} class="back-link">{t('clips.back')}</a>
+    <a href={localizePath('/clips', 'en')} class="back-link">{t('clips.back')}</a>
   </div>
 </ClipPost>
 

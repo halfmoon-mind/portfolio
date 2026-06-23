@@ -1,0 +1,279 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE_TITLE } from '../../consts';
+import { type Locale, useTranslations, localizePath } from '../../i18n/ui';
+
+interface Props {
+	entry: CollectionEntry<'portfolio'>;
+	locale?: Locale;
+	langAlternate?: string | null;
+}
+const { entry, locale = 'ko', langAlternate = null } = Astro.props;
+const t = useTranslations(locale);
+const { Content } = await render(entry);
+
+// 페이지 내에 표시될 이미지 최적 크기 정의
+const DISPLAY_IMAGE_WIDTH = 1200;
+const DISPLAY_IMAGE_HEIGHT = 600;
+const IMAGE_QUALITY = 85;
+const monthFmt = { year: 'numeric', month: 'long' } as const;
+---
+
+<BaseLayout
+	title={`${entry.data.title} | Portfolio | ${SITE_TITLE}`}
+	description={entry.data.description}
+	heroImage={entry.data.heroImage}
+	pubDate={entry.data.pubDate}
+	updatedDate={entry.data.updatedDate}
+	tags={entry.data.tags}
+	githubUrl={entry.data.githubUrl}
+	liveUrl={entry.data.liveUrl}
+	locale={locale}
+	langAlternate={langAlternate}
+>
+	<main>
+		<article>
+			<div class="hero-image">
+				{entry.data.heroImage && (
+					entry.data.heroImage.startsWith('http') ? (
+						<img src={entry.data.heroImage} alt={`Cover image for ${entry.data.title}`} />
+					) : (
+						<img
+							src={`${entry.data.heroImage}?w=${DISPLAY_IMAGE_WIDTH}&h=${DISPLAY_IMAGE_HEIGHT}&q=${IMAGE_QUALITY}&fit=cover`}
+							alt={`Cover image for ${entry.data.title}`}
+							width={DISPLAY_IMAGE_WIDTH}
+							height={DISPLAY_IMAGE_HEIGHT}
+						/>
+					)
+				)}
+			</div>
+			<div class="prose">
+				<div class="title">
+					<h1>{entry.data.title}</h1>
+					<div class="date">
+						{entry.data.startDate ? (
+							<div class="project-period">
+								<time datetime={new Date(entry.data.startDate).toISOString()}>
+									{new Date(entry.data.startDate).toLocaleDateString('en-US', monthFmt)}
+								</time>
+								{entry.data.endDate && (
+									<>
+										<span> - </span>
+										<time datetime={new Date(entry.data.endDate).toISOString()}>
+											{new Date(entry.data.endDate).toLocaleDateString('en-US', monthFmt)}
+										</time>
+									</>
+								)}
+							</div>
+						) : (
+							<time datetime={entry.data.pubDate.toISOString()}>
+								{entry.data.pubDate.toLocaleDateString('en-US', monthFmt)}
+							</time>
+						)}
+						{entry.data.updatedDate && (
+							<div class="updated-date">
+								{t('portfolio.updated')} <time datetime={entry.data.updatedDate.toISOString()}>
+									{entry.data.updatedDate.toLocaleDateString('en-US', monthFmt)}
+								</time>
+							</div>
+						)}
+					</div>
+					<div class="tags">
+						{entry.data.tags && entry.data.tags.map((tag: string) => (
+							<span class="tag">{tag}</span>
+						))}
+					</div>
+				</div>
+				<div class="links">
+					{entry.data.githubUrl && (
+						<a href={entry.data.githubUrl} target="_blank" rel="noopener noreferrer" class="project-link github">
+							<svg viewBox="0 0 16 16" aria-hidden="true" width="16" height="16">
+								<path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+							</svg>
+							GitHub Repository
+						</a>
+					)}
+					{entry.data.liveUrl && (
+						<a href={entry.data.liveUrl} target="_blank" rel="noopener noreferrer" class="project-link live">
+							<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+								<polyline points="15 3 21 3 21 9"></polyline>
+								<line x1="10" y1="14" x2="21" y2="3"></line>
+							</svg>
+							Live Demo
+						</a>
+					)}
+				</div>
+				<div class="content">
+					<Content />
+				</div>
+				<div class="back-link">
+					<a href={localizePath('/portfolio', locale)}>{t('portfolio.back')}</a>
+				</div>
+			</div>
+		</article>
+	</main>
+</BaseLayout>
+
+<style>
+	main {
+		width: calc(100% - 2em);
+		max-width: 960px;
+		margin: 0 auto;
+		padding: 1rem;
+	}
+
+	.hero-image {
+		margin-bottom: 2rem;
+	}
+
+	.hero-image img {
+		display: block;
+		width: 100%;
+		max-height: 400px;
+		object-fit: cover;
+		border-radius: 0.5rem;
+	}
+
+	.prose {
+		width: 100%;
+		max-width: 720px;
+		margin: 0 auto;
+		padding: 0 1em;
+	}
+
+	.title {
+		margin-bottom: 2rem;
+	}
+
+	.title h1 {
+		margin: 0 0 0.5rem 0;
+		font-size: 2.5rem;
+	}
+
+	.date {
+		margin-bottom: 1rem;
+		color: #666;
+	}
+
+	.date time {
+		font-style: italic;
+	}
+
+	.project-period {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-style: italic;
+	}
+
+	.updated-date {
+		margin-top: 0.5rem;
+		font-size: 0.9rem;
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-top: 0.5rem;
+	}
+
+	.tag {
+		background: #f0f0f0;
+		padding: 0.3rem 0.6rem;
+		border-radius: 0.3rem;
+		font-size: 0.8rem;
+		font-weight: 500;
+	}
+
+	.links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		margin-bottom: 2rem;
+	}
+
+	.project-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		border-radius: 0.3rem;
+		text-decoration: none;
+		font-weight: 500;
+		transition: background-color 0.3s ease;
+	}
+
+	.github {
+		background-color: #24292e;
+		color: white;
+	}
+
+	.github:hover {
+		background-color: #1b1f23;
+	}
+
+	.live {
+		background-color: #0366d6;
+		color: white;
+	}
+
+	.live:hover {
+		background-color: #0256b3;
+	}
+
+	.content {
+		margin-top: 2rem;
+		line-height: 1.6;
+	}
+
+	.content :global(h1) {
+		font-size: 2rem;
+		margin: 1.5rem 0 1rem 0;
+	}
+
+	.content :global(h2) {
+		font-size: 1.5rem;
+		margin: 1.5rem 0 1rem 0;
+	}
+
+	.content :global(h3) {
+		font-size: 1.2rem;
+		margin: 1.5rem 0 1rem 0;
+	}
+
+	.content :global(p) {
+		margin-bottom: 1rem;
+	}
+
+	.content :global(ul), .content :global(ol) {
+		margin: 1rem 0;
+		padding-left: 1.5rem;
+	}
+
+	.content :global(li) {
+		margin-bottom: 0.5rem;
+	}
+
+	.back-link {
+		margin-top: 3rem;
+	}
+
+	.back-link a {
+		color: var(--accent);
+		text-decoration: none;
+	}
+
+	.back-link a:hover {
+		text-decoration: underline;
+	}
+
+	@media (max-width: 768px) {
+		.title h1 {
+			font-size: 2rem;
+		}
+	}
+</style>

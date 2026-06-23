@@ -2,10 +2,11 @@ import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { primaryVariants } from '../utils/language';
+import { byLocale } from '../i18n/content';
 
 export async function GET(context) {
 	const blogPosts = primaryVariants(await getCollection('blog'));
-	const clips = await getCollection('clips');
+	const clips = byLocale(await getCollection('clips'), 'ko');
 
 	const items = [
 		...blogPosts.map((post) => ({
