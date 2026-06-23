@@ -1,0 +1,16 @@
+---
+title: A 4-layer hand-off strategy that keeps context intact across new sessions
+description: A reflection on how to work around the context window limits of AI sessions through hand-off design.
+pubDate: 2026-04-23
+sourceUrl: https://codex.epril.com/claude-session-context-handoff-4-layer-strategy
+tags: [ai, claude-code, codex, workflow]
+lang: en
+---
+
+When you work with AI tools like claude code or codex, you inevitably run into situations where the session's context window fills up.
+
+With claude code's default settings, auto compaction keeps carrying you over into the next session, but in most cases context rot sets in, and there are moments where it feels like the AI is getting dumber in real time. In fact, even before the context window hits 100%, once you've done a lot of work in a single session and consumed 80-90%, the AI also starts to feel the limit and begins trying to wrap things up quickly, leaving things unfinished with phrases like "I'll implement this later."
+
+That's why many developers offer advice like "open a new session" and "the first prompt always matters" as ways to deal with this. This post contains a reflection on how best to write the hand-off feature that, when you open a new session, lets you proceed by referencing the existing context.
+
+Up until now, the projects I worked on didn't involve many particularly difficult features, so whenever I lost a bit of context I just kept opening new sessions. But if I were to take on a large project all at once, I think I could refer to this approach and put it to use as a way to make good use of the previous session's memory even in a new session.

@@ -1,0 +1,43 @@
+---
+title: 'Nightary'
+description: 'A sleep-tracking app that visualizes your sleep state as a battery'
+pubDate: '2023-12-29'
+startDate: '2023-12'
+endDate: '2024-01'
+heroImage: '/assets/nightary.png'
+tags: ['Flutter', 'HealthKit', 'WidgetKit', 'Local Storage']
+githubUrl: 'https://github.com/GDSC-snowflowerthon/Nightary-team12-mobile'
+lang: en
+---
+
+# Nightary
+
+Nightary is a sleep-tracking app that analyzes the user's sleep patterns and visualizes their sleep state in the form of a battery.
+Developed at the Google Developer Student Club (GDSC) hackathon "Nunkkot-thon," this app helps users intuitively understand and improve their sleep state.
+
+It is built on Flutter and measures the quality and quantity of sleep through HealthKit, based on the Apple Watch's sensors.
+With battery visualization through a widget on the home screen, users can easily understand their sleep state as an energy level, and by receiving personalized advice based on their sleep patterns, they can form healthy sleep habits.
+
+It provides features for recording and analyzing various sleep data, and through sleep goal setting and notification features, it helps users maintain regular sleep habits.
+
+## Features
+
+- Sleep data collection and analysis
+- Intuitive battery-style visualization of sleep state
+- Personalized advice based on sleep patterns
+- Sleep goal setting and notification features
+- Home screen widget support
+
+## Tech Stack
+
+- **Flutter**: Mobile app development
+- **HealthKit**: Access to Apple's health data
+- **WidgetKit**: iOS home screen widget development
+- **Local Storage**: Storage of user settings and data
+
+## Challenges and Solutions
+
+### Sleep data collection and analysis
+
+- When analyzing real sleep data through HealthKit, we found patterns where the sleep data was not continuous—the data would break each time the sleep level changed, or sleep would be connected at intervals of 5 to 10 minutes.
+- Rather than simply judging this as sleep not being continuous, we analyzed the sleep data by treating it as continuous sleep when sleep resumed within 5 to 10 minutes of the break point.

@@ -1,0 +1,87 @@
+---
+title: 'Pickiverse'
+description: 'Ideal-type tournament platform'
+pubDate: '2025-04'
+startDate: '2025-01'
+heroImage: '/assets/pickiverse.png'
+tags:
+  [
+    'Flutter',
+    'Fastlane',
+    'Bloc',
+    'Nest.js',
+    'Next.js',
+    'Cloudflare Images',
+    'Mantine UI',
+    'Supabase',
+  ]
+iosUrl: 'https://apps.apple.com/kr/app/%ED%94%BC%ED%82%A4%EB%B2%84%EC%8A%A4/id6742077036?uo=2'
+androidUrl: 'https://play.google.com/store/apps/details?id=com.pickiverse.app'
+webUrl: 'https://pickiverse.com'
+lang: en
+---
+
+# Pickiverse
+
+Pickiverse is a platform where users can easily create and share their own ideal-type tournaments.
+
+You can enjoy ideal-type tournaments on a wide range of topics, and share the results with your friends for fun.
+
+By improving on existing ideal-type tournament platforms, we added various features that make it more convenient, such as uploading multiple images at once, tag-based search, recent comments, and the tournaments with the most participation over the past day.
+
+It was designed with smooth animations and an intuitive interface so that users can access and use it easily, and we continuously reflect user feedback to keep improving the features.
+
+## Features
+
+- Creating user-custom ideal-type tournaments
+- Real-time result sharing and statistics
+- Cross-platform support (iOS/Android/Web)
+- Social login and account linking
+- Internationalization support
+- Various features such as recent comments and the tournaments with the most participation over the past day
+
+## Tech Stack
+
+- **Flutter**: Cross-platform app development
+- **Fastlane**: App deployment automation
+- **Bloc**: State management
+- **Nest.js**: Backend API development
+- **Next.js**: Web frontend development
+- **Cloudflare Images**: Image storage and optimization
+- **Mantine UI**: UI components
+- **Supabase**: Database and authentication
+
+## Challenges and Solutions
+
+### Migrating from AWS S3 to Cloudflare Images
+
+- Initially, we used AWS S3 to store and serve images, and we did not impose any particular restrictions on the images. However, one user uploaded and shared 30 animated GIF images that were each over 50MB, which resulted in more than $32 per month in S3 storage costs.
+- Judging that it would be difficult to sustain AWS S3 costs at this rate, among the possible options we changed to using Cloudflare Images to solve this, and limited each user's image upload size to 10MB.
+- We also leveraged the image variant feature so that lower resolutions are used in places where users view high-quality images, such as the home and explore screens, while the original resolution is used on the actual game screen, allowing us to dramatically reduce image traffic costs.
+
+### Frontend speed optimization
+
+- We actively used SSR via Next.js to make the initial rendering faster, aiming to help users proceed through games quickly.
+- We used skeleton loading animations to help users proceed through games quickly.
+
+### Internationalization
+
+- We implemented middleware for locale so that, based on the user's preferred language, redirection and language settings are applied automatically, and we supported internationalization by mapping each text 1:1 through i18n.
+
+### Efforts to reduce costs
+
+- We used Vercel for the frontend and Supabase for the database, striving to minimize costs.
+- By switching the image storage to Cloudflare Images, we reduced it to $5 per month.
+- By switching to a server using ARM-based CPUs on AWS EC2, we cut costs by more than 10% from the previous usage. In addition, instead of HTTP via ALB, we used HTTPS communication through certbot and nginx to minimize costs.
+
+### Flutter
+
+- By leveraging WebViews for login and game creation, we used already-built web screens to log in and create games quickly, reducing unnecessary development.
+- Through Fastlane, we made it possible to continuously and quickly deploy and update the app.
+- Targeting a global audience, we carried out store localization in English and Korean.
+
+### Service promotion
+
+- To improve our low recognition and SEO, we increased backlinks across as many platforms as possible (Blind, DC, Naver Knowledge-iN, Twitter, etc.) and wrote posts to promote the service.
+- We conducted surveys and interviews with heavy users who play ideal-type tournaments at least once a day, continuously validating and incorporating the features and improvements that were needed.
+- Referencing other apps on the Play Store and the App Store, we continuously improve our keywords and posts.

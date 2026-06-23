@@ -1,0 +1,69 @@
+---
+title: 'Thoughts After Attending 2025 Flutter Alliance'
+description: 'Sharing my impressions after attending Flutter Alliance, held on October 19, 2025'
+heroImage: '/2025-flutter-alliance_1.jpeg'
+pubDate: 2025-10-22
+tags: ['flutter', 'conference']
+lang: en
+---
+
+This time, 2025 Flutter Alliance was held at the Microsoft building in front of Gyeongbokgung Palace in Seoul.
+![On-site photo](/2025-flutter-alliance_1.jpeg)
+
+It started at 10:30 a.m., but because of my commute, I arrived around 11.
+
+### Running LLMs On-Device
+
+When I walked in, a talk about running LLMs on-device with Flutter was in progress.
+
+![On-device LLM](/2025-flutter-alliance_2.jpeg)
+
+The gist was that you can run LLMs on-device using various models. There was a brief mention of flutter_gemma and cactus, which was interesting. I had wanted to use on-device LLMs myself, but at first I didn't really know how to get started so I couldn't, and now that I've learned about these things, I thought it might be worth adopting one of them someday.
+
+### animated_to
+
+Next came a talk related to animation. I had recently bought and was reading the [Flutter Engineering](https://product.kyobobook.co.kr/detail/S000217938670) book, and the very beginning covered how rendering is implemented, so having read the book and then listening to the talk made it a bit easier to understand.
+
+Overall I could grasp how it's implemented, but the talk felt more like a promotional pitch about how good their own package is once you try it. Of course, being able to implement animations very easily is a good paradigm, but I had been expecting a talk about how animation is really implemented, how it's calculated when an animation runs along a Bézier curve, and so on — so it was a little disappointing that it wasn't.
+
+### Break Time
+
+I had a short window for lunch, so I went to Ilwol Katsu near Anguk.
+
+![Ilwol Katsu](/2025-flutter-alliance_3.jpeg)
+
+It was delicious as expected, but on the way out, the Ttareungi bike wouldn't unlock from the dock, so I almost missed the next talk... Fortunately, I made it safely 10 minutes before the talk started.
+
+### Swapping the Backend LLM Without Changing Code
+
+There was actually a talk about monorepos that I wanted to hear, but apparently the speaker didn't show up, so it was replaced with a different talk.
+
+It was a talk by someone who works on LLM-related things at Microsoft, and it was about Microsoft Extension AI.
+
+![Microsoft Extension AI](/2025-flutter-alliance_4.jpeg)
+
+It's a service that bundles the SDKs of various LLM clients into one, and since it's open source, I thought it would have good versatility and extensibility.
+
+It wasn't a Flutter-related talk, but it was still interesting content.
+
+### Experience Using shore bird
+
+![shore_bird](/2025-flutter-alliance_5.jpeg)
+
+shore bird is a code-push tool you can use with Flutter. Back when I was at my previous company, we deployed very frequently, and since it was hard to get users to update with every release, I tried to use shore bird — but I left the company before I could apply it, so there was a lot I regretted not getting to do.
+
+There were various reasons I couldn't bring in shore bird, but the biggest one was that I felt its stability might be lacking. Even at the point when I first considered adopting it, iOS was at the alpha stage, and although an official 1.0.0 release came out later, the basic structure decomposes all of Flutter's logic and reimplements the engine differently, so I felt I couldn't trust it. Listening to the talk, sure enough, they said there had been stability-related issues.
+
+As I'd also felt earlier when I studied and researched rfw, I thought Flutter still falls short of RN when it comes to Code Push or delivering a similar experience. For now, pushing all that logic out to a WebView still seems like the better approach.
+
+### Borderless UX
+
+A Japanese speaker came up and shared the things they had grappled with while building a translation app. I had known before that you have to consider LTR and RTL characters, but I had never actually dealt with multilingual handling for RTL characters or thought about it from a UX standpoint, so it was a good experience to reflect on that.
+
+It was also nice to get an overview of how Flutter itself handles that internally. And the idea that you also have to consider UI differences arising from emoji or various cultural differences across countries felt like a new paradigm.
+
+### review
+
+It had been a while since I went to a Flutter-related conference, and it was fun. Recently I had thought I'd done all the studying there was to do in Flutter, but between the book I introduced above and going to the conference, I realized there are still more things I need to study.
+
+Now that I've entered my third year, I've worked across various domains, various services, and done plenty of troubleshooting, but I still fall short when it comes to things like how to write good code or mastering other state management packages — so it was a day on which I resolved to work hard and study.

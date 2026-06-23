@@ -1,0 +1,30 @@
+---
+title: 'Multiple Window Connection'
+description: 'A system where multiple web browsers are dynamically connected'
+pubDate: '2023-12'
+heroImage: '/assets/multiple_window_connection.png'
+tags: ['Flutter Web', 'JavaScript', 'Method Channel', 'Local Storage']
+webUrl: 'https://mutliple-windows.s3.ap-northeast-2.amazonaws.com/index.html'
+githubUrl: 'https://github.com/halfmoon-mind/multiple-window-connection'
+lang: en
+---
+
+# Multiple Window Connection
+
+Multiple Window Connection is a service that continuously displays connecting lines between multiple web browser windows in real time.
+
+Rather than building this service with complex technology, I implemented it by storing the center-point position of each window via local storage and connecting each of those center points using Canvas.
+
+I built it after being inspired by [this post](https://www.linkedin.com/feed/update/urn:li:activity:7135781966477438976/?utm_source=share&utm_medium=member_desktop).
+
+## Features
+
+- Real-time data synchronization between windows
+- Implemented so that the connections appear to remain continuous when a window is moved by dragging
+
+## Tech Stack
+
+- **Flutter Web**: Web application development
+- **JavaScript**: Communication between browser windows
+- **Method Channel**: Communication between Flutter and JavaScript
+- **Local Storage**: Storing window position data

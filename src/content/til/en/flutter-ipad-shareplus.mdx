@@ -1,0 +1,55 @@
+---
+title: 'Sharing in Flutter Fails to Launch on iPad OS'
+description: 'When sharing a file or text in Flutter, an error occurred on iPad OS and sharing did not work properly. As a result it was rejected during Apple review, so I am sharing my experience of tracking down the issue.'
+pubDate: 2025-07-04
+tags: ['flutter', 'share_plus']
+lang: en
+---
+
+## What I Learned Today
+
+When you use share_plus in Flutter, you can share images or text.
+However, you must always provide a value for the sharePositionOrigin parameter.
+
+### Cause
+
+A while ago, during an iOS App Store review, I received a message saying the review had been rejected because pressing the share button on iPad triggered an error where nothing happened at all.
+Up until then I had written the code without separately considering iOS and iPad OS, and since there was no problem when testing with the iOS simulator, this part had been left out of the iOS QA process.
+I assume the issue surfaced because this app review was a release that also took iPad into account.
+After recognizing the problem and checking the [share_plus] (https://pub.dev/packages/share_plus) package, I found a message at the very bottom asking you to make sure to include the `sharePositionOrigin` parameter.
+I'll attach the [related issue](https://github.com/fluttercommunity/plus_plugins/issues/1640) that helped me resolve it.
+
+### Actual Implementation
+
+```dart
+Future<ShareResultStatus> _shareImage(
+  String image,
+  BuildContext context,
+) async {
+  final http.Client client = http.Client();
+  final req = await client.get(Uri.parse(image));
+  if (req.statusCode >= 400) {
+    throw HttpException(req.statusCode.toString());
+  }
+  final bytes = req.bodyBytes;
+  String dir = (await getTemporaryDirectory()).path;
+  File file = File('$dir/example.jpeg');
+
+  await file.writeAsBytes(bytes);
+
+  final ShareResult result = await Share.shareXFiles(
+    [XFile(file.path)],
+    sharePositionOrigin: Rect.fromLTWH(
+      0,
+      0,
+      MediaQuery.of(context).size.width,
+      MediaQuery.of(context).size.height / 2,
+    ),
+  );
+  return result.status;
+}
+```
+
+### References
+
+- [Astro Content Collections Official Documentation](https://docs.astro.build/en/guides/content-collections/)

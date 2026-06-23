@@ -1,0 +1,18 @@
+---
+title: 'Things to Watch Out for When Using easy_localization for Internationalization in Flutter'
+description: 'Things to watch out for and how to leverage automation scripts when implementing internationalization with the easy_localization package in a Flutter app'
+pubDate: 2025-07-07
+tags: ['Flutter', 'Localization', 'Internationalization', 'easy_localization', 'i18n']
+lang: en
+---
+
+## What I Learned Today
+There are several ways to handle internationalization or localization in Flutter.<br />
+One of them is [easy_localization](https://pub.dev/packages/easy_localization), which lets you set up internationalization relatively easily.<br />
+That's because all you have to do is define the text needed for internationalization as key-value pairs in JSON form, and it is automatically set to the corresponding value. In addition, if you simply append the `.tr()` method to the text you want to internationalize, internationalization is applied automatically.<br />
+Also, if you use the command `flutter pub run easy_localization:generate -f keys -o locale_keys.g.dart`, the keys currently present in the JSON file are automatically registered.<br />
+Here, if you also specify the location like `flutter pub run easy_localization:generate -S assets/translations -f keys -o locale_keys.g.dart`, you can do it more precisely.<br />
+The previous developer had put the files in a localization folder rather than a translations folder for internationalization, and was managing each piece of text by manually adding key values one by one. Rather than that approach, I switched to a method that uses an automated script.<br />
+The advantage of this approach is that you only need to add the new keys and run the script, and the keys are added automatically and easily, so it seems quite usable.<br />
+
+However, a downside is that when you set the default language to en and add ko as the localized language, even if you add a key to the ko.json file, the automatically generated text only includes what is present in the default language. So if you're not careful, you might end up referencing nonexistent text, which could lead to cases where the key value itself is exposed on the actual screen instead of the localized text. So caution is needed.

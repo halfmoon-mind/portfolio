@@ -1,0 +1,16 @@
+---
+title: The Calendar I Thought I Could Build by Dropping in Square Blocks One by One
+description: A retrospective from an FE developer who solved the time-block calendar of KakaoTalk Reservation's Partner Center with graphs and DFS.
+pubDate: 2026-04-29
+sourceUrl: https://tech.kakao.com/posts/820
+tags: [frontend, algorithm, ux, engineering]
+lang: en
+---
+
+A piece I read carefully because it's about calendars, which reminded me of the "Gathering" service I worked on a while back.
+
+The idea was that given simple reservation start and end values, you build time blocks based on them, and the article was about how to lay those out. Of course, it's not just a matter of placing them by date, but something you have to work out while accounting for the position of each block, the size of each block, and so on, so it seems they implemented it nicely and appropriately using graphs and DFS.
+
+Back then with Gathering, after sorting first, I had to decide which value should take priority in each time block's position, and how to handle things depending on the number of blocks placed on a single date. It was a time before AI tools, so making it "in one click" was hard, and I remember spending several days agonizing over what algorithm to use for the layout so that it wouldn't look like a bug to users. In the end, for the sake of fast implementation, I did end up working around it with a calendar package, though.
+
+It started from the thought, "Can't I just drop in one square block per date?" but it was the first project where I really felt that, even within that, making it not look strange takes a lot of effort and UX consideration, which is why this article resonated with me even more. If you're curious about what kind of thought goes into a UI that looks simple, this is a good read.

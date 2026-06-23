@@ -1,0 +1,61 @@
+---
+title: 'Things to Watch Out for When Auto-Generating APIs with OpenAPI'
+description: 'Using OpenAPI Generator to auto-generate APIs lets you work with models and API endpoints that follow the exact same spec as the Swagger documentation defined on the server. Here I share the problems I ran into while using it.'
+pubDate: 2025-09-23
+heroImage: '/openapi_generator.png'
+tags: ['flutter', 'OpenAPI', 'Auto Generation']
+lang: en
+---
+
+## What I Learned Today
+
+As a Flutter Engineer, I had been continuously using an approach where I'd look at the existing Swagger documentation, build out [Retrofit](https://pub.dev/packages/retrofit) or some other API-calling layer from scratch, and then generate the corresponding models with [freezed](https://pub.dev/packages/freezed).
+
+The problem, though, was that every time an API changed or a new API was created, I had to manually modify things myself, and whenever the server was deployed, I had to check one by one whether anything had broken due to the changes.
+
+So what I considered using was the [openapi generator](https://github.com/OpenAPITools/openapi-generator).
+
+Using this tool automates the entire backend API-calling layer generated according to the OpenAPI spec, automatically producing API endpoints, request bodies, request parameters, response bodies, and so on, greatly improving convenience.
+
+When I tested it once with the intention of adopting the package, I found that some problems existed, so I put off applying it for now. I'd like to share those problems.
+
+### Problem 1
+When it comes to packages responsible for making API calls in Flutter, the most famous ones are probably [dio](https://pub.dev/packages/dio) and [http](https://pub.dev/packages/http). Both have their pros and cons, but since people try various customizations, I'd guess most use dio.
+
+I thought that using OpenAPI Generator would not only replace that calling layer but also automatically generate the models, letting me use everything conveniently.
+
+However, because it uses an older version of the dio package, it forced me to either downgrade the version of the package I was using or made it impossible to use the custom version I had previously implemented.
+
+So when I tried to use it based on the http package instead, I couldn't make 100% use of features like the Interceptor that I had already implemented.
+
+### Problem 2
+This is a case where problems arise even when you do the generation using OpenAPI on the server side, and I want to share this part too.
+
+When the server generates DTOs, even if you give the Objects different names, if the content of the RequestBody is identical, the generator has a characteristic of not creating each class separately but reusing the first class it created.
+
+A similar problem occurs when generating dart files, so let me explain using the problem I experienced as an example.
+
+Among the enum types used on the server, there was data related to the day of the week (date).
+
+This value was a part where the server received the request as a String type, and the data that could go into it was implemented as an enum type.
+
+But this enum type wasn't used in just one place — the same enum value ended up being used across multiple requests.
+
+In this situation, when I generated the models to put into the request bodies, the enum type used in request body A and the enum type used in request body B ended up referencing the same value.
+
+In a case like this, it would be nice if the auto-generation created a common value and made each one reference it, but instead of that approach — similar to the problem that occurs on the server — request body B references a portion of request body A.
+
+For example, if there's a common enum called ServiceDayEnum, there's also a similar value called InternalClassroomListBodyAllOfDataServiceDaysEnum, and an enum like ClassroomWithSiteServiceDaysEnum.
+
+If each had its own model it wouldn't matter, but unfortunately, you end up with this bizarre auto-generated code where it references ClassroomWithSiteServiceDaysEnum while holding ServiceDayEnum as its enum type.
+
+### The Approach I'm Currently Using
+As I pointed out in Problem 2, if you basically use the auto-generated code as-is, there's a possibility that problems will arise starting from the lint stage.
+
+To solve this, I created a script of my own. That script removes the commonly implemented enum types using grep and sed and fixes the incorrect references.
+
+Also, to work around not being able to use dio, for now I only use it for the models of the request/response bodies and parameters, and I don't use the part that actually calls the API.
+
+### Conclusion...
+I generated the code for the sake of automation, but ridiculously, the very fact that I've arrived at a point where I'm creating a script to modify the auto-generated code in order to maintain it does seem a bit contradictory.
+Still, if you make good use of the benefits of auto-generation, couldn't it become an opportunity to boost productivity a little more?

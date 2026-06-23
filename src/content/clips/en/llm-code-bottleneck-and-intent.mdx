@@ -1,0 +1,18 @@
+---
+title: In an Era Where the Cost of Writing Code Has Dropped, Where Does the Bottleneck Move To?
+description: A piece in which Martin Fowler lays out the argument that as LLMs lower the cost of writing code itself, the bottleneck shifts to understanding the system, preserving intent, and the ability to verify.
+pubDate: 2026-04-28
+sourceUrl: https://martinfowler.com/fragments/2026-04-02.html
+tags: [ai, llm, engineering, verification]
+lang: en
+---
+
+These days, as more and more code is generated with LLMs, I've been thinking a lot about how to manage it.
+
+What I found interesting was the argument that, as the cost of "writing code" itself drops, the bottleneck becomes not writing the code but understanding the system, the ability to preserve intent, and the ability to verify the code you've written.
+
+It also includes things mentioned in many of the articles I've read recently: that we should be wary of "cognitive surrender," accepting the reasoning produced by AI without any criticism. Cognitive offloading itself isn't the problem; what's dangerous is the attitude of skipping verification and simply accepting the results.
+
+In fact, when I implement features with AI while the intent remains vague, the results come out the wrong way or in unexpected directions, and I end up rolling back several times. I've felt firsthand that, more than the ability to produce code quickly, what determines the quality of the outcome is how clearly you've pinned down "what you want to build" at the starting point.
+
+In the end, what this piece is saying seems to be that the key is to make clear what you want to build (the intent) and to have the ability to verify whether it has been properly implemented.
