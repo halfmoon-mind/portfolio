@@ -23,6 +23,21 @@ const langVariants = translation
 // 현재 URL 생성
 const currentUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
+// hreflang: 번역본이 있을 때만 ko/en/x-default 상호 링크 (절대 URL, ko가 x-default)
+const hreflangLinks = translation
+	? (() => {
+			const abs = (p: string) => new URL(p, Astro.site).toString();
+			const siblingPath = `/blog/${translation.id}/`;
+			const koHref = abs(lang === 'ko' ? Astro.url.pathname : siblingPath);
+			const enHref = abs(lang === 'en' ? Astro.url.pathname : siblingPath);
+			return [
+				{ hreflang: 'ko', href: koHref },
+				{ hreflang: 'en', href: enHref },
+				{ hreflang: 'x-default', href: koHref },
+			];
+		})()
+	: [];
+
 // ISO 형식 날짜 변환 함수
 const formatISODate = (date: Date) => {
 	return date.toISOString();
@@ -60,6 +75,7 @@ const articleSchema = {
 <html lang={lang}>
 	<head>
 		<BaseHead title={title} description={description} image={heroImage} article={true} />
+			{hreflangLinks.map((l) => <link rel="alternate" hreflang={l.hreflang} href={l.href} />)}
 		<style>
 			main {
 				width: calc(100% - 2em);
@@ -137,12 +153,21 @@ const articleSchema = {
 						<nav class="lang-switch" aria-label="언어 선택">
 							{langVariants.map((v) =>
 								v.href ? (
-									<a href={v.href} hreflang={v.code} lang={v.code}>{LANG_LABEL[v.code]}</a>
+									<a href={v.href} hreflang={v.code} lang={v.code} data-set-lang={v.code}>{LANG_LABEL[v.code]}</a>
 								) : (
 									<span aria-current="true" lang={v.code}>{LANG_LABEL[v.code]}</span>
 								)
 							)}
 						</nav>
+					)}
+					{langVariants.length > 0 && (
+						<script is:inline>
+							document.querySelectorAll('a[data-set-lang]').forEach(function (a) {
+								a.addEventListener('click', function () {
+									document.cookie = 'blogLang=' + a.dataset.setLang + '; path=/; max-age=31536000; samesite=lax';
+								});
+							});
+						</script>
 					)}
 					<div class="title">
 						<div class="date">
