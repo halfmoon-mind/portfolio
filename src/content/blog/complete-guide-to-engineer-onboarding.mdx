@@ -1,0 +1,159 @@
+---
+title: 'The Complete Guide to Engineer Onboarding'
+description: 'A practical guide to onboarding new engineers successfully. From why onboarding is hard to the 30-60-90-150 day framework, it offers a systematic approach for both engineering managers and new engineers.'
+heroImage: '/엔지니어-온보딩.png'
+pubDate: '2025-07-01'
+tags: ['엔지니어링', '온보딩', '팀 관리', '개발 문화', '신입 직원', '관리', 'HR']
+lang: en
+translationKey: engineer-onboarding
+---
+
+> This post is a translation and adaptation of [The Ultimate Guide to Onboarding Software Engineers](https://leadership.garden/onboarding-engineers).
+
+Monday morning, a new engineer joins the team. After setting up their laptop and greeting their teammates, they ask: **"So, where should I start?"**
+
+For a moment, your head spins. Our team's tech stack, coding conventions, legacy code, deployment system, code review culture, release process… there is simply too much for a new hire to grasp on their own. So you say, "For now, just settle in and look around at your own pace," and head off to an urgent meeting.
+
+A week later, in your 1on1 with the new hire, they look tense and confused. They feel like they haven't learned anything, and the thought that they aren't contributing to the team weighs on them. Their mind is filled with anxiety: "Am I even going to make it through my probation period?" A more experienced senior, on the other hand, might be thinking, "This team has no structure at all… did I make a mistake joining?" and start considering moving on.
+
+> **📝 What is a 1on1 meeting?**  
+> A 1on1 is a recurring one-on-one meeting between a manager and a team member, used to check in on work, exchange feedback, discuss career development, and more. Effective 1on1s go a long way toward building trust, improving performance, and reducing turnover. ([See the basics of one-on-ones](https://leadership.garden/the-basics-of-one-on-ones/))
+
+Of course, most companies have a basic onboarding process run by HR, walking new hires through essential information like company policies, benefits, and department introductions. But **the real onboarding for an engineering team—understanding the team's technical culture, development processes, and architecture—is entirely up to the team itself.**
+
+As an engineering manager, I, too, have failed to provide structured onboarding in the past and made things hard for new hires. I even had an engineer leave the team over it. The faster an organization is "growing," the more often it focuses solely on hiring while neglecting onboarding, and ends up struggling because of it.
+
+**Remember: a good joining experience doesn't end with the offer letter or the signed contract.**
+
+## **Why is engineer onboarding so hard?**
+
+### **What you need to know, and what you don't even know you don't know**
+
+A new hire faces a layered situation. There's what they already know (e.g., a particular programming language), what they know they need to learn (e.g., the concept of HTTP/3), and—mixed in—**the things they can't even think to learn because they don't know they exist** (e.g., a legacy message queue used only within your team).
+
+What's perfectly obvious to the team ("We use event sourcing, obviously.") can be an enormous barrier to a new hire. This is exactly why a **structured onboarding roadmap** is needed. With a list or mind map of what they need to know, a new hire can find their own way forward.
+
+### **The dev environment Cold Start problem**
+
+> **💡 What is a Cold Start?**  
+> Much like a [Cold Start](https://en.wikipedia.org/wiki/Cold_start_(computing)) in the engineering sense, this refers to the process of a new engineer changing an application for the first time (or after a long gap). The Cold Start time is how long it takes them to be able to deploy a simple, "Hello World"-level change. ([Related: Optimizing Development Cold Start](https://medium.com/codex/development-cold-start-dad87e7836d1))
+
+For many teams, setting up the development environment is the first big barrier in engineer onboarding. It's common for building a local dev environment to take days, or for documentation to be so lacking that progress is impossible without help from an existing team member.
+
+##### **How to optimize Cold Start:**
+- Provide automated environment setup scripts
+- Keep `README.md` documentation up to date
+- Use Docker or virtual environments for a consistent dev environment
+- Minimize dependencies and external resources
+
+### **Psychological pressure and anxiety**
+
+A new environment is a major source of stress for anyone. New hires carry a host of questions and anxieties, such as:
+
+* Will I fit in here and be able to stick around?
+* Can I really learn all this technology and information?
+* Will my teammates like me?
+* What does the team expect of me at this point?
+
+People who excelled at their previous jobs are especially prone to "onboarding fatigue," feeling a disconnect between that past success and a present where they can't contribute anything yet.
+
+This is where the role of the manager or onboarding buddy becomes crucial. Simply **setting clear, realistic expectations** and offering **emotional support**—"It's okay, everyone starts out this way," "Don't rush yourself"—can be a tremendous source of strength for a new hire.
+
+### **The importance of managing expectations**
+
+Onboarding is a process that involves many stakeholders. Other teams expect that, with new headcount added, projects will move faster, and the PM may expect a boost in the team's productivity.
+
+But here's the crucial fact: **adding a new engineer slows the team down in the short term. Yet through this investment, the team can grow faster in the long term.** Onboarding is not a cost—it's an **investment**. Sharing this fact with all stakeholders and building a shared understanding around it is extremely important.
+
+---
+
+## **A multidimensional approach to onboarding**
+
+Onboarding isn't a single process; it's a complex one that happens across multiple areas at once.
+
+### **1. Onboarding to the team**
+
+* **Building relationships**: Getting to know your teammates' personalities, roles, and communication styles, and building trust.
+* **Grasping implicit rules and culture**: Understanding the unwritten, informal rules baked into how the team works.
+* **Processes and workflows**: Learning the team's practical work flow—its Agile practices, how the Kanban board is used, meeting culture, and so on.
+* **Tech stack and architecture**: Going beyond just reading docs to deeply understand the codebase and technical context through pair programming, architecture review sessions, and the like.
+* **Establishing a relationship with your manager**: Understanding your manager's role, expectations, and communication style, and building a healthy working relationship.
+
+### **2. Onboarding to the organization**
+
+* **Identifying stakeholders**: Understanding the other teams your team collaborates with (PM, QA, Design, etc.) and their roles.
+* **Joining technical communities**: Expanding your network by participating in internal technical communities such as a frontend chapter or backend guild.
+* **Understanding other departments**: Broadening your view of the business by understanding how other departments—sales, marketing, customer support, and so on—work and contribute to the company.
+
+### **3. Onboarding to the culture**
+
+This is the most abstract part, but also an important one. It's the process of observing and learning how the company's core values are reflected in actual decisions, and what standards your colleagues hold themselves to. Managers can help with cultural adaptation by asking questions like, "What has stood out to you most about our company culture, or what has puzzled you?"
+
+---
+
+## **8 tips for successful onboarding**
+
+1.  **Assign an onboarding buddy.** 
+
+> **🤝 The importance of an onboarding buddy**  
+>An onboarding buddy helps clarify organizational context, improves productivity, and increases employee satisfaction. The buddy serves as a first friend the new hire can comfortably turn to—not just for technical questions, but for the small curiosities too. ([Reference: HBR - Every New Employee Needs an Onboarding "Buddy"](https://hbr.org/2019/06/every-new-employee-needs-an-onboarding-buddy))
+
+2.  **Actively seek feedback and encourage questions.** A new hire's fresh perspective is a valuable opportunity to uncover the team's problems. Take the initiative and ask, "Is there anything you've found awkward or that you think could be improved?"
+3.  **Give positive feedback regularly.** New hires want to know whether they're heading in the right direction. Praise and acknowledge even small wins, specifically. This goes a long way toward boosting their confidence and sense of security.
+4.  **Arrange meetings with various stakeholders.** As the manager, personally introduce the new hire to key people on other teams and set up coffee chats to help them build a network within the company.
+5.  **Make technical onboarding as smooth as possible.** Focus on lowering technical barriers—provide scripts so that setting up the local dev environment finishes in hours without snags, keep `README.md` documentation up to date, and so on.
+6.  **Respect individual learning styles.** Some people prefer reading docs closely; others prefer pair programming. Ask the new hire which approach is most comfortable for them and tailor the onboarding plan accordingly.
+7.  **Train your onboarding helpers (buddies/mentors).** The best way to scale the onboarding experience is to teach your buddies and mentors how to be good guides.
+8.  **Create a single source of truth for new hires.** So they aren't left hunting through countless docs and links, create and provide a single "welcome doc" that contains everything needed for onboarding (checklist, key links, team introduction, and more).
+
+---
+
+## **The 30-60-90-150 day onboarding framework**
+
+This framework is designed so that new hires and managers share the same goals and can systematically track progress and adaptation. The goal at each milestone is not a performance evaluation, but a guide to support growth.
+
+### **🚀 Day 30 goal: Building the foundation**
+
+The goal of this stage is to understand the basic workings of the company and team, and to acquire the fundamental tools and knowledge needed for the job.
+
+* **Understanding culture and processes**: Understand how our team works (meetings, code reviews, deployments, etc.) and grasp how the company's core values are reflected in actual work.
+* **Understanding role and responsibilities**: Understand what's expected of your role and how our team contributes to the company's goals.
+* **Using tools and systems**: Learn how to use the core tools needed for development, communication, and monitoring.
+* **Sharing early difficulties**: Honestly share with your manager the difficulties or questions you've had over the past 30 days, and ask for help.
+* **Grasping the tech stack basics**: Get a sense of the overall structure of the codebase, and experience your first contribution through a simple bug fix or small feature addition.
+
+> **📋 Day 30 1on1 checkpoint**
+> - Did the development environment setup go smoothly?
+> - Do you understand the team's code review process, and have you taken part in it?
+> - Have you completed your first small contribution (a bug fix, a doc improvement, etc.)?
+> - How is your relationship with your onboarding buddy?
+> - What has been the hardest part so far, and what has been the most helpful?
+
+### **✈️ Day 60 goal: Starting to contribute**
+
+Now you start participating in the team's work in earnest, broadening the scope of your contributions and beginning to experience collaboration with other teams.
+
+* **Understanding team goals and your contribution**: Clearly understand the team's short- and mid-term goals (the roadmap), and be able to explain how your work contributes to achieving them.
+* **Building collaborative relationships**: Understand who the other teams (stakeholders) your team works closely with are, and how you collaborate with them.
+* **Acquiring domain-specific knowledge**: For at least one of the several domains your team owns, deeply understand the technical and business context, and feel confident making changes to the related code.
+
+### **🛰️ Day 90 goal: Working with ownership**
+
+By this point, as a full member of the team, you start to drive your own work and plan your personal growth on your own.
+
+* **Understanding success metrics**: Understand the criteria (performance metrics) that measure success in your role, and discuss next-quarter goals with your manager.
+* **Building a growth plan**: Identify the skills you need and create a concrete plan to develop them (study groups, side projects, requesting mentoring, etc.).
+* **Proposing improvements**: Actively propose improvements you've found in the team's codebase or development processes, and take part in improvement work.
+
+### **🌟 Day 150: Successful onboarding completed and operating independently**
+
+Congratulations! You've now successfully completed the onboarding process, fully adapted to the team, and become an engineer who can make high-level contributions independently. Onboarding is over, but your growth is just beginning. I look forward to seeing you keep learning, collaborate with your colleagues, and make an even bigger impact!
+
+---
+
+## **References**
+
+- [The Ultimate Guide to Onboarding Software Engineers](https://leadership.garden/onboarding-engineers/) - the original post
+- [The Basics of One-on-Ones](https://leadership.garden/the-basics-of-one-on-ones/) - a guide to effective 1on1 meetings
+- [Every New Employee Needs an Onboarding "Buddy"](https://hbr.org/2019/06/every-new-employee-needs-an-onboarding-buddy) - Harvard Business Review's research on onboarding buddies
+- [Optimize Development Cold Start](https://medium.com/codex/development-cold-start-dad87e7836d1) - a guide to optimizing dev environment setup

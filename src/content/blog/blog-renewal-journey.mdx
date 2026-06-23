@@ -1,0 +1,82 @@
+---
+title: 'My Blog Renewal Journey'
+description: 'The story of renewing my blog.'
+pubDate: '2025-04-30'
+heroImage: '/블로그-리뉴얼-도전기.png'
+tags: ['Astro', 'React', 'Frontend', 'SSG', 'SSR', 'SEO', 'Web Development', 'Blog']
+lang: en
+translationKey: blog-renewal
+---
+
+# My Blog Renewal Journey
+
+## Why Did I Renew My Blog?
+
+1.  First, I thought it would be nice to have a single site that represents who I am.
+2.  These days you can build all sorts of services using AI, and I felt that to have an edge over others, I should be able to whip up a site like this with ease.
+
+## Why I Abandoned My Old Blog
+
+Previously, I ran a React-based blog at [https://halfmoon-mind.vercel.app](https://halfmoon-mind.vercel.app). But a few limitations led me to migrate (renew) to my current blog.
+
+### The Limits of a Pure React Blog
+
+Trying to build a blog with pure React (Create React App and the like) ran me into unexpected problems.
+
+I was comfortable with design and implementing interactive components, but loading and parsing blog posts written in Markdown, and setting up routing for each post, turned out to be more cumbersome than I expected. I used a library like `react-markdown`, but integrating extra features such as code highlighting and table-of-contents generation took additional effort. Compared to a content-focused static site generator, development productivity was noticeably lower.
+
+### The Difficulty of SEO and Social Sharing
+
+The most decisive problem was search engine optimization (SEO) and social media sharing. With a pure client-side rendering (CSR) approach, setting up dynamic per-page meta tags (especially Open Graph tags like `og:title`, `og:description`, and `og:image`) didn't work properly. I tried the `react-helmet-async` library, but at the moment the initial HTML loads, JavaScript hasn't run yet, so the tags weren't applied. As a result, search engine bots and social media bots couldn't properly read the page content, which meant the title, description, or image wouldn't display correctly when a link was shared.
+
+### Exploring Other Tech Stacks
+
+To solve these problems, I started looking into other technologies.
+
+The first alternative that came to mind was Next.js. It supports both server-side rendering (SSR) and static site generation (SSG), and being React-based, the migration looked relatively easy. Thanks to its page-based routing, I expected the meta tag problem would be solved too. But I felt it was a somewhat heavy and complex framework to use for a personal blog. As [this Toss tech blog post](https://toss.tech/article/firesidechat_frontend_8) also mentions, Next.js isn't necessarily the best choice for every project.
+
+I also considered traditional static site generators like Jekyll, Hugo, and Gatsby. Jekyll integrated easily with GitHub Pages, but being Ruby-based gave me some pause. Gatsby is powerful, but the GraphQL learning curve felt like a burden.
+
+### Discovering Astro
+
+Then someone recommended Astro, and when I tried it, I found it appealing on many fronts: its content-focused approach, excellent performance, and support for a variety of UI frameworks. I became convinced that it would solve the problems I'd been facing without compromising the development experience.
+
+---
+
+## Astro: Why Did I Choose It?
+
+There are a few specific reasons I chose Astro.
+
+### SSG, SSR, and the Islands Architecture
+
+Astro is fundamentally a static site generator (SSG), but it also supports server-side rendering (SSR) when needed. What I found especially appealing was that the 'Islands Architecture' lets you implement interactive components while using a minimal amount of JavaScript. Thanks to that, the initial load speed was very fast.
+
+### Flexible UI Framework Integration
+
+You can also freely mix various UI frameworks like React, Vue, and Svelte within a single project. I liked the flexibility of being able to reuse some of my existing React components while trying out other frameworks or Astro's own components for new parts.
+
+### Type-Safe Content Management
+
+Astro's Content Collections feature lets you manage your Markdown files in a type-safe way. It made defining and managing the metadata (frontmatter) format of blog posts easy, which was a big help for writing and maintaining content.
+
+### An Excellent Developer Experience
+
+It was relatively easy to learn and well documented, so I was able to get up to speed quickly. The dev server was fast too, and the overall development experience was pleasant.
+
+---
+
+## The Migration Process and What I Learned
+
+### A Journey That Wasn't Smooth Sailing
+
+The process of moving from my old React-based blog to Astro wasn't entirely smooth. In particular, I had to rethink components that needed state management or complex interactions in the Astro way.
+
+### A Deeper Understanding of Web Performance Optimization
+
+But this process became an opportunity to more deeply understand the difference between server components and client components, as well as web performance optimization. For example, the dynamic meta tag problem could be solved by leveraging Astro's page-based routing and `Astro.props` to easily generate and inject the meta tags each page needs.
+
+---
+
+## Future Plans
+
+I think the blog renewal isn't an ending but a new beginning. Going forward, I plan to steadily record and share posts about technology and my personal thoughts. I'd also like to gradually implement features that improve the reader experience, such as adding comments or enhancing search.

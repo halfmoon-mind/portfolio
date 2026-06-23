@@ -1,0 +1,153 @@
+---
+title: 'Building Rich Events in Flutter Without App Updates'
+description: 'How I built dynamic, varied in-app events in Flutter without shipping app updates.'
+pubDate: '2024-04-02'
+heroImage: 'https://velog.velcdn.com/images/halfmoon_mind/post/e19be1b4-5ead-463c-9561-2fe1b54166af/image.png'
+tags: ['Flutter', 'Method Channel', 'WebView', 'Event Page']
+lang: en
+translationKey: flutter-dynamic-events-part1
+---
+
+Hello!
+I'm Sanghyeon Sim. I currently work as a Flutter Engineer at a company called Tailcrew, building a web novel platform service called "Mopic."
+
+> _This is a summary of a talk I gave at Soongsil University's Developer Conference, DEVCON._
+
+# The Problem
+
+We're building a web novel platform, and while working on it I ran into a problem I'd like to share.
+We wanted to build an event page as a new feature. The idea was to let users immediately see what events were going on.
+There are several ways to implement an event page like this, and these were the options we considered.
+
+### Option 1. Build it with a WebView.
+
+At first, the obvious choice was to build it with a WebView.
+This kind of screen changes constantly, and there was a very high chance it would need frequent updates.
+But there was one problem.
+The event page could include dynamic interactions.
+
+> | <img src="https://velog.velcdn.com/images/halfmoon_mind/post/ead3c762-c339-4dad-ad96-cba9e916ef37/image.png"/> | <img src="https://velog.velcdn.com/images/halfmoon_mind/post/02010652-8145-4ad5-ab49-4d43fed61b41/image.png"/> |
+> | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+>
+> Tapping the image on the left should navigate to the novel detail page on the right.
+
+Beyond navigating to a novel, a variety of interactions had to happen: calling an API, showing a dialog from inside the app, and more.
+In a situation like this, using a WebView alone meant I had to figure out how the WebView area could invoke code that lives inside Flutter.
+
+### Option 2. Build it as a page inside the app. (Build and ship it in Flutter using Dart code.)
+
+So then I considered: what if we implemented it as a screen inside the app instead?
+In that case, since everything happens inside the app, running the in-app code I mentioned earlier (showing a dialog, navigating to a page, etc.) was easy, but every app release forced a new update on users.
+
+# The Solution
+
+In the end, after a lot of thought, I solved it by combining Method Channels and a WebView.
+A Method Channel is a technology that lets you execute native code, or pass data and call functions from the native side into the Flutter side.
+
+> ![https://docs.flutter.dev/platform-integration/platform-channels](https://velog.velcdn.com/images/halfmoon_mind/post/5757ff5a-7e64-4668-b31c-5800516a7803/image.png)
+> Flutter's Method Channel can execute native Android and iOS code, or run Flutter code from the native side.
+
+Also, using a WebView lets you update content inside the app without going through the App Store or Play Store. You just redeploy the web side!
+
+So the following architecture came to life.
+![](https://velog.velcdn.com/images/halfmoon_mind/post/e19be1b4-5ead-463c-9561-2fe1b54166af/image.png)
+Shall we take a look at the code? **_All the code is up on [Github](https://github.com/halfmoon-mind/remote-flutter-widget/blob/main/lib/webview/webview.dart)._**
+First, let's look at the HTML code.
+**Location: assets/test.html**
+
+```HTML
+<!DOCTYPE html>
+<html lang="ko">
+  <body>
+    <script>
+      // dialog라는 이벤트에 첫번째 인자로 "EVENT_TITLE_HELLO" 데이터 전달
+        function dialog() {
+            window.flutter_inappwebview.callHandler('dialog', 'EVENT_TITLE_HELLO');
+        }
+    </script>
+    <h1 style="color: black" onclick="dialog()" >ON TAP DIALOG EVENT!</p>
+  </body>
+</html>
+```
+
+You can see that inside the `dialog` function, it passes the data `"EVENT_TITLE_HELLO"` as the first argument to the `dialog` event over on the Flutter side.
+
+**Location: lib/webview/webview.dart**
+
+Note: This code uses `flutter_inappwebview: ^5.8.0`. Depending on package version updates, the arguments or values in this code may not run correctly.
+
+```dart
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+      ),
+      body: InAppWebView(
+        initialFile: '/assets/test.html',
+        initialOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(
+            javaScriptEnabled: true,
+            useShouldOverrideUrlLoading: true,
+            mediaPlaybackRequiresUserGesture: false,
+            useOnLoadResource: true,
+            allowFileAccessFromFileURLs: true,
+            allowUniversalAccessFromFileURLs: true,
+            transparentBackground: true,
+          ),
+        ),
+        onLoadStop: (controller, url) {
+          webViewController = controller;
+          addDialogEvent(context);
+        },
+      ),
+    );
+  }
+}
+```
+
+The part worth paying attention to is addDialogEvent. Once the WebView has finished loading, the addDialogEvent function adds an observer for the dialog action.
+
+```dart
+void addDialogEvent(BuildContext context) {
+    webViewController?.addJavaScriptHandler(
+    // event handler 이름 등록
+      handlerName: "dialog",
+      callback: (args) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Dialog"),
+            // argument 사용
+            content: Text(args[0]),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const LocalView(),
+                    ),
+                  );
+                },
+                child: const Text("OK"),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+```
+
+With this approach, the data received as an argument for the `dialog` event can be used in the code inside the Flutter app.
+And if you adopt this approach, you can declare the interfaces for things that need to run inside the app up front, then call them by their event name from the web side so the work happens on the Flutter side. This makes the work easy. (In practice, there aren't that many events you need to observe inside the app, so it's straightforward to implement.)
+
+# Wrapping Up
+
+I don't think the approach I came up with is the best possible one. There are many ways to build an event page, but when I was solving this problem and weighing the various options, as far as I knew there was no established best practice for it, and this felt fast to implement and easy to maintain.
+To implement this part, you need to collaborate with the backend and web developers. You need to think about which interfaces Flutter will call and what data the backend will send down.
+If you spot any issues or have advice, feel free to leave a comment anytime.
+
+#### I'm also sharing the [presentation slides](https://docs.google.com/presentation/d/1h1k59DlG17EkKn8x8BKJWyMSrG0xvtWC4TrrjrclaJg/edit?usp=sharing), hehe

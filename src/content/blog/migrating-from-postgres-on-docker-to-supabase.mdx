@@ -1,0 +1,114 @@
+---
+title: 'Migrating a Database from PostgreSQL on Docker to Supabase'
+description: 'Migrating a database from PostgreSQL running on Docker to Supabase.'
+pubDate: '2025-05-14'
+heroImage: 'https://velog.velcdn.com/images/halfmoon_mind/post/6a0d05d9-1cce-40c4-be7c-db4b052497db/image.png'
+tags: ['Docker', 'PostgreSQL', 'Supabase', '데이터베이스 마이그레이션']
+lang: en
+translationKey: postgres-to-supabase-migration
+---
+
+Database migration is a challenging task that every developer faces at least once. It can get especially tricky when there's a version mismatch. In this post, I want to share the process of migrating a PostgreSQL 17 database running in a Docker container on EC2 over to Supabase (PostgreSQL 15), the problems that came up along the way, and the solution I ultimately landed on.
+
+## Table of Contents
+
+1. Overview of the Situation
+2. First Attempt: pg_dump and Direct Restore
+3. Second Attempt: Using a SQL Dump File
+4. Third Attempt: Supabase CLI
+5. Final Solution: Table Migration with DBeaver
+6. Lessons and Conclusion
+
+## 1. Overview of the Situation
+
+While working on a project, I ran into a situation where I needed to move an existing PostgreSQL 17 database—running in a Docker container inside an EC2 instance—over to Supabase.
+
+The first problem I was trying to address was cost: I wanted to switch the EC2 instance from a t2.small to a t2.micro, and rather than CPU, I was focused on reducing memory usage, so I tried to keep other processes to a minimum.
+
+On top of that, when the DB and the server are running together inside the same EC2 instance, there's a real risk that if you lose access to that EC2 instance or it shuts down, you could end up with a problem so severe that the database itself can't be recovered. So I decided to use a separate cloud service for the DB, and compared to AWS RDS, I went with Supabase since it offers a usable free plan.
+
+The catch was that Supabase currently runs on PostgreSQL 15, while our existing database was on the latest version, PostgreSQL 17—which created a version mismatch problem.
+
+## 2. First Attempt: pg_dump and Direct Restore
+
+The first thing I tried was using `pg_dump`, PostgreSQL's built-in backup tool, to dump the data and then restore it into Supabase.
+
+```bash
+# Docker 컨테이너에서 데이터베이스 덤프
+docker exec -it [container_name] pg_dump -U [username] -F c -b -v -f /tmp/database_dump.backup [database_name]
+
+# 덤프 파일을 로컬로 복사
+docker cp [container_name]:/tmp/database_dump.backup ./database_dump.backup
+
+```
+
+I then tried to restore this backup file in Supabase, but the following error occurred:
+
+```
+pg_restore: 오류: 파일 헤더에 있는 1.16 버전은 지원되지 않습니다
+
+```
+
+This error means that a dump file created in PostgreSQL 17 can't be restored directly in PostgreSQL 15. That's because PostgreSQL generally guarantees compatibility with higher versions, but not with lower ones.
+
+## 3. Second Attempt: Using a SQL Dump File
+
+Next, with some help from ChatGPT, I tried generating the dump in plain SQL format and running it in Supabase's SQL Editor.
+
+```bash
+# 일반 SQL 형식으로 덤프 생성
+docker exec -it [container_name] pg_dump -U [username] --schema-only --no-owner -f /tmp/schema.sql [database_name]
+docker exec -it [container_name] pg_dump -U [username] --data-only -f /tmp/data.sql [database_name]
+
+# SQL 파일을 로컬로 복사
+docker cp [container_name]:/tmp/schema.sql ./schema.sql
+docker cp [container_name]:/tmp/data.sql ./data.sql
+
+```
+
+But this approach ran into problems as well:
+
+```
+psql:backup.sql:224: 오류: 잘못된 명령: \N
+```
+
+I also hit an issue where UUID-typed data wasn't being recognized properly. It seemed to be caused by data type changes or SQL syntax differences between PostgreSQL 17 and 15.
+
+## 4. Third Attempt: Supabase CLI
+
+I also considered using the Supabase CLI. The Supabase CLI provides tools for syncing data between a local development environment and a Supabase project.
+
+```bash
+# Supabase CLI 설치
+npm install -g supabase
+
+# 로그인
+supabase login
+
+# 데이터베이스 참조
+supabase db remote set --db-url postgresql://[connection_string]
+
+# 마이그레이션 시도
+supabase db push
+```
+
+But this approach didn't turn out to be a complete solution either, again because of compatibility issues stemming from the version difference.
+
+## 5. Final Solution: Table Migration with DBeaver
+
+After several attempts, the solution I found was to use **DBeaver**, an open-source database tool. DBeaver is a free tool similar to DataGrip, and it offers migration features for moving data between various databases.
+
+### Migration steps using DBeaver:
+
+1. Install and launch DBeaver
+2. Set up a connection to the source database (the Docker PostgreSQL 17 on EC2)
+3. Set up a connection to the target database (Supabase PostgreSQL 15)
+4. Select the tables you want to migrate from the source database
+5. Right-click and choose "Export Data" → "Database Transfer"
+6. Select the target database and configure the options
+   - Enable the schema creation option
+   - Enable the data migration option
+   - Configure the constraint and index options
+7. Run the migration
+
+This approach let me migrate the data successfully. DBeaver automatically handled the database version difference, performed the necessary conversions, and transferred the data and schema correctly.

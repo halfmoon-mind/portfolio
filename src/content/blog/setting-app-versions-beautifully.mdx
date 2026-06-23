@@ -1,0 +1,141 @@
+---
+title: 'Setting App Versions Beautifully'
+description: 'How to set app versions thoughtfully and beautifully, instead of arbitrarily.'
+pubDate: '2025-05-15'
+heroImage: '/app-version.png'
+tags: ['semantic versioning', 'versioning', '버저닝', '아름답게 설정하기', '앱 버전', 'flutter']
+lang: en
+translationKey: semantic-app-versioning
+---
+
+Hello! One question that always comes up when you're building software is how to manage your "app version." It might look like you're just bumping a number, but there's actually a lot more meaning and intent that should be packed into it than you'd expect. Today I want to share the "beautiful app versioning" approach that I settled on through plenty of thought and experience.
+
+---
+
+### Table of Contents
+
+1.  **What is an app version?**
+2.  **Why did I write this post?**
+3.  **The shortcomings of traditional Semantic Versioning: what was the problem?**
+4.  **Thinking through better app version management: how can we improve it?**
+    - Things to consider
+      - Is it intuitive enough?
+      - Does each part of the version carry meaningful information?
+5.  **The final app versioning scheme we chose**
+6.  **Retrospective and closing thoughts**
+
+---
+
+### 1. What is an app version?
+
+An app version is a unique name or number that identifies a particular state of your software. Through the version, users can tell which state of the app they're running, and the development team can track changes, troubleshoot problems, and manage releases based on it. Most people are familiar with the `Major.Minor.Patch` form of Semantic Versioning, which is widely used.
+
+### 2. Why did I write this post? (Where the questioning began)
+
+Here are the reasons I kept thinking about version management while building Flutter apps.
+
+- **A build number alone isn't enough**: When you distribute an app to testers through Android's internal testing channel or TestFlight, the "app version" is often more prominent and visible than the build number. If you neglect the app version and only keep bumping the build number, testers or internal team members can get confused: "Is this really the latest version I'm supposed to be testing?" or "Is this the version where that earlier bug was fixed?" Unless you embed some extra information inside the app, the app icon alone makes it hard to tell whether the installed app is the latest test version the developer intended or an older one.
+- **The dilemma of fast development speed vs. version management**: In a startup environment especially, features are added and bugs are fixed simultaneously and very quickly. In that kind of environment, I came to the conclusion that the traditional version management approach isn't always efficient.
+
+I wanted to solve these problems and find a way for everyone on the team to communicate clearly through the version.
+
+### 3. The shortcomings of traditional Semantic Versioning: what was the problem?
+
+The most widely used scheme, Semantic Versioning (SemVer), consists of three parts: `Major.Minor.Patch`.
+
+- **MAJOR**: API changes that are not backward compatible
+- **MINOR**: Adding functionality in a backward-compatible manner
+- **PATCH**: Fixing bugs in a backward-compatible manner
+
+These three distinctions look clear, but in real-world development they came with the following problems.
+
+- **The blurry line between Minor and Patch**: A "simple feature update" is supposed to be a Minor, and a "trivial bug fix" a Patch, but the boundary between the two is often unclear. For example, is a UI tweak to improve user experience (UX) a feature addition or a bug fix? If you add a small feature and fix a bug you discovered along the way, is that a Minor update or a Patch update?
+- **The fast development cycle of a startup**: At a startup that has to respond quickly to market demands, strictly distinguishing Minor from Patch for every single release and bumping the version accordingly is tedious, and it can sometimes even slow development down.
+- **Compound changes**: In real development, it's common for bug fixes and feature additions to be bundled into a single release. In that situation, I felt that simply labeling the version as a "bug fix" or a "feature addition" doesn't adequately reflect what actually changed in that version.
+
+In the end, while the definition of SemVer itself is excellent, I concluded that it doesn't fit our team's development culture and pace 100%.
+
+### 4. Thinking through better app version management: how can we improve it?
+
+Having recognized the problems with the existing approach, I started thinking about a new version management strategy that fit our team. Here are the considerations we felt were important.
+
+- **Things to consider**
+  - **Is it intuitive enough?**: Not just developers, but anyone on the internal team—the QA team, the product team, and so on—should be able to look at the version and easily infer what state the build is in. Questions like "Which release number is this?" or "Is this for QA, or just for internal checking?" should be minimized.
+  - **Does each part of the version carry meaningful information?**: Each part of the version should convey clear information, not just be a string of numbers. For example, it would be very useful to know which official release this is, and which internal test build of that release it is.
+  - **(Bonus) Compatibility with deployment automation**: If the versioning scheme is complex, mistakes can creep into the deployment automation process or it can become hard to implement. We tried to keep it as simple as possible while still carrying the information we needed.
+
+### 5. The final app versioning scheme we chose
+
+After a great deal of thought and discussion, our team established the following app version naming convention.
+
+**`{MAJOR}.{RELEASE_SEQUENCE}.{INTERNAL_BUILD_SEQUENCE}`**
+
+Here's what each part means.
+
+- **`MAJOR`**: Identical to the Major in traditional SemVer. We bump it when there's a large-scale update that changes the foundation of the app, or a change that breaks backward compatibility. (e.g., `1`.x.x -> `2`.x.x)
+- **`RELEASE_SEQUENCE`**: Indicates **which Nth version is being released to current users**. It increases by 1 every time something is officially distributed to users with a new feature or improvement included. (e.g., 1.`5`.x -> 1.`6`.x)
+  - This part lets you intuitively grasp which release number the app is for users.
+- **`INTERNAL_BUILD_SEQUENCE`**: The **sequence number of the build being tested internally within that `RELEASE_SEQUENCE` version**. It increases by 1 every time you build for QA or internal testing, and resets to 1 when you move to a new `RELEASE_SEQUENCE`. (e.g., 1.5.`1` -> 1.5.`2` -> (after release) -> 1.6.`1`)
+  - Through this number, the QA team can clearly know which build to test and in which internal build a given bug occurred.
+  - In tools like TestFlight or Firebase App Distribution, you can also clearly choose and manage which build to install based on the version.
+
+#### How do we manage the build number (Version Code / Build Number)?
+
+Separately from the app version (Version Name), when you upload to the store you need a **unique integer build number that is always higher than the previous one**. (Android's `versionCode`, iOS's `buildNumber`)
+
+To solve this problem, we use the **number of Git commits**.
+
+- **Guaranteed uniqueness and monotonic increase**: The `git rev-list --count HEAD` command returns the total number of commits on the current branch. Since this number automatically increases whenever you commit for a new release, it naturally guarantees uniqueness and a value higher than the previous version.
+- **Ease of automation**: This command is very easy to implement via a shell script, and when integrated with deployment automation tools like Fastlane, it can greatly reduce human error.
+
+Here's a simple example shell script you can use when updating `pubspec.yaml` and deploying.
+
+```sh
+#!/bin/bash
+
+# 사용 예시:
+# VERSION="1.2.3" ./update_version.sh
+# 위와 같이 VERSION 환경 변수를 설정하고 스크립트를 실행하거나,
+# 스크립트 내에서 VERSION="1.2.3" 와 같이 직접 설정할 수 있습니다.
+# 여기서 VERSION은 사람이 수동으로 "{MAJOR}.{RELEASE_SEQUENCE}.{INTERNAL_BUILD_SEQUENCE}" 형식에 맞춰 설정합니다.
+
+# 현재 브랜치의 총 커밋 수를 가져와 BUILD 환경 변수에 저장
+export BUILD=$(git rev-list --count HEAD)
+
+# pubspec.yaml의 version 필드를 업데이트합니다.
+# 예를 들어 VERSION이 "1.2.3"이고 BUILD가 "101"이라면 "version: 1.2.3+101"로 변경됩니다.
+# !!주의: Mac의 sed는 -i 옵션 뒤에 '' 백업 파일 확장자를 명시해야 합니다. Linux에서는 '' 없이 -i 만 사용 가능합니다.
+if [[ -z "$VERSION" ]]; then
+  echo "오류: VERSION 환경 변수를 설정해주세요."
+  echo "예: VERSION=\"1.2.3\" $0"
+  exit 1
+fi
+sed -i '' "s/version: .*/version: ${VERSION}+${BUILD}/" pubspec.yaml
+
+echo "Updated pubspec.yaml with Version: $VERSION, Build Number: $BUILD"
+
+# 이후 Flutter 빌드 및 배포 과정 진행...
+fastlane ios beta version:"$VERSION" build_number:"$BUILD"
+fastlane android beta version:"$VERSION" build_number:"$BUILD"
+```
+
+_In practice, the `version` field of `pubspec.yaml` is updated to the form `version: {VERSION}+{BUILD}`. Here the `{VERSION}` part (e.g., `1.2.3`) corresponds to the `{MAJOR}.{RELEASE_SEQUENCE}.{INTERNAL_BUILD_SEQUENCE}` defined above, and the developer **sets it manually at the time the script is run, either directly or via an environment variable**. The `{BUILD}` part (e.g., `101`) is a commit-based build number generated automatically by the `git rev-list --count HEAD` command._
+
+By doing this, we've been able to effectively separate and manage the **version name that's easy for people to read and understand** from the **unique, ever-increasing build number that the system requires**.
+
+### 6. Retrospective and closing thoughts
+
+After adopting the new version management system, our team experienced the following positive changes.
+
+- **Clear communication**: With just the version number, we can now clearly tell the state and purpose of the current build, which reduced communication errors within the team.
+- **Efficient QA**: The QA team can quickly figure out which version to test and in which version a bug was fixed, enabling more efficient testing.
+- **Ease of release management**: We no longer mix up versions during TestFlight or internal distribution.
+- **Higher developer satisfaction**: Developers no longer have to agonize over whether something is a Minor or a Patch, so they can focus more on building the core features.
+
+Of course, this approach may not be the perfect answer for every team. The optimal version management strategy can differ depending on team size, development culture, and the nature of the project. But what matters, I think, is the process of answering the essential question—"why do we manage versions?"—and creating a "beautiful" set of rules that everyone on the team can agree on and understand. For now I haven't thought about what to call this versioning scheme, but if a good name comes up, I'll update this post later, hehe.
+
+I hope this post is at least a little helpful to the many developers wondering how to manage their Flutter app versions. How does your team manage versions? If you have better ideas, please share them in the comments!
+
+---
+
+_Reference article: [LINE Engineering - HeadVer, a New Versioning System for Product Teams](https://techblog.lycorp.co.jp/ko/headver-new-versioning-system-for-product-teams)_
