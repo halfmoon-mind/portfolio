@@ -1,29 +1,48 @@
 ---
 import HeaderLink from './HeaderLink.astro';
 import { SITE_TITLE } from '../consts';
+import { type Locale, localizePath, useTranslations } from '../i18n/ui';
+
+interface Props {
+	locale?: Locale;
+	// undefined → auto (swap /en prefix on current path); null → hide toggle; string → explicit sibling URL
+	langAlternate?: string | null;
+}
+const { locale = 'ko', langAlternate } = Astro.props;
+const t = useTranslations(locale);
+const other: Locale = locale === 'ko' ? 'en' : 'ko';
+const switchHref = langAlternate === undefined ? localizePath(Astro.url.pathname, other) : langAlternate;
 ---
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+		<h2><a href={localizePath('/', locale)}>{SITE_TITLE}</a></h2>
 		<div class="menu-container">
-			<button id="menu-toggle" aria-label="메뉴 열기">
+			<button id="menu-toggle" aria-label={t('a11y.openMenu')}>
 				<div class="menu-icon-wrapper">
 					<span class="menu-icon"></span>
 				</div>
 			</button>
 			<div class="internal-links" id="dropdown-menu">
-				<HeaderLink href="/">Home</HeaderLink>
-				<HeaderLink href="/blog">Blog</HeaderLink>
-				<HeaderLink href="/til">TIL</HeaderLink>
-				<HeaderLink href="/clips">Clips</HeaderLink>
-				<HeaderLink href="/portfolio">Portfolio</HeaderLink>
+				<HeaderLink href={localizePath('/', locale)}>Home</HeaderLink>
+				<HeaderLink href={localizePath('/blog', locale)}>Blog</HeaderLink>
+				<HeaderLink href={localizePath('/til', locale)}>TIL</HeaderLink>
+				<HeaderLink href={localizePath('/clips', locale)}>Clips</HeaderLink>
+				<HeaderLink href={localizePath('/portfolio', locale)}>Portfolio</HeaderLink>
 				<HeaderLink href="/resume">Resume</HeaderLink>
 			</div>
 		</div>
-		<div class="social-links">
+		<div class="nav-right">
+			{switchHref && (
+				<div class="lang-toggle" aria-label={t('a11y.langSwitch')}>
+					{locale === 'ko' ? <span aria-current="true">KO</span> : <a href={switchHref}>KO</a>}
+					<span class="lang-sep">·</span>
+					{locale === 'en' ? <span aria-current="true">EN</span> : <a href={switchHref}>EN</a>}
+				</div>
+			)}
+			<div class="social-links">
 			<a href="https://github.com/halfmoon-mind" target="_blank">
-				<span class="sr-only">GitHub 프로필</span>
+				<span class="sr-only">{t('a11y.github')}</span>
 				<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
 					><path
 						fill="currentColor"
@@ -32,7 +51,7 @@ import { SITE_TITLE } from '../consts';
 				>
 			</a>
 			<a href="https://linkedin.com/in/eddy-sim" target="_blank">
-				<span class="sr-only">LinkedIn 프로필</span>
+				<span class="sr-only">{t('a11y.linkedin')}</span>
 				<svg viewBox="0 0 24 24" aria-hidden="true" width="32" height="32"
 					><path
 						fill="currentColor"
@@ -40,6 +59,7 @@ import { SITE_TITLE } from '../consts';
 					></path></svg
 				>
 			</a>
+		</div>
 		</div>
 	</nav>
 </header>
@@ -78,7 +98,37 @@ import { SITE_TITLE } from '../consts';
 	.social-links a {
 		display: flex;
 	}
-	
+	.nav-right {
+		display: flex;
+		align-items: center;
+		gap: 0.75em;
+	}
+	.lang-toggle {
+		display: flex;
+		align-items: center;
+		gap: 0.35em;
+		font-size: 0.85em;
+		font-weight: 600;
+		white-space: nowrap;
+	}
+	.lang-toggle a {
+		padding: 0;
+		color: #666;
+		text-decoration: none;
+		border-bottom: none;
+	}
+	.lang-toggle a:hover {
+		color: var(--accent, #0077cc);
+		text-decoration: underline;
+	}
+	.lang-toggle span[aria-current] {
+		color: #222;
+	}
+	.lang-sep {
+		color: #aaa;
+		font-weight: 400;
+	}
+
 	.menu-container {
 		position: relative;
 		display: flex;

@@ -4,6 +4,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE } from '../consts';
+import { type Locale, hreflangFor } from '../i18n/ui';
 
 const baseHeroImage = "/og-image.png";
 
@@ -17,9 +18,18 @@ type Props = {
 	tags?: string[];
 	githubUrl?: string;
 	liveUrl?: string;
+	locale?: Locale;
+	langAlternate?: string | null;
+	alternates?: { hreflang: string; href: string }[];
 };
 
-const { title, description, heroImage } = Astro.props;
+const { title, description, heroImage, locale = 'ko', langAlternate, alternates = [] } = Astro.props;
+
+// A page with a known locale sibling gets ko/en/x-default hreflang for free.
+const hreflangAlternates =
+	typeof langAlternate === 'string'
+		? hreflangFor(locale, Astro.url.pathname, langAlternate, Astro.site)
+		: alternates;
 
 // 웹사이트 구조화된 데이터 생성
 const websiteSchema = {
@@ -38,9 +48,9 @@ const websiteSchema = {
 };
 ---
 
-<html lang="ko">
+<html lang={locale}>
 	<head>
-		<BaseHead title={title} description={description} image={heroImage ?? baseHeroImage} />
+		<BaseHead title={title} description={description} image={heroImage ?? baseHeroImage} locale={locale} alternates={hreflangAlternates} />
 		<style>
 			body {
 				display: flex;
@@ -58,11 +68,11 @@ const websiteSchema = {
 		<script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
 	</head>
 	<body>
-		<Header />
+		<Header locale={locale} langAlternate={langAlternate} />
 		<main>
 			<slot />
 		</main>
-		<Footer />
+		<Footer locale={locale} />
 	</body>
 </html>
 

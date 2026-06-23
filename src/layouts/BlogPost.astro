@@ -4,12 +4,23 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import { type Locale, hreflangFor } from '../i18n/ui';
 
 type Props = CollectionEntry<'blog'>['data'] & {
 	translation?: CollectionEntry<'blog'> | null;
+	// Header language-toggle target for non-blog callers (e.g. til). null hides it.
+	langAlternate?: string | null;
 };
 
-const { title, description, pubDate, updatedDate, heroImage, lang = 'ko', translation } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, lang = 'ko', translation, langAlternate = null } = Astro.props;
+const locale = lang as Locale;
+
+// Blog posts carry their own in-prose toggle + hreflang (below). Other callers
+// (til) get the global header toggle and hreflang via langAlternate.
+const baseHeadAlternates =
+	!translation && typeof langAlternate === 'string'
+		? hreflangFor(locale, Astro.url.pathname, langAlternate, Astro.site)
+		: [];
 
 const LANG_LABEL = { ko: '한국어', en: 'English' } as const;
 // 번역본이 있을 때만 토글 노출. KO를 항상 왼쪽으로 고정.
@@ -74,7 +85,7 @@ const articleSchema = {
 
 <html lang={lang}>
 	<head>
-		<BaseHead title={title} description={description} image={heroImage} article={true} />
+		<BaseHead title={title} description={description} image={heroImage} article={true} locale={locale} alternates={baseHeadAlternates} />
 			{hreflangLinks.map((l) => <link rel="alternate" hreflang={l.hreflang} href={l.href} />)}
 		<style>
 			main {
@@ -142,7 +153,7 @@ const articleSchema = {
 	</head>
 
 	<body>
-		<Header />
+		<Header locale={locale} langAlternate={langAlternate} />
 		<main>
 			<article>
 				<div class="hero-image">
@@ -187,6 +198,6 @@ const articleSchema = {
 				</div>
 			</article>
 		</main>
-		<Footer />
+		<Footer locale={locale} />
 	</body>
 </html>

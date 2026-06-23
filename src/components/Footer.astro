@@ -1,4 +1,11 @@
 ---
+import { type Locale, useTranslations } from '../i18n/ui';
+
+interface Props {
+	locale?: Locale;
+}
+const { locale = 'ko' } = Astro.props;
+const t = useTranslations(locale);
 const today = new Date();
 ---
 
@@ -6,7 +13,7 @@ const today = new Date();
 	&copy; {today.getFullYear()} Sanghyeon Sim. All rights reserved.
 	<div class="social-links">
 		<a href="https://github.com/halfmoon-mind" target="_blank">
-			<span class="sr-only">GitHub 프로필</span>
+			<span class="sr-only">{t('a11y.github')}</span>
 			<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
 				><path
 					fill="currentColor"
@@ -15,7 +22,7 @@ const today = new Date();
 			>
 		</a>
 		<a href="https://linkedin.com/in/eddy-sim" target="_blank">
-			<span class="sr-only">LinkedIn 프로필</span>
+			<span class="sr-only">{t('a11y.linkedin')}</span>
 			<svg viewBox="0 0 24 24" aria-hidden="true" width="32" height="32"
 				><path
 					fill="currentColor"

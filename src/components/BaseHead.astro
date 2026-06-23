@@ -2,7 +2,8 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { SITE_TITLE } from '../consts';
+import { type Locale, ogLocale, useTranslations, siteDescription } from '../i18n/ui';
 import { Image } from 'astro:assets';
 
 interface Props {
@@ -10,16 +11,22 @@ interface Props {
 	description: string;
 	image?: string;
 	article?: boolean;
+	locale?: Locale;
+	alternates?: { hreflang: string; href: string }[];
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { 
-	title, 
-	description = SITE_DESCRIPTION, 
+const {
+	title,
+	locale = 'ko',
+	description = siteDescription(locale),
 	image = '/og-image.png',
-	article = false
+	article = false,
+	alternates = [],
 } = Astro.props;
+
+const t = useTranslations(locale);
 
 // 이미지 URL 처리 로직 추가
 let imageUrl = image;
@@ -71,13 +78,14 @@ if (!image.startsWith('http')) {
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
+{alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
 
 <!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 <meta name="author" content="사이트 작성자 이름" />
-<meta name="keywords" content="포트폴리오, 블로그, 기술, 개발, 웹 개발" />
+<meta name="keywords" content={t('meta.keywords')} />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content={article ? 'article' : 'website'} />
@@ -88,7 +96,7 @@ if (!image.startsWith('http')) {
 <meta property="og:image:width" content={OG_IMAGE_WIDTH.toString()} />
 <meta property="og:image:height" content={OG_IMAGE_HEIGHT.toString()} />
 <meta property="og:site_name" content={SITE_TITLE} />
-<meta property="og:locale" content="ko_KR" />
+<meta property="og:locale" content={ogLocale(locale)} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
