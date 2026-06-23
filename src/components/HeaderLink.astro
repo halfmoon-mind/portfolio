@@ -4,12 +4,23 @@ import type { HTMLAttributes } from 'astro/types';
 type Props = HTMLAttributes<'a'>;
 
 const { href, class: className, ...props } = Astro.props;
-// Strip the /en locale prefix so active-state matching is locale-agnostic.
-const strip = (p: string) => (p === '/en' || p === '/en/' ? '/' : p.startsWith('/en/') ? p.slice(3) : p);
-const pathname = strip(Astro.url.pathname.replace(import.meta.env.BASE_URL, ''));
-const hrefBase = strip(typeof href === 'string' ? href : '');
-const subpath = pathname.match(/[^\/]+/g);
-const isActive = hrefBase === pathname || hrefBase === '/' + (subpath?.[0] || '');
+const base = import.meta.env.BASE_URL;
+// Normalise a path so active-state matching is locale-agnostic: drop the base
+// prefix, drop the /en locale prefix, ensure a leading slash, drop the trailing
+// slash. ('/en/' and '/en/blog/' collapse to '/' and '/blog'.)
+const stripLocale = (p: string) =>
+	p === '/en' || p === '/en/' ? '/' : p.startsWith('/en/') ? p.slice(3) : p;
+const norm = (raw: string) => {
+	let p = base !== '/' && raw.startsWith(base) ? '/' + raw.slice(base.length) : raw;
+	p = stripLocale(p);
+	if (!p.startsWith('/')) p = '/' + p;
+	if (p.length > 1 && p.endsWith('/')) p = p.slice(0, -1);
+	return p;
+};
+const current = norm(Astro.url.pathname);
+const target = norm(typeof href === 'string' ? href : '');
+const top = (p: string) => '/' + (p.match(/[^/]+/g)?.[0] ?? '');
+const isActive = target === current || top(target) === top(current);
 ---
 
 <a href={href} class:list={[className, { active: isActive }]} {...props}>
