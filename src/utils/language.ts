@@ -13,13 +13,24 @@ export function getTranslation<T extends Translatable>(post: T, all: T[]): T | n
 	return all.find((p) => p.id !== post.id && p.data.translationKey === key) ?? null;
 }
 
-/** ko/en 쌍을 canonical 하나로 합친다(ko 우선, ko가 없으면 그룹의 첫 항목). 쌍이 없는 글은 그대로 통과. */
-export function primaryVariants<T extends Translatable>(all: T[]): T[] {
+/**
+ * ko/en 쌍을 canonical 하나로 합친다. preferred 언어를 우선 노출하고, 없으면 ko,
+ * 그래도 없으면 그룹의 첫 항목. 쌍이 없는 글은 그대로 통과.
+ */
+export function canonicalVariants<T extends Translatable>(all: T[], preferred: 'ko' | 'en' = 'ko'): T[] {
 	return all.filter((post) => {
 		const key = post.data.translationKey;
 		if (!key) return true;
 		const group = all.filter((p) => p.data.translationKey === key);
-		const canonical = group.find((p) => (p.data.lang ?? 'ko') === 'ko') ?? group[0];
+		const canonical =
+			group.find((p) => (p.data.lang ?? 'ko') === preferred) ??
+			group.find((p) => (p.data.lang ?? 'ko') === 'ko') ??
+			group[0];
 		return post.id === canonical.id;
 	});
+}
+
+/** ko canonical 한 줄 추리기 (목록/RSS 기본값). */
+export function primaryVariants<T extends Translatable>(all: T[]): T[] {
+	return canonicalVariants(all, 'ko');
 }

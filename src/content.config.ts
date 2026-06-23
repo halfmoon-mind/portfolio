@@ -40,6 +40,7 @@ const portfolio = defineCollection({
     androidUrl: z.string().optional(),
     slackUrl: z.string().optional(),
     docUrl: z.string().optional(),
+    lang: z.enum(['ko', 'en']).default('ko'),
   }),
 });
 
@@ -54,6 +55,7 @@ const til = defineCollection({
     pubDate: z.coerce.date(),
     tags: z.array(z.string()).optional(),
     heroImage: z.string().optional(),
+    lang: z.enum(['ko', 'en']).default('ko'),
   }),
 });
 
@@ -68,6 +70,7 @@ const clips = defineCollection({
     quote: z.string().optional(),
     tags: z.array(z.string()).optional(),
     heroImage: z.string().optional(),
+    lang: z.enum(['ko', 'en']).default('ko'),
   }),
 });
 

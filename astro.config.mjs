@@ -8,7 +8,20 @@ import netlify from '@astrojs/netlify';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://halfmoon.day/',
-  integrations: [mdx(), sitemap()],
+  i18n: {
+    defaultLocale: 'ko',
+    locales: ['ko', 'en'],
+    routing: { prefixDefaultLocale: false },
+  },
+  integrations: [
+    mdx(),
+    sitemap({
+      i18n: {
+        defaultLocale: 'ko',
+        locales: { ko: 'ko-KR', en: 'en-US' },
+      },
+    }),
+  ],
   adapter: netlify({ edgeMiddleware: true }),
   security: {
     checkOrigin: false,
