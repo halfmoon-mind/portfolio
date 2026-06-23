@@ -1,5 +1,5 @@
 ---
-import { type Locale, useTranslations } from '../i18n/ui';
+import { type Locale, useTranslations, localizePath } from '../i18n/ui';
 
 interface Props {
 	locale?: Locale;
@@ -32,9 +32,9 @@ const today = new Date();
 		</a>
 	</div>
 	<div class="footer-links">
-		<a href="/clips/slack/privacy">Privacy</a>
-		<a href="/clips/slack/terms">Terms</a>
-		<a href="/clips/slack/support">Support</a>
+		<a href={localizePath('/clips/slack/privacy', locale)}>Privacy</a>
+		<a href={localizePath('/clips/slack/terms', locale)}>Terms</a>
+		<a href={localizePath('/clips/slack/support', locale)}>Support</a>
 	</div>
 </footer>
 <style>

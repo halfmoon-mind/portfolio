@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE_TITLE } from '../../consts';
+import type { Locale } from '../../i18n/ui';
+interface Props {
+	locale?: Locale;
+}
+const { locale = 'ko' } = Astro.props;
+
+const contactEmail = 'simsanghyeon00@gmail.com';
+---
+
+<BaseLayout
+  title={`${SITE_TITLE} Clips for Slack - Privacy Policy`}
+  description="Privacy Policy for Half to Full Clips for Slack."
+  locale={locale}
+>
+  <article class="legal-page">
+    <p class="eyebrow">Half to Full Clips for Slack</p>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: April 28, 2026</p>
+
+    <p>
+      This Privacy Policy explains how Half to Full Clips for Slack ("the app")
+      handles data when you install or use the app with a Slack workspace.
+    </p>
+
+    <h2>Data we collect</h2>
+    <p>The app collects and stores the minimum Slack data needed to send Clip notifications:</p>
+    <ul>
+      <li>Slack workspace ID and workspace name.</li>
+      <li>The Slack channel ID and channel name selected during installation.</li>
+      <li>The incoming webhook URL issued by Slack for the selected channel.</li>
+      <li>The installation timestamp.</li>
+      <li>A temporary OAuth state cookie used to protect the installation flow.</li>
+    </ul>
+    <p>
+      If you contact support, we also receive the information you choose to
+      include in your email, such as your email address, workspace name, and the
+      details of your request.
+    </p>
+    <p>
+      The app does not collect Slack messages, files, conversation history,
+      private channel contents, user profile data, user email addresses, or
+      payment information.
+    </p>
+
+    <h2>How we use data</h2>
+    <p>We use the collected data to:</p>
+    <ul>
+      <li>Complete the Slack OAuth installation flow.</li>
+      <li>Send new Half to Full Clip notifications to the selected Slack channel.</li>
+      <li>Maintain, secure, troubleshoot, and support the app.</li>
+      <li>Remove invalid installations when Slack indicates a webhook or workspace is no longer available.</li>
+    </ul>
+
+    <h2>Data storage and retention</h2>
+    <p>
+      Installation records are stored with Netlify Blobs. We keep installation
+      data while the app is installed, until you request deletion, until Slack
+      indicates that the webhook or workspace is no longer available, or until
+      the data is no longer needed to operate the app.
+    </p>
+    <p>
+      The temporary OAuth state cookie expires after 10 minutes. Hosting and
+      security logs may be processed by Netlify and retained according to
+      Netlify's operational practices.
+    </p>
+
+    <h2>Sharing and subprocessors</h2>
+    <p>
+      We do not sell Slack data. Data may be processed by service providers
+      required to operate the app, including Slack for authorization and message
+      delivery, and Netlify for hosting, storage, and logs.
+    </p>
+
+    <h2>AI and model training</h2>
+    <p>
+      The app does not use generative AI and does not use Slack data to train
+      large language models or other machine learning models.
+    </p>
+
+    <h2>Security</h2>
+    <p>
+      The app uses Slack OAuth state validation and HTTPS endpoints. Webhook
+      URLs and Slack credentials are treated as secrets and are not intentionally
+      exposed to end users or public repositories.
+    </p>
+
+    <h2>Your choices and data requests</h2>
+    <p>
+      You can uninstall the app from your Slack workspace at any time through
+      Slack's app management settings. To request access, transfer, correction,
+      or deletion of data associated with an installation, contact
+      <a href={`mailto:${contactEmail}`}>{contactEmail}</a>. Please include the
+      Slack workspace name or workspace ID so we can identify the installation.
+    </p>
+
+    <h2>International transfers</h2>
+    <p>
+      The app is operated from South Korea and may use service providers that
+      process data in other countries. By installing the app, you understand
+      that data may be processed where these providers operate.
+    </p>
+
+    <h2>Changes</h2>
+    <p>
+      We may update this Privacy Policy when the app changes or legal
+      requirements change. The updated date above will reflect the latest
+      version.
+    </p>
+
+    <h2>Contact</h2>
+    <p>
+      For privacy questions or requests, email
+      <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .legal-page {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .eyebrow,
+  .updated {
+    color: rgb(var(--gray));
+    font-size: 0.95rem;
+  }
+
+  .eyebrow {
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  li {
+    margin-bottom: 0.4rem;
+  }
+</style>
