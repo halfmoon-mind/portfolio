@@ -112,7 +112,7 @@ const langAlternate = localizePath(Astro.url.pathname, locale === 'ko' ? 'en' : 
 						posts.map((post) => (
 							<li>
 								<a href={`/blog/${post.id}/`}>
-									<img width={600} height={300} src={post.data.heroImage} alt="" style="height: 300px; width: 100%; object-fit: cover;" />
+									<img width={600} height={300} src={post.data.heroImage} alt="" loading="lazy" decoding="async" style="height: 300px; width: 100%; object-fit: cover;" />
 									<h4 class="title">{post.data.title}</h4>
 									<p class="date">
 										<FormattedDate date={post.data.pubDate} />

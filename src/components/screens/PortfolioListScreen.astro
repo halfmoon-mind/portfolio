@@ -37,7 +37,7 @@ const langAlternate = localizePath('/portfolio', locale === 'ko' ? 'en' : 'ko');
 								<img
 									src={entry.data.heroImage}
 									alt={`Image for ${entry.data.title}`}
-									class="portfolio-image"
+									class="portfolio-image" loading="lazy" decoding="async"
 								/>
 							)}
 							<div class="portfolio-content">

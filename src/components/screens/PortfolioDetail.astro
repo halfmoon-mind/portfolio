@@ -17,7 +17,6 @@ const { Content } = await render(entry);
 // 페이지 내에 표시될 이미지 최적 크기 정의
 const DISPLAY_IMAGE_WIDTH = 1200;
 const DISPLAY_IMAGE_HEIGHT = 600;
-const IMAGE_QUALITY = 85;
 const monthFmt = { year: 'numeric', month: 'long' } as const;
 ---
 
@@ -41,7 +40,7 @@ const monthFmt = { year: 'numeric', month: 'long' } as const;
 						<img src={entry.data.heroImage} alt={`Cover image for ${entry.data.title}`} />
 					) : (
 						<img
-							src={`${entry.data.heroImage}?w=${DISPLAY_IMAGE_WIDTH}&h=${DISPLAY_IMAGE_HEIGHT}&q=${IMAGE_QUALITY}&fit=cover`}
+							src={entry.data.heroImage}
 							alt={`Cover image for ${entry.data.title}`}
 							width={DISPLAY_IMAGE_WIDTH}
 							height={DISPLAY_IMAGE_HEIGHT}
