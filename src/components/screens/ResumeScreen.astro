@@ -38,7 +38,6 @@ const getIconClass = (label: string, href: string) => {
 
 <BaseLayout title={title} description={description} locale={locale}>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-	<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 	<div class="resume-container">
 		<div class="print-controls" aria-live="polite">
@@ -215,6 +214,23 @@ const getIconClass = (label: string, href: string) => {
 	const pdfStatus = document.querySelector<HTMLParagraphElement>('#pdfStatus');
 	const resumeContainer = document.querySelector<HTMLElement>('.resume-container');
 
+	// html2pdf(~200KB)는 PDF 버튼을 누를 때만 동적 로드 — 첫 페이지 로드 가볍게.
+	const HTML2PDF_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+	let html2pdfPromise: Promise<any> | null = null;
+	const loadHtml2Pdf = (): Promise<any> => {
+		if ((window as any).html2pdf) return Promise.resolve((window as any).html2pdf);
+		if (!html2pdfPromise) {
+			html2pdfPromise = new Promise((resolve, reject) => {
+				const s = document.createElement('script');
+				s.src = HTML2PDF_SRC;
+				s.onload = () => resolve((window as any).html2pdf);
+				s.onerror = () => reject(new Error('html2pdf 라이브러리를 불러오지 못했습니다.'));
+				document.head.appendChild(s);
+			});
+		}
+		return html2pdfPromise;
+	};
+
 	const waitForImages = async (container: HTMLElement) => {
 		const pendingImages = Array.from(container.querySelectorAll('img')).filter((img) => !img.complete);
 
@@ -248,7 +264,7 @@ const getIconClass = (label: string, href: string) => {
 			try {
 				await waitForImages(resumeContainer);
 
-				const html2pdf = (window as any).html2pdf;
+				const html2pdf = await loadHtml2Pdf();
 				if (typeof html2pdf !== 'function') {
 					throw new Error('html2pdf 라이브러리를 불러오지 못했습니다.');
 				}

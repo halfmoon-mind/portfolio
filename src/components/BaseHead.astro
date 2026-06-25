@@ -28,30 +28,14 @@ const {
 
 const t = useTranslations(locale);
 
-// 이미지 URL 처리 로직 추가
-let imageUrl = image;
-let optimizedImageUrl = image;
-
-// OG 이미지 권장 크기 (소셜 미디어 플랫폼 최적화)
+// OG 이미지 권장 크기 (소셜 미디어 플랫폼 메타용)
 const OG_IMAGE_WIDTH = 1200;
 const OG_IMAGE_HEIGHT = 630;
 
-// 이미지가 로컬 경로인 경우 최적화 작업 수행
-if (!image.startsWith('http')) {
-  // 상대 경로를 절대 URL로 변환
-  imageUrl = new URL(image.startsWith('/') ? image : `/${image}`, Astro.site).toString();
-  
-  // OG 이미지 최적화를 위한 URL 생성
-  try {
-    // 이미지 서비스를 사용하여 최적화된 이미지 URL 생성
-    optimizedImageUrl = `${imageUrl}?w=${OG_IMAGE_WIDTH}&h=${OG_IMAGE_HEIGHT}&q=75&fit=contain`;
-  } catch (e) {
-    optimizedImageUrl = imageUrl;
-  }
-} else {
-  // 외부 이미지는 그대로 사용
-  optimizedImageUrl = imageUrl;
-}
+// 로컬 경로는 절대 URL로 변환, 외부 URL은 그대로 사용
+const optimizedImageUrl = image.startsWith('http')
+  ? image
+  : new URL(image.startsWith('/') ? image : `/${image}`, Astro.site).toString();
 ---
 
 <!-- Global Metadata -->
@@ -71,10 +55,6 @@ if (!image.startsWith('http')) {
 	href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
-
-<!-- Font preloads -->
-<link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
-<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
