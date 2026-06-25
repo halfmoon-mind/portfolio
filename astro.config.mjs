@@ -22,7 +22,7 @@ export default defineConfig({
       },
     }),
   ],
-  adapter: netlify({ edgeMiddleware: true }),
+  adapter: netlify(),
   // Inline the (small) global CSS into each page's HTML so the first paint
   // doesn't wait on a separate render-blocking stylesheet request.
   build: { inlineStylesheets: 'always' },

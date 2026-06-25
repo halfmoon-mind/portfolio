@@ -85,6 +85,25 @@ const articleSchema = {
 
 <html lang={lang}>
 	<head>
+		{translation && (
+			<script is:inline define:vars={{ siblingUrl: `/blog/${translation.id}/`, pageLang: lang }}>
+				// Auto-redirect to the visitor's language version. This was an edge
+				// middleware, but pages are now static/CDN-cached so the per-user
+				// decision must run in the browser. Runs first in <head> (before paint)
+				// to avoid a flash. Set the cookie BEFORE redirecting so the back button
+				// and a manual toggle-back aren't bounced (cookie present → never auto).
+				(function () {
+					try {
+						if (/(?:^|;\s*)blogLang=/.test(document.cookie)) return;
+						var pref = (navigator.language || '').slice(0, 2).toLowerCase();
+						if (pref !== 'ko' && pref !== 'en') return;
+						if (pref === pageLang) return;
+						document.cookie = 'blogLang=' + pref + '; path=/; max-age=31536000; samesite=lax';
+						location.replace(siblingUrl);
+					} catch (e) {}
+				})();
+			</script>
+		)}
 		<BaseHead title={title} description={description} image={heroImage} article={true} locale={locale} alternates={baseHeadAlternates} />
 			{hreflangLinks.map((l) => <link rel="alternate" hreflang={l.hreflang} href={l.href} />)}
 		<style>

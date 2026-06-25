@@ -5,7 +5,7 @@
   "homepage": "https://halfmoon.day/",
   "scripts": {
     "dev": "astro dev",
-    "build": "yarn clips:refresh && node scripts/build-translation-map.mjs && astro build",
+    "build": "yarn clips:refresh && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "clips:refresh": "node scripts/refresh-clips-cache.mjs",
