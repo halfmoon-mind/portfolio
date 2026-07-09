@@ -17,6 +17,7 @@
     "@astrojs/netlify": "^6.3.0",
     "@astrojs/rss": "^4.0.11",
     "@astrojs/sitemap": "^3.3.0",
+    "@halfmoon/tokens": "https://github.com/halfmoon-mind/halfmoon-design/releases/download/tokens-v0.2.0/halfmoon-tokens-0.2.0.tgz",
     "@netlify/blobs": "^10.7.4",
     "astro": "^5.7.3"
   },

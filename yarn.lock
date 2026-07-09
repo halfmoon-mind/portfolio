@@ -990,6 +990,10 @@
     fastq "^1.17.1"
     glob "^13.0.0"
 
+"@halfmoon/tokens@https://github.com/halfmoon-mind/halfmoon-design/releases/download/tokens-v0.2.0/halfmoon-tokens-0.2.0.tgz":
+  version "0.2.0"
+  resolved "https://github.com/halfmoon-mind/halfmoon-design/releases/download/tokens-v0.2.0/halfmoon-tokens-0.2.0.tgz#827e46e7053a5659408076a29b5bce669aaf927d"
+
 "@humanwhocodes/momoa@^2.0.2":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/momoa/-/momoa-2.0.4.tgz#8b9e7a629651d15009c3587d07a222deeb829385"
