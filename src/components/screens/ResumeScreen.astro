@@ -259,10 +259,21 @@ const getIconClass = (label: string, href: string) => {
 
 			savePdfBtn.hidden = true;
 			showPdfStatus('PDF 생성 중...', 'loading');
-			resumeContainer.classList.add('print-compact');
+
+			// 화면 DOM은 건드리지 않고 복제본을 화면 밖에 두고 캡처 — 생성 중 화면이 쪼그라들지 않음
+			// 오프스크린 위치는 래퍼에만 지정: html2pdf가 넘겨받은 요소를 재복제하므로
+			// 복제본 자체에 left: -10000px 인라인 스타일이 있으면 캡처 캔버스 밖으로 밀려 빈 PDF가 됨
+			const printClone = resumeContainer.cloneNode(true) as HTMLElement;
+			printClone.classList.add('print-compact');
+			const printWrapper = document.createElement('div');
+			printWrapper.style.position = 'absolute';
+			printWrapper.style.left = '-10000px';
+			printWrapper.style.top = '0';
+			printWrapper.appendChild(printClone);
+			document.body.appendChild(printWrapper);
 
 			try {
-				await waitForImages(resumeContainer);
+				await waitForImages(printClone);
 
 				const html2pdf = await loadHtml2Pdf();
 				if (typeof html2pdf !== 'function') {
@@ -270,7 +281,7 @@ const getIconClass = (label: string, href: string) => {
 				}
 
 				await html2pdf()
-					.from(resumeContainer)
+					.from(printClone)
 					.set({
 						margin: [5, 5, 5, 5],
 						filename: '심상현_이력서.pdf',
@@ -288,6 +299,7 @@ const getIconClass = (label: string, href: string) => {
 							unit: 'mm',
 							compress: true,
 						},
+						pagebreak: { mode: ['css', 'legacy'] },
 					})
 					.save();
 			} catch (error) {
@@ -295,7 +307,7 @@ const getIconClass = (label: string, href: string) => {
 				console.error('PDF 생성 중 오류 발생:', error);
 				showPdfStatus('PDF 생성에 실패했습니다. 브라우저 인쇄 기능을 사용해주세요.', 'error');
 			} finally {
-				resumeContainer.classList.remove('print-compact');
+				printWrapper.remove();
 				savePdfBtn.hidden = false;
 
 				if (!failed) {
