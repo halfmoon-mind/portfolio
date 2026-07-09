@@ -61,32 +61,6 @@
   outline-offset: 2px;
 }
 
-.pdf-status {
-  margin: 0;
-  color: var(--resume-muted);
-  font-size: var(--hm-size-font-sm);
-}
-
-.pdf-status[data-state='loading'] {
-  animation: resume-pulse 1.4s ease-in-out infinite;
-}
-
-.pdf-status[data-state='error'] {
-  color: var(--hm-color-status-danger);
-  animation: none;
-}
-
-@keyframes resume-pulse {
-  0%,
-  100% {
-    opacity: 0.55;
-  }
-
-  50% {
-    opacity: 1;
-  }
-}
-
 .resume-header {
   display: grid;
   gap: 2rem;
@@ -555,7 +529,8 @@
   word-break: break-word;
 }
 
-@media (max-width: 760px) {
+/* screen 한정: 인쇄 시 A4 콘텐츠 폭(~730px)이 760px에 걸려 모바일 레이아웃이 새는 것 방지 */
+@media screen and (max-width: 760px) {
   .resume-container {
     margin: 1rem auto;
     padding: 1rem;
@@ -597,251 +572,15 @@
   }
 }
 
-.print-compact {
-  /* html2pdf가 캡처 컨테이너 폭을 항상 200mm(A4 − 여백)로 고정하므로 width: auto로 정확히 채움.
-     명시적 width를 주면 content-box padding만큼 컨테이너를 넘쳐 우측이 잘림 */
-  width: auto;
-  max-width: none;
-  margin: 0;
-  padding: 0.2rem;
-  border: 0;
-  box-shadow: none;
-  font-size: 8px;
-  line-height: var(--hm-font-line-height-tight);
-}
-
-.print-compact .print-controls {
-  display: none;
-}
-
-.print-compact .resume-header {
-  gap: 0.35rem;
-  margin-bottom: 0.45rem;
-}
-
-.print-compact .profile-info {
-  grid-template-columns: auto 1fr;
-  gap: 0.6rem;
-  text-align: left;
-}
-
-.print-compact .profile-image {
-  width: 70px;
-  height: 70px;
-  border-width: 1px;
-  box-shadow: none;
-}
-
-.print-compact .name {
-  /* html2canvas가 background-clip: text를 지원하지 않아 그라데이션이 블록 배경으로 그려짐 → 단색으로 대체 */
-  background: none;
-  -webkit-text-fill-color: var(--resume-accent);
-  font-size: var(--hm-size-font-xl);
-}
-
-.print-compact .job-title {
-  margin: 0.1rem 0 0.25rem;
-  font-size: var(--hm-size-font-sm);
-}
-
-.print-compact .contact-info {
-  justify-content: flex-start;
-  gap: 0.25rem;
-}
-
-.print-compact .contact-item,
-.print-compact .link-button {
-  min-height: auto;
-  padding: 0.1rem 0.35rem;
-  border-radius: 3px;
-  font-size: var(--hm-size-font-xs);
-}
-
-.print-compact .intro-container,
-.print-compact .skill-category,
-.print-compact .project-subsection,
-.print-compact .talk-item,
-.print-compact .education-card,
-.print-compact .project-card {
-  border: 1px solid var(--hm-color-border-default);
-  box-shadow: none;
-}
-
-.print-compact .intro-container,
-.print-compact .skill-category,
-.print-compact .project-subsection,
-.print-compact .education-card,
-.print-compact .project-card {
-  padding: 0.3rem;
-}
-
-.print-compact .section-title {
-  gap: 0.4rem;
-  margin-bottom: 0.3rem;
-}
-
-.print-compact .section-title h2,
-.print-compact .resume-section h2 {
-  font-size: var(--hm-size-font-md);
-}
-
-.print-compact .intro-content {
-  gap: 0.2rem;
-}
-
-.print-compact .intro-text {
-  font-size: var(--hm-size-font-xs);
-  line-height: var(--hm-font-line-height-tight);
-}
-
-.print-compact .resume-section {
-  margin-bottom: 0.35rem;
-}
-
-.print-compact .resume-section > h2 {
-  margin-bottom: 0.35rem;
-  padding-bottom: 0.1rem;
-}
-
-.print-compact .resume-section > h2::after {
-  height: 1px;
-}
-
-.print-compact .career-timeline {
-  padding-left: 0.45rem;
-}
-
-.print-compact .career-timeline::before,
-.print-compact .experience-item::before {
-  display: none;
-}
-
-.print-compact .experience-item {
-  margin-bottom: 0.35rem;
-}
-
-.print-compact .experience-header {
-  flex-direction: row;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.print-compact .experience-header h3,
-.print-compact .project-header h3,
-.print-compact .education-details h3 {
-  font-size: var(--hm-size-font-sm);
-}
-
-.print-compact .period,
-.print-compact .project-badge {
-  padding: 0.1rem 0.3rem;
-  font-size: var(--hm-size-font-xs);
-}
-
-.print-compact .position {
-  margin: 0.1rem 0 0.25rem;
-  font-size: var(--hm-size-font-xs);
-}
-
-.print-compact .project-subsection {
-  margin-bottom: 0.25rem;
-}
-
-.print-compact .project-subsection h4,
-.print-compact .skill-category h3 {
-  margin-bottom: 0.2rem;
-  padding-bottom: 0.15rem;
-  font-size: var(--hm-size-font-xs);
-}
-
-.print-compact .project-links,
-.print-compact .talk-links {
-  gap: 0.25rem;
-  margin-bottom: 0.2rem;
-}
-
-.print-compact .responsibilities li,
-.print-compact .project-features li,
-.print-compact .skill-category li {
-  margin-bottom: 0.1rem;
-  padding-left: 0.65rem;
-  font-size: var(--hm-size-font-xs);
-  line-height: var(--hm-font-line-height-tight);
-}
-
-.print-compact .responsibilities li::before,
-.print-compact .project-features li::before,
-.print-compact .skill-category li::before {
-  top: 0.6em;
-  width: 3px;
-  height: 3px;
-}
-
-.print-compact .skills {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.3rem;
-}
-
-.print-compact .talks-container {
-  gap: 0.2rem;
-}
-
-.print-compact .talk-item {
-  grid-template-columns: 30px 1fr;
-  gap: 0.5rem;
-  padding: 0.2rem;
-}
-
-.print-compact .talk-year {
-  width: 30px;
-  height: 30px;
-  font-size: var(--hm-size-font-xs);
-}
-
-.print-compact .talk-title,
-.print-compact .talk-link,
-.print-compact .project-link,
-.print-compact .education-details p {
-  font-size: var(--hm-size-font-xs);
-}
-
-.print-compact .opensource-projects {
-  grid-template-columns: 1fr;
-  gap: 0.25rem;
-}
-
-.print-compact .project-card .project-header {
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 0.15rem;
-}
-
-.print-compact .project-link {
-  margin-bottom: 0.15rem;
-}
-
-/* html2pdf pagebreak css 모드가 읽는 규칙 — 카드가 페이지 경계에 걸리면 통째로 다음 페이지로 밀림 */
-.print-compact .intro-container,
-.print-compact .project-subsection,
-.print-compact .skill-category,
-.print-compact .talk-item,
-.print-compact .education-card,
-.print-compact .project-card {
-  break-inside: avoid;
-  page-break-inside: avoid;
-}
-
-.print-compact a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.print-compact .highlight {
-  color: inherit;
-  font-weight: var(--hm-font-weight-bold);
-}
-
+/* 인쇄(PDF 저장) — A4 세로 2페이지 안에 들어가는 압축 레이아웃.
+   토큰 폰트 크기는 화면용 px 고정값이라 인쇄에선 명시적 px로 재지정 */
 @media print {
+  /* margin 0이면 브라우저가 머리글(날짜·제목)/바닥글(URL·쪽번호)을 그리지 않음.
+     페이지 여백은 .resume-container padding으로 대신 확보 */
+  @page {
+    margin: 0;
+  }
+
   body {
     margin: 0;
     padding: 0;
@@ -862,17 +601,221 @@
   .resume-container {
     max-width: 100%;
     margin: 0;
-    padding: 0.2rem;
+    padding: 10mm 9mm;
     border: 0;
     border-radius: 0;
     box-shadow: none;
+    font-size: 9px;
+    line-height: 1.4;
+  }
+
+  /* 페이지 1 = 소개+경력, 페이지 2 = 나머지로 고정 분할.
+     @page margin이 0이라 새 페이지 상단 여백은 padding으로 직접 확보.
+     ponytail: 경력이 페이지 1을 넘치면 중간 분할 지점이 상단에 붙음 — 그때 여백 전략 재조정 */
+  .resume-section[aria-labelledby='skills-title'] {
+    break-before: page;
+    padding-top: 10mm;
   }
 
   .print-controls {
     display: none;
   }
 
-  .resume-section,
+  .resume-header {
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .profile-info {
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    text-align: left;
+  }
+
+  .profile-image {
+    width: 64px;
+    height: 64px;
+    border-width: 1px;
+  }
+
+  .name {
+    /* background-clip: text 그라데이션이 인쇄 렌더링에서 선 아티팩트를 남겨 단색으로 대체 */
+    background: none;
+    -webkit-text-fill-color: var(--resume-accent);
+    font-size: 20px;
+  }
+
+  .job-title {
+    margin: 0.15rem 0 0.35rem;
+    font-size: 11px;
+  }
+
+  .contact-info {
+    gap: 0.3rem;
+  }
+
+  .contact-item,
+  .link-button {
+    min-height: auto;
+    padding: 0.15rem 0.5rem;
+    font-size: 8.5px;
+  }
+
+  .icon {
+    width: 1em;
+    margin-right: 0.3rem;
+    font-size: 9px;
+  }
+
+  .intro-container,
+  .skill-category,
+  .project-subsection,
+  .education-card,
+  .project-card {
+    padding: 0.4rem 0.55rem;
+  }
+
+  .section-title {
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .section-title h2,
+  .resume-section h2 {
+    font-size: 13px;
+  }
+
+  .intro-text {
+    margin-bottom: 0.3rem;
+    font-size: 9px;
+    line-height: 1.45;
+  }
+
+  .resume-section {
+    margin-bottom: 0.6rem;
+  }
+
+  .resume-section > h2 {
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.15rem;
+    break-after: avoid;
+  }
+
+  .resume-section > h2::after {
+    height: 2px;
+  }
+
+  .career-timeline {
+    padding-left: 0.5rem;
+  }
+
+  .career-timeline::before,
+  .experience-item::before {
+    display: none;
+  }
+
+  .experience-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .experience-header {
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .experience-header h3,
+  .project-header h3,
+  .education-details h3 {
+    font-size: 11px;
+  }
+
+  .period,
+  .project-badge {
+    padding: 0.1rem 0.4rem;
+    font-size: 8px;
+  }
+
+  .position {
+    margin: 0.1rem 0 0.3rem;
+    font-size: 9px;
+  }
+
+  .project-subsection {
+    margin-bottom: 0.35rem;
+  }
+
+  .project-subsection h4,
+  .skill-category h3 {
+    margin-bottom: 0.25rem;
+    padding-bottom: 0.15rem;
+    font-size: 9.5px;
+  }
+
+  .project-links,
+  .talk-links {
+    gap: 0.3rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .responsibilities li,
+  .project-features li,
+  .skill-category li {
+    margin-bottom: 0.12rem;
+    padding-left: 0.7rem;
+    font-size: 8.5px;
+    line-height: 1.4;
+  }
+
+  .responsibilities li::before,
+  .project-features li::before,
+  .skill-category li::before {
+    top: 0.55em;
+    width: 3px;
+    height: 3px;
+  }
+
+  .skills {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.35rem;
+  }
+
+  .talks-container {
+    gap: 0.25rem;
+  }
+
+  .talk-item {
+    grid-template-columns: 28px 1fr;
+    gap: 0.5rem;
+    padding: 0.25rem 0.4rem;
+  }
+
+  .talk-year {
+    width: 28px;
+    height: 28px;
+    font-size: 8px;
+  }
+
+  .talk-title,
+  .talk-link,
+  .project-link,
+  .education-details p {
+    font-size: 9px;
+  }
+
+  .opensource-projects {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.3rem;
+  }
+
+  .project-card .project-header {
+    margin-bottom: 0.2rem;
+  }
+
+  .project-link {
+    margin-bottom: 0.2rem;
+  }
+
+  .intro-container,
   .experience-item,
   .project-subsection,
   .skill-category,

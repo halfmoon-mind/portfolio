@@ -40,9 +40,8 @@ const getIconClass = (label: string, href: string) => {
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 
 	<div class="resume-container">
-		<div class="print-controls" aria-live="polite">
+		<div class="print-controls">
 			<button id="savePdfBtn" class="pdf-button" type="button">PDF로 저장하기</button>
-			<p id="pdfStatus" class="pdf-status" hidden>PDF 생성 중...</p>
 		</div>
 
 		<header class="resume-header">
@@ -210,110 +209,18 @@ const getIconClass = (label: string, href: string) => {
 </BaseLayout>
 
 <script>
+	// 네이티브 인쇄(PDF 저장) 사용 — html2canvas 캡처의 우측 잘림·래스터 흐림 없음, 텍스트 선택 가능한 벡터 PDF.
+	// 인쇄용 레이아웃은 resume.css의 @media print 블록이 담당.
 	const savePdfBtn = document.querySelector<HTMLButtonElement>('#savePdfBtn');
-	const pdfStatus = document.querySelector<HTMLParagraphElement>('#pdfStatus');
-	const resumeContainer = document.querySelector<HTMLElement>('.resume-container');
+	const originalTitle = document.title;
 
-	// html2pdf(~200KB)는 PDF 버튼을 누를 때만 동적 로드 — 첫 페이지 로드 가볍게.
-	const HTML2PDF_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-	let html2pdfPromise: Promise<any> | null = null;
-	const loadHtml2Pdf = (): Promise<any> => {
-		if ((window as any).html2pdf) return Promise.resolve((window as any).html2pdf);
-		if (!html2pdfPromise) {
-			html2pdfPromise = new Promise((resolve, reject) => {
-				const s = document.createElement('script');
-				s.src = HTML2PDF_SRC;
-				s.onload = () => resolve((window as any).html2pdf);
-				s.onerror = () => reject(new Error('html2pdf 라이브러리를 불러오지 못했습니다.'));
-				document.head.appendChild(s);
-			});
-		}
-		return html2pdfPromise;
-	};
+	// 브라우저의 "PDF로 저장" 기본 파일명은 document.title을 따름
+	window.addEventListener('beforeprint', () => {
+		document.title = '심상현_이력서';
+	});
+	window.addEventListener('afterprint', () => {
+		document.title = originalTitle;
+	});
 
-	const waitForImages = async (container: HTMLElement) => {
-		const pendingImages = Array.from(container.querySelectorAll('img')).filter((img) => !img.complete);
-
-		await Promise.all(
-			pendingImages.map(
-				(img) =>
-					new Promise<void>((resolve) => {
-						img.addEventListener('load', () => resolve(), { once: true });
-						img.addEventListener('error', () => resolve(), { once: true });
-					}),
-			),
-		);
-	};
-
-	const showPdfStatus = (message: string, state: 'loading' | 'error') => {
-		if (!pdfStatus) return;
-
-		pdfStatus.textContent = message;
-		pdfStatus.dataset.state = state;
-		pdfStatus.hidden = false;
-	};
-
-	if (savePdfBtn && pdfStatus && resumeContainer) {
-		savePdfBtn.addEventListener('click', async () => {
-			let failed = false;
-
-			savePdfBtn.hidden = true;
-			showPdfStatus('PDF 생성 중...', 'loading');
-
-			// 화면 DOM은 건드리지 않고 복제본을 화면 밖에 두고 캡처 — 생성 중 화면이 쪼그라들지 않음
-			// 오프스크린 위치는 래퍼에만 지정: html2pdf가 넘겨받은 요소를 재복제하므로
-			// 복제본 자체에 left: -10000px 인라인 스타일이 있으면 캡처 캔버스 밖으로 밀려 빈 PDF가 됨
-			const printClone = resumeContainer.cloneNode(true) as HTMLElement;
-			printClone.classList.add('print-compact');
-			const printWrapper = document.createElement('div');
-			printWrapper.style.position = 'absolute';
-			printWrapper.style.left = '-10000px';
-			printWrapper.style.top = '0';
-			printWrapper.appendChild(printClone);
-			document.body.appendChild(printWrapper);
-
-			try {
-				await waitForImages(printClone);
-
-				const html2pdf = await loadHtml2Pdf();
-				if (typeof html2pdf !== 'function') {
-					throw new Error('html2pdf 라이브러리를 불러오지 못했습니다.');
-				}
-
-				await html2pdf()
-					.from(printClone)
-					.set({
-						margin: [5, 5, 5, 5],
-						filename: '심상현_이력서.pdf',
-						image: { type: 'jpeg', quality: 0.98 },
-						html2canvas: {
-							scale: 2,
-							useCORS: true,
-							logging: false,
-							letterRendering: true,
-							allowTaint: true,
-						},
-						jsPDF: {
-							format: 'a4',
-							orientation: 'portrait',
-							unit: 'mm',
-							compress: true,
-						},
-						pagebreak: { mode: ['css', 'legacy'] },
-					})
-					.save();
-			} catch (error) {
-				failed = true;
-				console.error('PDF 생성 중 오류 발생:', error);
-				showPdfStatus('PDF 생성에 실패했습니다. 브라우저 인쇄 기능을 사용해주세요.', 'error');
-			} finally {
-				printWrapper.remove();
-				savePdfBtn.hidden = false;
-
-				if (!failed) {
-					pdfStatus.hidden = true;
-				}
-			}
-		});
-	}
+	savePdfBtn?.addEventListener('click', () => window.print());
 </script>
