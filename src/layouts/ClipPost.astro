@@ -110,36 +110,36 @@ const articleSchema = {
         display: block;
         margin: 1em 0 2em;
         padding: 1.25em;
-        border: 1px solid #d1d9e0;
+        border: 1px solid var(--hm-color-border-default);
         border-radius: 12px;
-        background: #f6f8fa;
+        background: var(--hm-color-bg-subtle);
         text-decoration: none;
         color: inherit;
         transition: border-color 0.2s ease, transform 0.2s ease;
       }
       .source-card:hover {
-        border-color: var(--accent, #0077cc);
+        border-color: var(--accent);
         transform: translateY(-2px);
       }
       .source-card-label {
         font-size: 0.85em;
-        color: #656d76;
+        color: var(--hm-color-fg-muted);
         margin-bottom: 0.4em;
       }
       .source-card-title {
-        font-weight: 600;
+        font-weight: var(--hm-font-weight-semibold);
         font-size: 1.05em;
         margin-bottom: 0.3em;
       }
       .source-card-desc {
         font-size: 0.9em;
-        color: #656d76;
-        line-height: 1.5;
+        color: var(--hm-color-fg-muted);
+        line-height: var(--hm-font-line-height-normal);
         margin-bottom: 0.5em;
       }
       .source-card-domain {
         font-size: 0.85em;
-        color: var(--accent, #0077cc);
+        color: var(--accent);
       }
       .clip-header h1 {
         margin: 0 0 0.5em;
@@ -161,24 +161,24 @@ const articleSchema = {
         flex-wrap: wrap;
       }
       .clip-tag {
-        background-color: #f6f8fa;
-        color: #656d76;
-        border: 1px solid #d1d9e0;
+        background-color: var(--hm-color-bg-subtle);
+        color: var(--hm-color-fg-muted);
+        border: 1px solid var(--hm-color-border-default);
         border-radius: 12px;
         padding: 2px 8px;
         font-size: 0.75em;
-        font-weight: 500;
+        font-weight: var(--hm-font-weight-medium);
       }
       .clip-quote {
-        border-left: 4px solid var(--accent, #0077cc);
+        border-left: 4px solid var(--accent);
         padding: 0.5em 1em;
         margin: 1.5em 0;
-        background: #f6f8fa;
+        background: var(--hm-color-bg-subtle);
         font-style: italic;
-        color: #333;
+        color: var(--hm-color-fg-default);
       }
       .clip-body {
-        line-height: 1.7;
+        line-height: var(--hm-font-line-height-relaxed);
       }
     </style>
   </body>

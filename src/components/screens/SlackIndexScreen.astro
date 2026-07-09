@@ -110,15 +110,15 @@ const description =
   .eyebrow {
     margin: 0 0 0.75rem;
     color: var(--accent);
-    font-size: 0.9rem;
-    font-weight: 700;
+    font-size: var(--hm-size-font-sm);
+    font-weight: var(--hm-font-weight-bold);
     letter-spacing: 0;
   }
 
   .lead {
     max-width: 42rem;
     color: rgb(var(--gray));
-    font-size: 1.08rem;
+    font-size: var(--hm-size-font-lg);
   }
 
   .actions {
@@ -136,22 +136,22 @@ const description =
     padding: 0 1rem;
     border: 1px solid rgba(var(--gray-medium), 0.9);
     border-radius: 8px;
-    font-weight: 700;
+    font-weight: var(--hm-font-weight-bold);
   }
 
   .primary-action {
     gap: 0.5rem;
     background: rgb(var(--black));
-    color: #fff;
+    color: var(--hm-color-fg-inverted);
   }
 
   .primary-action:hover {
-    color: #fff;
+    color: var(--hm-color-fg-inverted);
     background: rgb(var(--gray-dark));
   }
 
   .secondary-action {
-    background: #fff;
+    background: var(--hm-color-bg-default);
     color: rgb(var(--black));
   }
 
@@ -164,7 +164,7 @@ const description =
     overflow: hidden;
     border: 1px solid rgba(var(--gray-medium), 0.9);
     border-radius: 8px;
-    background: #fff;
+    background: var(--hm-color-bg-default);
     box-shadow: var(--box-shadow);
   }
 
@@ -189,7 +189,7 @@ const description =
     padding: 0.85rem 1rem;
     border-bottom: 1px solid rgba(var(--gray-medium), 0.6);
     color: rgb(var(--black));
-    font-weight: 700;
+    font-weight: var(--hm-font-weight-bold);
   }
 
   .preview-message {
@@ -206,9 +206,9 @@ const description =
     width: 42px;
     height: 42px;
     border-radius: 8px;
-    background: #1f2937;
-    color: #fff;
-    font-weight: 800;
+    background: var(--hm-color-gray-800);
+    color: var(--hm-color-fg-inverted);
+    font-weight: var(--hm-font-weight-bold);
   }
 
   .message-head {
@@ -221,18 +221,18 @@ const description =
   .message-head span,
   .source-row {
     color: rgb(var(--gray));
-    font-size: 0.86rem;
+    font-size: var(--hm-size-font-sm);
   }
 
   .preview-message h2 {
     margin: 0 0 0.4rem;
-    font-size: 1rem;
+    font-size: var(--hm-size-font-md);
   }
 
   .preview-message p {
     margin: 0 0 0.75rem;
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: var(--hm-size-font-md);
+    line-height: var(--hm-font-line-height-normal);
   }
 
   .preview-message button {
@@ -241,10 +241,10 @@ const description =
     border: 0;
     border-radius: 6px;
     background: #007a5a;
-    color: #fff;
+    color: var(--hm-color-fg-inverted);
     font: inherit;
-    font-size: 0.9rem;
-    font-weight: 700;
+    font-size: var(--hm-size-font-sm);
+    font-weight: var(--hm-font-weight-bold);
   }
 
   .info-grid {
@@ -263,13 +263,13 @@ const description =
   .info-grid h2,
   .legal-links h2 {
     margin-top: 0;
-    font-size: 1.15rem;
+    font-size: var(--hm-size-font-lg);
   }
 
   .info-grid p {
     margin: 0;
     color: rgb(var(--gray));
-    font-size: 0.98rem;
+    font-size: var(--hm-size-font-md);
   }
 
   .legal-links ul {

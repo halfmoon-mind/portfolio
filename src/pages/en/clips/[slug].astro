@@ -34,19 +34,19 @@ const t = useTranslations('en');
     text-align: center;
     margin-top: 3rem;
     padding-top: 2rem;
-    border-top: 1px solid #e5e5e5;
+    border-top: 1px solid var(--hm-color-border-default);
   }
   .back-link {
-    color: rgb(var(--accent));
+    color: var(--accent);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: var(--hm-font-weight-medium);
     padding: 0.5rem 1rem;
-    border: 1px solid rgb(var(--accent));
+    border: 1px solid var(--accent);
     border-radius: 6px;
     transition: all 0.2s ease;
   }
   .back-link:hover {
-    background: rgb(var(--accent));
-    color: white;
+    background: var(--accent);
+    color: var(--hm-color-fg-inverted);
   }
 </style>

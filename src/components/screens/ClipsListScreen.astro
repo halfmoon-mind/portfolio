@@ -91,15 +91,15 @@ const langAlternate = localizePath(Astro.url.pathname, locale === 'ko' ? 'en' : 
         margin: 0 auto;
       }
       .section-title {
-        font-size: 2rem;
-        font-weight: 600;
-        color: #1f2328;
+        font-size: var(--hm-size-font-3xl);
+        font-weight: var(--hm-font-weight-semibold);
+        color: var(--hm-color-fg-default);
         margin-bottom: 0.4em;
         padding-bottom: 8px;
-        border-bottom: 1px solid #d1d9e0;
+        border-bottom: 1px solid var(--hm-color-border-default);
       }
       .section-intro {
-        color: #656d76;
+        color: var(--hm-color-fg-muted);
         margin-top: 0;
         margin-bottom: 1em;
       }
@@ -115,19 +115,19 @@ const langAlternate = localizePath(Astro.url.pathname, locale === 'ko' ? 'en' : 
         align-items: center;
         gap: 0.5em;
         padding: 0.55em 1em;
-        background: #ffffff;
-        color: #1f2328;
-        border: 1px solid #d1d9e0;
+        background: var(--hm-color-bg-default);
+        color: var(--hm-color-fg-default);
+        border: 1px solid var(--hm-color-border-default);
         border-radius: 6px;
         font-size: 0.95em;
-        font-weight: 600;
+        font-weight: var(--hm-font-weight-semibold);
         text-decoration: none;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
         transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
       }
       .slack-install:hover {
         transform: translateY(-1px);
-        border-color: #b8c0c9;
+        border-color: var(--hm-color-border-strong);
         box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
       }
       .slack-logo {
@@ -137,7 +137,7 @@ const langAlternate = localizePath(Astro.url.pathname, locale === 'ko' ? 'en' : 
       .slack-cta-note {
         margin: 0;
         font-size: 0.85em;
-        color: #656d76;
+        color: var(--hm-color-fg-muted);
       }
       .clip-grid {
         list-style: none;
@@ -148,7 +148,7 @@ const langAlternate = localizePath(Astro.url.pathname, locale === 'ko' ? 'en' : 
         gap: 1.5em;
       }
       .clip-card {
-        border: 1px solid #eee;
+        border: 1px solid var(--hm-color-border-default);
         border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -184,28 +184,28 @@ const langAlternate = localizePath(Astro.url.pathname, locale === 'ko' ? 'en' : 
         transform: scale(1.05);
       }
       .thumb-placeholder {
-        font-size: 3rem;
-        font-weight: 700;
-        color: #8b95a1;
+        font-size: var(--hm-size-font-4xl);
+        font-weight: var(--hm-font-weight-bold);
+        color: var(--hm-color-fg-subtle);
       }
       .card-body {
         padding: 1em;
       }
       .source-domain {
         font-size: 0.8em;
-        color: #656d76;
+        color: var(--hm-color-fg-muted);
         margin-bottom: 0.4em;
       }
       .card-title {
         margin: 0 0 0.4em;
         font-size: 1.05em;
-        line-height: 1.4;
+        line-height: var(--hm-font-line-height-normal);
       }
       .card-desc {
         margin: 0 0 0.8em;
         font-size: 0.9em;
-        color: #656d76;
-        line-height: 1.5;
+        color: var(--hm-color-fg-muted);
+        line-height: var(--hm-font-line-height-normal);
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
@@ -220,7 +220,7 @@ const langAlternate = localizePath(Astro.url.pathname, locale === 'ko' ? 'en' : 
       }
       .card-date {
         font-size: 0.8em;
-        color: #888;
+        color: var(--hm-color-fg-subtle);
       }
       .card-tags {
         list-style: none;
@@ -231,13 +231,13 @@ const langAlternate = localizePath(Astro.url.pathname, locale === 'ko' ? 'en' : 
         flex-wrap: wrap;
       }
       .card-tag {
-        background-color: #f6f8fa;
-        color: #656d76;
-        border: 1px solid #d1d9e0;
+        background-color: var(--hm-color-bg-subtle);
+        color: var(--hm-color-fg-muted);
+        border: 1px solid var(--hm-color-border-default);
         border-radius: 12px;
         padding: 2px 8px;
         font-size: 0.7em;
-        font-weight: 500;
+        font-weight: var(--hm-font-weight-medium);
       }
     </style>
   </body>

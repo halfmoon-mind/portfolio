@@ -65,7 +65,7 @@ const langAlternate = localizePath('/portfolio', locale === 'ko' ? 'en' : 'ko');
 		}
 
 		h1 {
-			font-size: 2.5rem;
+			font-size: var(--hm-size-font-4xl);
 			margin-bottom: 1rem;
 		}
 
@@ -87,7 +87,7 @@ const langAlternate = localizePath('/portfolio', locale === 'ko' ? 'en' : 'ko');
 		}
 
 		.portfolio-card {
-			background: white;
+			background: var(--hm-color-bg-default);
 			border-radius: 0.5rem;
 			overflow: hidden;
 			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -115,7 +115,7 @@ const langAlternate = localizePath('/portfolio', locale === 'ko' ? 'en' : 'ko');
 		}
 
 		.portfolio-content h2 {
-			font-size: 1.5rem;
+			font-size: var(--hm-size-font-2xl);
 			margin: 0 0 0.5rem 0;
 		}
 
@@ -132,11 +132,11 @@ const langAlternate = localizePath('/portfolio', locale === 'ko' ? 'en' : 'ko');
 		}
 
 		.tag {
-			background: #f0f0f0;
+			background: var(--hm-color-bg-muted);
 			padding: 0.3rem 0.6rem;
 			border-radius: 0.3rem;
-			font-size: 0.8rem;
-			font-weight: 500;
+			font-size: var(--hm-size-font-sm);
+			font-weight: var(--hm-font-weight-medium);
 		}
 
 		@media (max-width: 768px) {

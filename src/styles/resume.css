@@ -1,13 +1,13 @@
 .resume-container {
-  --resume-accent: #61dafb;
-  --resume-accent-strong: #1a73e8;
-  --resume-link: #0077cc;
-  --resume-link-hover: #005fa3;
-  --resume-text: #333333;
-  --resume-muted: #666666;
-  --resume-soft: #f8f9fa;
-  --resume-border: #eaeaea;
-  --resume-card: #ffffff;
+  --resume-accent: var(--hm-color-blue-400);
+  --resume-accent-strong: var(--hm-color-action-primary-bg);
+  --resume-link: var(--hm-color-fg-link);
+  --resume-link-hover: var(--hm-color-action-primary-hover);
+  --resume-text: var(--hm-color-fg-default);
+  --resume-muted: var(--hm-color-fg-muted);
+  --resume-soft: var(--hm-color-bg-subtle);
+  --resume-border: var(--hm-color-border-default);
+  --resume-card: var(--hm-color-bg-default);
   --resume-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 
   max-width: 900px;
@@ -17,13 +17,7 @@
   background: var(--resume-card);
   border-radius: 12px;
   box-shadow: var(--resume-shadow);
-  font-family:
-    'Pretendard',
-    -apple-system,
-    BlinkMacSystemFont,
-    system-ui,
-    Roboto,
-    sans-serif;
+  font-family: var(--hm-font-family-sans);
   letter-spacing: 0;
 }
 
@@ -45,12 +39,12 @@
   justify-content: center;
   min-height: 2.5rem;
   padding: 0.55rem 1rem;
-  color: #ffffff;
-  background: #3182ce;
+  color: var(--hm-color-fg-inverted);
+  background: var(--hm-color-action-primary-bg);
   border: 0;
   border-radius: 6px;
   font: inherit;
-  font-weight: 600;
+  font-weight: var(--hm-font-weight-semibold);
   cursor: pointer;
   transition:
     background-color 0.2s ease,
@@ -58,7 +52,7 @@
 }
 
 .pdf-button:hover {
-  background: #2c5282;
+  background: var(--hm-color-action-primary-hover);
   transform: translateY(-1px);
 }
 
@@ -70,7 +64,7 @@
 .pdf-status {
   margin: 0;
   color: var(--resume-muted);
-  font-size: 0.9rem;
+  font-size: var(--hm-size-font-sm);
 }
 
 .pdf-status[data-state='loading'] {
@@ -78,7 +72,7 @@
 }
 
 .pdf-status[data-state='error'] {
-  color: #b42318;
+  color: var(--hm-color-status-danger);
   animation: none;
 }
 
@@ -110,7 +104,7 @@
   width: 180px;
   height: 180px;
   object-fit: cover;
-  border: 4px solid #ffffff;
+  border: 4px solid var(--hm-color-bg-default);
   border-radius: 50%;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
@@ -121,20 +115,20 @@
 
 .name {
   margin: 0;
-  background: linear-gradient(90deg, var(--resume-accent), #4facfe);
+  background: linear-gradient(90deg, var(--resume-accent), var(--hm-color-blue-400));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: 2.5rem;
+  font-size: var(--hm-size-font-4xl);
   line-height: 1.1;
-  font-weight: 700;
+  font-weight: var(--hm-font-weight-bold);
   letter-spacing: -0.02em;
 }
 
 .job-title {
   margin: 0.5rem 0 1.2rem;
   color: var(--resume-muted);
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: var(--hm-size-font-xl);
+  font-weight: var(--hm-font-weight-medium);
   letter-spacing: 0.05em;
 }
 
@@ -160,9 +154,9 @@
   padding: 0.6rem 1rem;
   background: var(--resume-soft);
   border-radius: 999px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  line-height: 1.3;
+  font-size: var(--hm-size-font-sm);
+  font-weight: var(--hm-font-weight-medium);
+  line-height: var(--hm-font-line-height-tight);
   transition:
     background-color 0.2s ease,
     color 0.2s ease,
@@ -171,7 +165,7 @@
 
 .contact-item:hover,
 .link-button:hover {
-  color: #ffffff;
+  color: var(--hm-color-fg-inverted);
   background: var(--resume-accent);
   text-decoration: none;
   transform: translateY(-2px);
@@ -183,7 +177,7 @@
   justify-content: center;
   width: 1.2rem;
   margin-right: 0.5rem;
-  font-size: 1rem;
+  font-size: var(--hm-size-font-md);
   transition: transform 0.2s ease;
 }
 
@@ -195,11 +189,11 @@
 }
 
 .fa-github {
-  color: #333333;
+  color: var(--hm-color-fg-default);
 }
 
 .fa-apple {
-  color: #555555;
+  color: var(--hm-color-fg-muted);
 }
 
 .fa-android {
@@ -207,7 +201,7 @@
 }
 
 .fa-youtube {
-  color: #ff0000;
+  color: var(--hm-color-status-danger);
 }
 
 .contact-item:hover .fa-github,
@@ -215,7 +209,7 @@
 .link-button:hover .fa-apple,
 .link-button:hover .fa-android,
 .link-button:hover .fa-globe {
-  color: #ffffff;
+  color: var(--hm-color-fg-inverted);
 }
 
 .talk-link:hover,
@@ -252,9 +246,9 @@
 .resume-section h2 {
   margin: 0;
   color: var(--resume-text);
-  font-size: 1.5rem;
-  line-height: 1.25;
-  font-weight: 600;
+  font-size: var(--hm-size-font-2xl);
+  line-height: var(--hm-font-line-height-tight);
+  font-weight: var(--hm-font-weight-semibold);
   letter-spacing: 0;
 }
 
@@ -265,15 +259,15 @@
 }
 
 .intro-content {
-  font-size: 1rem;
-  line-height: 1.8;
+  font-size: var(--hm-size-font-md);
+  line-height: var(--hm-font-line-height-relaxed);
 }
 
 .intro-text {
   margin: 0 0 1rem;
   color: var(--resume-text);
-  font-size: 1rem;
-  line-height: 1.75;
+  font-size: var(--hm-size-font-md);
+  line-height: var(--hm-font-line-height-relaxed);
   word-break: keep-all;
 }
 
@@ -283,7 +277,7 @@
 
 .highlight {
   color: inherit;
-  font-weight: 600;
+  font-weight: var(--hm-font-weight-semibold);
 }
 
 .resume-section {
@@ -361,9 +355,9 @@
 .project-header h3 {
   margin: 0;
   color: var(--resume-text);
-  font-size: 1.18rem;
-  line-height: 1.35;
-  font-weight: 600;
+  font-size: var(--hm-size-font-lg);
+  line-height: var(--hm-font-line-height-tight);
+  font-weight: var(--hm-font-weight-semibold);
 }
 
 .period,
@@ -375,16 +369,16 @@
   background: var(--resume-soft);
   border: 1px solid var(--resume-border);
   border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  line-height: 1.35;
+  font-size: var(--hm-size-font-sm);
+  font-weight: var(--hm-font-weight-bold);
+  line-height: var(--hm-font-line-height-tight);
 }
 
 .position {
   margin: 0.35rem 0 0.8rem;
   color: var(--resume-accent);
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: var(--hm-size-font-md);
+  font-weight: var(--hm-font-weight-medium);
 }
 
 .project-subsection {
@@ -401,9 +395,9 @@
   padding-bottom: 0.6rem;
   color: var(--resume-text);
   border-bottom: 1px solid var(--resume-border);
-  font-size: 1rem;
-  line-height: 1.35;
-  font-weight: 600;
+  font-size: var(--hm-size-font-md);
+  line-height: var(--hm-font-line-height-tight);
+  font-weight: var(--hm-font-weight-semibold);
 }
 
 .project-links,
@@ -429,8 +423,8 @@
   margin-bottom: 0.65rem;
   padding-left: 1.1rem;
   color: var(--resume-text);
-  font-size: 0.98rem;
-  line-height: 1.6;
+  font-size: var(--hm-size-font-md);
+  line-height: var(--hm-font-line-height-relaxed);
 }
 
 .responsibilities li:last-child,
@@ -467,8 +461,8 @@
   padding-bottom: 0.55rem;
   color: var(--resume-text);
   border-bottom: 1px solid var(--resume-border);
-  font-size: 1rem;
-  font-weight: 800;
+  font-size: var(--hm-size-font-md);
+  font-weight: var(--hm-font-weight-bold);
 }
 
 .talks-container {
@@ -490,19 +484,19 @@
   justify-content: center;
   width: 3.2rem;
   height: 3.2rem;
-  color: #ffffff;
+  color: var(--hm-color-fg-inverted);
   background: linear-gradient(135deg, var(--resume-accent), var(--resume-accent-strong));
   border-radius: 50%;
-  font-size: 1rem;
-  font-weight: 800;
+  font-size: var(--hm-size-font-md);
+  font-weight: var(--hm-font-weight-bold);
 }
 
 .talk-title {
   margin: 0;
   color: var(--resume-text);
-  font-size: 1rem;
-  line-height: 1.45;
-  font-weight: 800;
+  font-size: var(--hm-size-font-md);
+  line-height: var(--hm-font-line-height-normal);
+  font-weight: var(--hm-font-weight-bold);
 }
 
 .talk-links {
@@ -512,9 +506,9 @@
 .talk-link,
 .project-link {
   display: inline-flex;
-  font-size: 0.92rem;
-  font-weight: 700;
-  line-height: 1.4;
+  font-size: var(--hm-size-font-sm);
+  font-weight: var(--hm-font-weight-bold);
+  line-height: var(--hm-font-line-height-normal);
 }
 
 .education-section .section-title {
@@ -528,14 +522,14 @@
 .education-details h3 {
   margin: 0 0 0.45rem;
   color: var(--resume-text);
-  font-size: 1.1rem;
-  font-weight: 800;
+  font-size: var(--hm-size-font-lg);
+  font-weight: var(--hm-font-weight-bold);
 }
 
 .education-details p {
   margin: 0 0 0.25rem;
   color: var(--resume-muted);
-  font-size: 0.98rem;
+  font-size: var(--hm-size-font-md);
 }
 
 .education-details p:last-child {
@@ -579,7 +573,7 @@
   }
 
   .name {
-    font-size: 2rem;
+    font-size: var(--hm-size-font-3xl);
   }
 
   .contact-info {
@@ -604,13 +598,16 @@
 }
 
 .print-compact {
-  max-width: 100%;
+  /* html2pdf가 캡처 컨테이너 폭을 항상 200mm(A4 − 여백)로 고정하므로 width: auto로 정확히 채움.
+     명시적 width를 주면 content-box padding만큼 컨테이너를 넘쳐 우측이 잘림 */
+  width: auto;
+  max-width: none;
   margin: 0;
   padding: 0.2rem;
   border: 0;
   box-shadow: none;
   font-size: 8px;
-  line-height: 1.25;
+  line-height: var(--hm-font-line-height-tight);
 }
 
 .print-compact .print-controls {
@@ -636,12 +633,15 @@
 }
 
 .print-compact .name {
-  font-size: 1.3rem;
+  /* html2canvas가 background-clip: text를 지원하지 않아 그라데이션이 블록 배경으로 그려짐 → 단색으로 대체 */
+  background: none;
+  -webkit-text-fill-color: var(--resume-accent);
+  font-size: var(--hm-size-font-xl);
 }
 
 .print-compact .job-title {
   margin: 0.1rem 0 0.25rem;
-  font-size: 0.8rem;
+  font-size: var(--hm-size-font-sm);
 }
 
 .print-compact .contact-info {
@@ -654,7 +654,7 @@
   min-height: auto;
   padding: 0.1rem 0.35rem;
   border-radius: 3px;
-  font-size: 0.65rem;
+  font-size: var(--hm-size-font-xs);
 }
 
 .print-compact .intro-container,
@@ -663,7 +663,7 @@
 .print-compact .talk-item,
 .print-compact .education-card,
 .print-compact .project-card {
-  border: 1px solid #eeeeee;
+  border: 1px solid var(--hm-color-border-default);
   box-shadow: none;
 }
 
@@ -682,7 +682,7 @@
 
 .print-compact .section-title h2,
 .print-compact .resume-section h2 {
-  font-size: 0.95rem;
+  font-size: var(--hm-size-font-md);
 }
 
 .print-compact .intro-content {
@@ -690,8 +690,8 @@
 }
 
 .print-compact .intro-text {
-  font-size: 0.7rem;
-  line-height: 1.32;
+  font-size: var(--hm-size-font-xs);
+  line-height: var(--hm-font-line-height-tight);
 }
 
 .print-compact .resume-section {
@@ -729,18 +729,18 @@
 .print-compact .experience-header h3,
 .print-compact .project-header h3,
 .print-compact .education-details h3 {
-  font-size: 0.82rem;
+  font-size: var(--hm-size-font-sm);
 }
 
 .print-compact .period,
 .print-compact .project-badge {
   padding: 0.1rem 0.3rem;
-  font-size: 0.62rem;
+  font-size: var(--hm-size-font-xs);
 }
 
 .print-compact .position {
   margin: 0.1rem 0 0.25rem;
-  font-size: 0.72rem;
+  font-size: var(--hm-size-font-xs);
 }
 
 .print-compact .project-subsection {
@@ -751,7 +751,7 @@
 .print-compact .skill-category h3 {
   margin-bottom: 0.2rem;
   padding-bottom: 0.15rem;
-  font-size: 0.76rem;
+  font-size: var(--hm-size-font-xs);
 }
 
 .print-compact .project-links,
@@ -765,8 +765,8 @@
 .print-compact .skill-category li {
   margin-bottom: 0.1rem;
   padding-left: 0.65rem;
-  font-size: 0.68rem;
-  line-height: 1.28;
+  font-size: var(--hm-size-font-xs);
+  line-height: var(--hm-font-line-height-tight);
 }
 
 .print-compact .responsibilities li::before,
@@ -795,14 +795,14 @@
 .print-compact .talk-year {
   width: 30px;
   height: 30px;
-  font-size: 0.68rem;
+  font-size: var(--hm-size-font-xs);
 }
 
 .print-compact .talk-title,
 .print-compact .talk-link,
 .print-compact .project-link,
 .print-compact .education-details p {
-  font-size: 0.68rem;
+  font-size: var(--hm-size-font-xs);
 }
 
 .print-compact .opensource-projects {
@@ -820,6 +820,17 @@
   margin-bottom: 0.15rem;
 }
 
+/* html2pdf pagebreak css 모드가 읽는 규칙 — 카드가 페이지 경계에 걸리면 통째로 다음 페이지로 밀림 */
+.print-compact .intro-container,
+.print-compact .project-subsection,
+.print-compact .skill-category,
+.print-compact .talk-item,
+.print-compact .education-card,
+.print-compact .project-card {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
 .print-compact a {
   color: inherit;
   text-decoration: none;
@@ -827,14 +838,14 @@
 
 .print-compact .highlight {
   color: inherit;
-  font-weight: 800;
+  font-weight: var(--hm-font-weight-bold);
 }
 
 @media print {
   body {
     margin: 0;
     padding: 0;
-    background: #ffffff;
+    background: var(--hm-color-bg-default);
   }
 
   body > header,

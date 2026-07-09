@@ -4,52 +4,39 @@
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
   Enhanced with Apple-inspired design principles for better readability
  */
+@import '@halfmoon/tokens/halfmoon/tokens.css';
 
 :root {
-  /* Primary colors */
-  --accent: #0071e3;         /* Apple blue */
-  --accent-dark: #0051a2;    /* Darker blue for hover states */
-  --black: 17, 21, 28;       /* Deeper black for better contrast */
-  --gray: 95, 99, 104;       /* Neutral gray */
-  --gray-light: 241, 241, 243; /* Light background gray */
-  --gray-medium: 210, 210, 215; /* Medium gray for borders */
-  --gray-dark: 34, 34, 38;    /* Dark gray for secondary text */
-  
+  /* Primary colors — bridged to halfmoon (--hm-*) tokens */
+  --accent: var(--hm-color-action-primary-bg);
+  --accent-dark: var(--hm-color-action-primary-hover);
+  /* ponytail: rgb-triplet vars can't reference hex tokens; values copied from hm gray scale */
+  --black: 15, 23, 42;          /* --hm-color-gray-900 */
+  --gray: 71, 85, 105;          /* --hm-color-gray-600 */
+  --gray-light: 241, 245, 249;  /* --hm-color-gray-100 */
+  --gray-medium: 226, 232, 240; /* --hm-color-gray-200 */
+  --gray-dark: 30, 41, 59;      /* --hm-color-gray-800 */
+
   /* Gradients and effects */
-  --gray-gradient: rgba(var(--gray-light), 70%), #fff;
+  --gray-gradient: rgba(var(--gray-light), 70%), var(--hm-color-bg-default);
   --box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.08);
-  
-  /* Spacing */
+
+  /* Spacing — halfmoon 4px scale */
   --content-width: 768px;
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
-  --spacing-lg: 1.5rem;
-  --spacing-xl: 2rem;
-  --spacing-xxl: 3rem;
-  
+  --spacing-xs: var(--hm-space-1);
+  --spacing-sm: var(--hm-space-2);
+  --spacing-md: var(--hm-space-4);
+  --spacing-lg: var(--hm-space-6);
+  --spacing-xl: var(--hm-space-8);
+  --spacing-xxl: var(--hm-space-12);
+
   /* Typography */
-  --line-height-tight: 1.2;
-  --line-height-normal: 1.5;
-  --line-height-relaxed: 1.7;
-}
-/* Keep Atkinson as a fallback, but prioritize system fonts for an Apple-like experience */
-@font-face {
-  font-family: "Atkinson";
-  src: url("/fonts/atkinson-regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Atkinson";
-  src: url("/fonts/atkinson-bold.woff") format("woff");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
+  --line-height-tight: var(--hm-font-line-height-tight);
+  --line-height-normal: var(--hm-font-line-height-normal);
+  --line-height-relaxed: var(--hm-font-line-height-relaxed);
 }
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "San Francisco", "Helvetica Neue", "Atkinson", sans-serif;
+  font-family: var(--hm-font-family-sans);
   margin: 0;
   padding: 0;
   text-align: left;
@@ -58,7 +45,7 @@ body {
   word-wrap: break-word;
   overflow-wrap: break-word;
   color: rgb(var(--gray-dark));
-  font-size: 17px;
+  font-size: var(--hm-size-font-md);
   line-height: var(--line-height-relaxed);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -79,36 +66,36 @@ h6 {
   margin: 0 0 var(--spacing-md) 0;
   color: rgb(var(--black));
   line-height: var(--line-height-tight);
-  font-weight: 600;
+  font-weight: var(--hm-font-weight-semibold);
   letter-spacing: -0.02em;
 }
 
 h1 {
-  font-size: 2.25rem;
+  font-size: var(--hm-size-font-4xl);
   margin-bottom: var(--spacing-lg);
 }
 
 h2 {
-  font-size: 1.75rem;
+  font-size: var(--hm-size-font-3xl);
   margin-top: var(--spacing-xl);
   margin-bottom: var(--spacing-md);
 }
 
 h3 {
-  font-size: 1.4rem;
+  font-size: var(--hm-size-font-2xl);
   margin-top: var(--spacing-lg);
 }
 
 h4 {
-  font-size: 1.2rem;
+  font-size: var(--hm-size-font-xl);
 }
 
 h5 {
-  font-size: 1.1rem;
+  font-size: var(--hm-size-font-lg);
 }
 strong,
 b {
-  font-weight: 600;
+  font-weight: var(--hm-font-weight-semibold);
 }
 
 a {
@@ -123,10 +110,10 @@ a:hover {
 
 p {
   margin-bottom: var(--spacing-lg);
-  font-size: 17px;
+  font-size: var(--hm-size-font-md);
 }
 .prose {
-  font-size: 17px;
+  font-size: var(--hm-size-font-md);
   line-height: var(--line-height-relaxed);
 }
 
@@ -135,7 +122,7 @@ p {
 }
 textarea {
   width: 100%;
-  font-size: 16px;
+  font-size: var(--hm-size-font-md);
   font-family: inherit;
   padding: var(--spacing-sm);
   border: 1px solid rgba(var(--gray-medium), 0.8);
@@ -143,7 +130,7 @@ textarea {
 }
 
 input {
-  font-size: 16px;
+  font-size: var(--hm-size-font-md);
   font-family: inherit;
   padding: var(--spacing-sm) var(--spacing-md);
   border: 1px solid rgba(var(--gray-medium), 0.8);
@@ -168,22 +155,22 @@ code {
   background-color: rgba(var(--gray-light), 0.8);
   border-radius: 4px;
   font-size: 0.9em;
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: var(--hm-font-family-mono);
 }
 
 pre {
   padding: var(--spacing-lg);
   border-radius: 12px;
   background-color: rgb(var(--black));
-  color: white;
+  color: var(--hm-color-fg-inverted);
   overflow-x: auto;
   margin: var(--spacing-lg) 0;
 }
 
 pre > code {
   all: unset;
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  font-size: 15px;
+  font-family: var(--hm-font-family-mono);
+  font-size: var(--hm-size-font-sm);
 }
 blockquote {
   border-left: 3px solid var(--accent);
@@ -201,7 +188,7 @@ hr {
 }
 @media (max-width: 768px) {
   body {
-    font-size: 16px;
+    font-size: var(--hm-size-font-md);
   }
   
   main {
@@ -209,19 +196,19 @@ hr {
   }
   
   h1 {
-    font-size: 1.9rem;
+    font-size: var(--hm-size-font-3xl);
   }
   
   h2 {
-    font-size: 1.5rem;
+    font-size: var(--hm-size-font-2xl);
   }
   
   h3 {
-    font-size: 1.3rem;
+    font-size: var(--hm-size-font-xl);
   }
   
   .prose {
-    font-size: 16px;
+    font-size: var(--hm-size-font-md);
   }
 }
 

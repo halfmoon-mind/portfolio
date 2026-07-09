@@ -187,7 +187,7 @@ const langAlternate = localizePath('/', locale === 'ko' ? 'en' : 'ko');
 		}
 
 		.card {
-			border: 1px solid #eee;
+			border: 1px solid var(--hm-color-border-default);
 			border-radius: 8px;
 			overflow: hidden;
 			box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -244,7 +244,7 @@ const langAlternate = localizePath('/', locale === 'ko' ? 'en' : 'ko');
 		.date, .description {
 			margin: 0;
 			font-size: 0.9em;
-			color: #666;
+			color: var(--hm-color-fg-muted);
 		}
 
 		/* TIL 스타일 */
@@ -262,10 +262,10 @@ const langAlternate = localizePath('/', locale === 'ko' ? 'en' : 'ko');
 			display: block;
 			text-decoration: none;
 			color: inherit;
-			border: 1px solid #eee;
+			border: 1px solid var(--hm-color-border-default);
 			border-radius: 8px;
 			padding: 1.5em;
-			background: #fff;
+			background: var(--hm-color-bg-default);
 			box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 			transition: transform 0.2s ease, box-shadow 0.2s ease;
 		}
@@ -282,16 +282,16 @@ const langAlternate = localizePath('/', locale === 'ko' ? 'en' : 'ko');
 		.til-title {
 			margin: 0 0 0.5em 0;
 			font-size: 1.1em;
-			font-weight: 600;
-			line-height: 1.4;
-			color: #333;
+			font-weight: var(--hm-font-weight-semibold);
+			line-height: var(--hm-font-line-height-normal);
+			color: var(--hm-color-fg-default);
 		}
 
 		.til-description {
 			margin: 0 0 1em 0;
 			font-size: 0.9em;
-			color: #666;
-			line-height: 1.5;
+			color: var(--hm-color-fg-muted);
+			line-height: var(--hm-font-line-height-normal);
 			display: -webkit-box;
 			-webkit-line-clamp: 2;
 			-webkit-box-orient: vertical;
@@ -308,7 +308,7 @@ const langAlternate = localizePath('/', locale === 'ko' ? 'en' : 'ko');
 
 		.til-date {
 			font-size: 0.8em;
-			color: #888;
+			color: var(--hm-color-fg-subtle);
 		}
 
 		.til-tags {
@@ -318,19 +318,19 @@ const langAlternate = localizePath('/', locale === 'ko' ? 'en' : 'ko');
 		}
 
 		.til-tag {
-			background-color: #f6f8fa;
-			color: #656d76;
-			border: 1px solid #d1d9e0;
+			background-color: var(--hm-color-bg-subtle);
+			color: var(--hm-color-fg-muted);
+			border: 1px solid var(--hm-color-border-default);
 			border-radius: 12px;
 			padding: 2px 8px;
-			font-size: 11px;
-			font-weight: 500;
+			font-size: var(--hm-size-font-xs);
+			font-weight: var(--hm-font-weight-medium);
 		}
 
 		.til-tag.more-tags {
-			background-color: #e3f2fd;
-			color: #1976d2;
-			border-color: #bbdefb;
+			background-color: var(--hm-color-blue-50);
+			color: var(--hm-color-fg-link);
+			border-color: var(--hm-color-blue-200);
 		}
 
 		.clip-thumb {
@@ -340,13 +340,13 @@ const langAlternate = localizePath('/', locale === 'ko' ? 'en' : 'ko');
 			justify-content: center;
 		}
 		.clip-placeholder {
-			font-size: 3rem;
-			font-weight: 700;
-			color: #8b95a1;
+			font-size: var(--hm-size-font-4xl);
+			font-weight: var(--hm-font-weight-bold);
+			color: var(--hm-color-fg-subtle);
 		}
 		.clip-domain {
 			font-size: 0.8em;
-			color: #656d76;
+			color: var(--hm-color-fg-muted);
 			margin-bottom: 0.3em;
 		}
 
@@ -358,7 +358,7 @@ const langAlternate = localizePath('/', locale === 'ko' ? 'en' : 'ko');
 		.more-link a {
 			color: var(--accent);
 			text-decoration: none;
-			font-weight: 500;
+			font-weight: var(--hm-font-weight-medium);
 		}
 
 		@media (max-width: 768px) {
