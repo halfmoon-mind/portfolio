@@ -1,0 +1,27 @@
+---
+title: 'Fusion Council'
+description: 'Claude Code plugin where multiple model families deliberate on plans and reviews'
+pubDate: '2026-07'
+heroImage: '/assets/fusion_council.webp'
+tags: ['JavaScript', 'Claude Code Plugin', 'Multi-Agent', 'GPT-5.5', 'Codex CLI']
+githubUrl: 'https://github.com/halfmoon-mind/fusion-council'
+lang: en
+---
+
+# Fusion Council
+
+Fusion Council is a Claude Code plugin providing two deterministic, read-only **councils** that vet your work with more than one model family before you commit to it.
+
+- **fusion-plan** — run before a non-trivial change. A Claude role panel (architect · skeptic · test strategist · maintainer) plus **GPT-5.5** deliberate in parallel; a judge compares them on merit and synthesizes one implementation plan.
+- **fusion-review** — run after the change. A generalist Claude seat plus **GPT-5.5** review the current `git diff`, judged and synthesized into one findings report.
+
+Every panelist may read the repo but never edits it — only the main session implements, and only after user approval.
+The GPT-5.5 seat shells out to the local Codex CLI (`codex exec`); when it fails, it never drops out silently — the report's Council Coverage line says so.
+
+## Features
+
+- Two read-only council workflows: planning (fusion-plan) and review (fusion-review)
+- Cross-model-family verification (Claude + GPT-5.5), judged and synthesized into a single output
+- Self-validated with a seeded-bug benchmark (EVAL.md) — the review default was chosen by data (duo: matched recall at half the noise and −21% cost)
+- Real-usage telemetry measuring per-seat surviving insights, FP rate, and acceptance
+- One-line install from the plugin marketplace

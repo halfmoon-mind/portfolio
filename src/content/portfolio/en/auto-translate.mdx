@@ -1,0 +1,27 @@
+---
+title: 'Auto Translator'
+description: 'Chrome extension translating web pages into Korean via a local Codex bridge'
+pubDate: '2026-07'
+heroImage: '/assets/auto_translate.webp'
+tags: ['Chrome Extension', 'Node.js', 'Codex CLI', 'Native Messaging']
+githubUrl: 'https://github.com/halfmoon-mind/auto-translate'
+lang: en
+---
+
+# Auto Translator
+
+Auto Translator is a Chrome extension that translates visible web-page paragraphs into Korean.
+Translation runs through a local **native bridge** that reuses the local Codex CLI's ChatGPT login — no external API keys involved.
+
+The extension connects to the local host via Chrome Native Messaging, keeping one native messaging port open during a translation session so batches reuse the same host process.
+The host starts `codex app-server` per session and keeps it alive through an idle timeout, so consecutive page translations skip the cold start.
+
+Since Chrome extensions cannot install native messaging hosts themselves, a one-click macOS companion installer (`Codex Translator Installer.app`) ships alongside.
+The installer reports each step as it runs — copying the runtime, registering the native host, opening the extension setup page — and on failure shows the failed step with a recovery hint.
+
+## Features
+
+- One-click translation of the visible paragraphs on the current page
+- Reuses the local Codex CLI ChatGPT login — no API key is passed to translation runs
+- Persistent native messaging port + session keep-alive eliminates cold starts on consecutive translations
+- macOS companion installer and in-extension setup page guide bridge installation and diagnosis

@@ -1,0 +1,26 @@
+---
+title: 'Rubric Evaluator'
+description: 'AI 에이전트 스킬을 결정론적 루브릭으로 채점하는 플러그인'
+pubDate: '2026-07'
+heroImage: '/assets/rubric_evaluator.webp'
+tags: ['Python', 'Claude Code Plugin', 'Codex Plugin', 'Rubric']
+githubUrl: 'https://github.com/halfmoon-mind/rubric-evaluator'
+---
+
+# Rubric Evaluator
+
+Rubric Evaluator는 Claude Code / Codex 스킬 디렉토리(`SKILL.md`)를 6개 섹션 · 31개 항목 루브릭으로 채점하는 플러그인입니다.
+구조·안전성 검사는 표준 라이브러리만 사용하는 Python 스크립트가 결정론적으로 수행하고, 의미론적 검사는 번들된 루브릭 레퍼런스를 기준으로 적용됩니다.
+최종 등급(S/A/B/C/F)은 사람 감이 아닌 결정론적 계산으로 산출됩니다.
+
+Toss Tech의 [Skill 품질 관리를 위한 Rubric 설계와 시스템 구현](https://toss.tech/article/skill-quality-rubric) 아티클의 루브릭을 기반으로 설계했습니다.
+
+하나의 소스(`plugins/rubric-evaluator/`)에서 Claude Code와 Codex 두 호스트용 플러그인을 동시에 배포하며, 각 호스트의 마켓플레이스에서 한 줄로 설치할 수 있습니다.
+
+## 기능
+
+- 6개 섹션 · 31개 항목 루브릭 기반 스킬 채점
+- 구조·안전성 검사를 stdlib-only Python 스크립트로 결정론적 수행 (시크릿 유출 등 안전 위반은 즉시 F)
+- 실패 항목마다 왜 문제인지와 수정 방법을 담은 리포트 제공
+- Claude Code / Codex 듀얼 호스트 지원 — 단일 소스에서 두 플러그인 매니페스트 배포
+- "grade ./my-skill" 같은 자연어 요청만으로 트리거

@@ -1,0 +1,26 @@
+---
+title: 'Auto Translator'
+description: '로컬 Codex 브리지로 웹페이지를 한국어 번역하는 크롬 확장'
+pubDate: '2026-07'
+heroImage: '/assets/auto_translate.webp'
+tags: ['Chrome Extension', 'Node.js', 'Codex CLI', 'Native Messaging']
+githubUrl: 'https://github.com/halfmoon-mind/auto-translate'
+---
+
+# Auto Translator
+
+Auto Translator는 웹페이지에서 보이는 문단을 한국어로 번역하는 크롬 확장 프로그램입니다.
+번역은 외부 API 키 없이 로컬 Codex CLI의 ChatGPT 로그인을 그대로 사용하는 **네이티브 브리지**를 통해 수행됩니다.
+
+Chrome Native Messaging으로 확장과 로컬 호스트를 연결하고, 번역 세션 동안 하나의 네이티브 메시징 포트를 유지해 번역 배치가 같은 호스트 프로세스를 재사용합니다.
+호스트는 세션마다 `codex app-server`를 띄우고, 유휴 타임아웃까지 세션을 유지해 연속 번역 시 콜드 스타트를 건너뜁니다.
+
+크롬 확장은 네이티브 호스트를 스스로 설치할 수 없기 때문에, macOS용 원클릭 컴패니언 인스톨러(`Codex Translator Installer.app`)를 함께 제공합니다.
+인스톨러는 런타임 복사 · 네이티브 호스트 등록 · 확장 설정 페이지 오픈까지 단계별 진행 상황을 보고하며, 실패 시 단계 이름과 복구 힌트를 안내합니다.
+
+## 기능
+
+- 클릭 한 번으로 현재 페이지의 보이는 문단 한국어 번역
+- API 키 없이 로컬 Codex CLI ChatGPT 로그인 재사용 — 키가 번역 런에 전달되지 않음
+- 네이티브 메시징 포트 + 세션 유지로 연속 번역 콜드 스타트 제거
+- macOS 컴패니언 인스톨러와 인앱 설정 페이지로 브리지 설치·진단 가이드

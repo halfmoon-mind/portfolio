@@ -1,0 +1,27 @@
+---
+title: 'Rubric Evaluator'
+description: 'Plugin that grades AI agent skills against a deterministic rubric'
+pubDate: '2026-07'
+heroImage: '/assets/rubric_evaluator.webp'
+tags: ['Python', 'Claude Code Plugin', 'Codex Plugin', 'Rubric']
+githubUrl: 'https://github.com/halfmoon-mind/rubric-evaluator'
+lang: en
+---
+
+# Rubric Evaluator
+
+Rubric Evaluator is a plugin that grades a Claude Code / Codex skill directory (one containing a `SKILL.md`) against a 6-section, 31-item rubric.
+Structural and safety checks run deterministically as a stdlib-only Python script, while semantic checks are applied from a bundled rubric reference.
+The headline grade (S/A/B/C/F) is computed deterministically — never eyeballed.
+
+The rubric is based on Toss Tech's article [Designing a Rubric for Skill Quality Management](https://toss.tech/article/skill-quality-rubric).
+
+The same skill bundle ships for both Claude Code and Codex from a single source of truth (`plugins/rubric-evaluator/`), installable in one line from each host's marketplace.
+
+## Features
+
+- Grades skills against a 6-section, 31-item rubric
+- Deterministic structural and safety checks via a stdlib-only Python script (safety violations like secret leaks grade F immediately)
+- Per-item report explaining why each failing item matters and how to fix it
+- Dual-host support — one source ships both Claude Code and Codex plugin manifests
+- Triggers on natural-language requests like "grade ./my-skill"

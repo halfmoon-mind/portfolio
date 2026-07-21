@@ -1,0 +1,26 @@
+---
+title: 'Fusion Council'
+description: '멀티 모델 패밀리가 계획·리뷰를 합의하는 Claude Code 플러그인'
+pubDate: '2026-07'
+heroImage: '/assets/fusion_council.webp'
+tags: ['JavaScript', 'Claude Code Plugin', 'Multi-Agent', 'GPT-5.5', 'Codex CLI']
+githubUrl: 'https://github.com/halfmoon-mind/fusion-council'
+---
+
+# Fusion Council
+
+Fusion Council은 커밋 전에 여러 모델 패밀리가 작업을 검증하는, 결정론적 read-only **카운슬** 두 개를 제공하는 Claude Code 플러그인입니다.
+
+- **fusion-plan** — 굵직한 변경 전에 실행. Claude 역할 패널(아키텍트 · 스켑틱 · 테스트 전략가 · 메인테이너)과 **GPT-5.5**가 병렬로 숙고하고, 저지가 결과를 비교해 하나의 구현 계획으로 합성합니다.
+- **fusion-review** — 변경 후 실행. Claude 제너럴리스트와 **GPT-5.5**가 현재 `git diff`를 리뷰하고, 저지·합성을 거쳐 하나의 findings 리포트를 만듭니다.
+
+모든 패널리스트는 레포를 읽기만 할 뿐 절대 수정하지 않으며, 구현은 사용자 승인 후 메인 세션만 수행합니다.
+GPT-5.5 시트는 로컬 Codex CLI(`codex exec`)로 연결되고, 실패 시 조용히 사라지는 대신 리포트의 Council Coverage 라인에 명시됩니다.
+
+## 기능
+
+- 계획(fusion-plan) · 리뷰(fusion-review) 두 개의 read-only 카운슬 워크플로
+- Claude + GPT-5.5 크로스 모델 패밀리 검증, 저지 비교 후 단일 결과물로 합성
+- 시드 버그 벤치마크 기반 자체 검증(EVAL.md) — 리뷰 기본 구성을 데이터로 결정 (duo 기본: 동일 재현율에 노이즈 절반, 비용 −21%)
+- 실사용 텔레메트리로 시트별 생존 인사이트 · FP율 · 수용률 측정
+- 플러그인 마켓플레이스에서 한 줄 설치
