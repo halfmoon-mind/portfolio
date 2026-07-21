@@ -19,6 +19,7 @@
   box-shadow: var(--resume-shadow);
   font-family: var(--hm-font-family-sans);
   letter-spacing: 0;
+  word-break: keep-all;
 }
 
 .resume-container * {
@@ -89,9 +90,8 @@
 
 .name {
   margin: 0;
-  background: linear-gradient(90deg, var(--resume-accent), var(--hm-color-blue-400));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  /* blue-400 그라데이션은 흰 배경 대비 2.5:1로 WCAG 미달 — 테마별로 적응하는 강조색 단색 사용 */
+  color: var(--resume-accent-strong);
   font-size: var(--hm-size-font-4xl);
   line-height: 1.1;
   font-weight: var(--hm-font-weight-bold);
@@ -140,9 +140,17 @@
 .contact-item:hover,
 .link-button:hover {
   color: var(--hm-color-fg-inverted);
-  background: var(--resume-accent);
+  background: var(--resume-accent-strong);
   text-decoration: none;
   transform: translateY(-2px);
+}
+
+.contact-item:focus-visible,
+.link-button:focus-visible,
+.talk-link:focus-visible,
+.project-link:focus-visible {
+  outline: 2px solid var(--resume-accent-strong);
+  outline-offset: 2px;
 }
 
 .icon {
@@ -209,27 +217,14 @@
   border-radius: 12px;
 }
 
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 0.9rem;
-  margin-bottom: 1.5rem;
-}
-
-.section-title h2,
-.resume-section h2 {
+.resume-section h2,
+.intro-container h2 {
   margin: 0;
   color: var(--resume-text);
   font-size: var(--hm-size-font-2xl);
   line-height: var(--hm-font-line-height-tight);
   font-weight: var(--hm-font-weight-semibold);
   letter-spacing: 0;
-}
-
-.title-line {
-  flex: 1;
-  height: 2px;
-  background: var(--resume-border);
 }
 
 .intro-content {
@@ -242,7 +237,6 @@
   color: var(--resume-text);
   font-size: var(--hm-size-font-md);
   line-height: var(--hm-font-line-height-relaxed);
-  word-break: keep-all;
 }
 
 .intro-text:last-child {
@@ -255,17 +249,19 @@
 }
 
 .resume-section {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
-.resume-section > h2 {
+.resume-section > h2,
+.intro-container > h2 {
   position: relative;
   display: inline-block;
   margin-bottom: 1.2rem;
   padding-bottom: 0.45rem;
 }
 
-.resume-section > h2::after {
+.resume-section > h2::after,
+.intro-container > h2::after {
   content: '';
   position: absolute;
   left: 0;
@@ -350,7 +346,7 @@
 
 .position {
   margin: 0.35rem 0 0.8rem;
-  color: var(--resume-accent);
+  color: var(--resume-accent-strong);
   font-size: var(--hm-size-font-md);
   font-weight: var(--hm-font-weight-medium);
 }
@@ -460,7 +456,7 @@
   width: 3.2rem;
   height: 3.2rem;
   color: var(--hm-color-fg-inverted);
-  background: linear-gradient(135deg, var(--resume-accent), var(--resume-accent-strong));
+  background: var(--resume-accent-strong);
   border-radius: 50%;
   font-size: var(--hm-size-font-md);
   font-weight: var(--hm-font-weight-bold);
@@ -484,10 +480,6 @@
   font-size: var(--hm-size-font-sm);
   font-weight: var(--hm-font-weight-bold);
   line-height: var(--hm-font-line-height-normal);
-}
-
-.education-section .section-title {
-  margin-bottom: 1rem;
 }
 
 .education-card {
@@ -644,9 +636,6 @@
   }
 
   .name {
-    /* background-clip: text 그라데이션이 인쇄 렌더링에서 선 아티팩트를 남겨 단색으로 대체 */
-    background: none;
-    -webkit-text-fill-color: var(--resume-accent);
     font-size: 20px;
   }
 
@@ -680,13 +669,8 @@
     padding: 0.4rem 0.55rem;
   }
 
-  .section-title {
-    gap: 0.5rem;
-    margin-bottom: 0.4rem;
-  }
-
-  .section-title h2,
-  .resume-section h2 {
+  .resume-section h2,
+  .intro-container h2 {
     font-size: 13px;
   }
 
@@ -700,13 +684,15 @@
     margin-bottom: 0.6rem;
   }
 
-  .resume-section > h2 {
+  .resume-section > h2,
+  .intro-container > h2 {
     margin-bottom: 0.4rem;
     padding-bottom: 0.15rem;
     break-after: avoid;
   }
 
-  .resume-section > h2::after {
+  .resume-section > h2::after,
+  .intro-container > h2::after {
     height: 2px;
   }
 

@@ -69,10 +69,7 @@ const getIconClass = (label: string, href: string) => {
 			</div>
 
 			<section class="intro-container" aria-labelledby="intro-title">
-				<div class="section-title">
-					<h2 id="intro-title">소개</h2>
-					<div class="title-line"></div>
-				</div>
+				<h2 id="intro-title">소개</h2>
 				<div class="intro-content">
 					{resumeIntro.map((paragraph) => <p class="intro-text" set:html={paragraph} />)}
 				</div>
@@ -138,6 +135,29 @@ const getIconClass = (label: string, href: string) => {
 			</div>
 		</section>
 
+		<section class="resume-section" aria-labelledby="opensource-title">
+			<h2 id="opensource-title">오픈소스</h2>
+			<div class="section-content opensource-projects">
+				{
+					openSourceProjects.map((project) => (
+						<article class="project-card">
+							<div class="project-header">
+								<h3>{project.name}</h3>
+								<span class="project-badge">{project.period}</span>
+							</div>
+							<a href={project.url} target="_blank" rel="noopener noreferrer" class="project-link">
+								<i class={`${getIconClass(project.name, project.url)} icon`} aria-hidden="true"></i>
+								{project.url.replace('https://', '')}
+							</a>
+							<ul class="project-features">
+								{project.features.map((feature) => <li set:html={feature} />)}
+							</ul>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
 		<section class="resume-section" aria-labelledby="talks-title">
 			<h2 id="talks-title">발표</h2>
 			<div class="section-content talks-container">
@@ -169,40 +189,14 @@ const getIconClass = (label: string, href: string) => {
 			</div>
 		</section>
 
-		<section class="resume-section education-section" aria-labelledby="education-title">
-			<div class="section-title">
-				<h2 id="education-title">학력</h2>
-				<div class="title-line"></div>
-			</div>
+		<section class="resume-section" aria-labelledby="education-title">
+			<h2 id="education-title">학력</h2>
 			<div class="education-card">
 				<div class="education-details">
 					<h3>{education.school}</h3>
 					<p>{education.department}</p>
 					<p>{education.period}</p>
 				</div>
-			</div>
-		</section>
-
-		<section class="resume-section" aria-labelledby="opensource-title">
-			<h2 id="opensource-title">오픈소스</h2>
-			<div class="section-content opensource-projects">
-				{
-					openSourceProjects.map((project) => (
-						<article class="project-card">
-							<div class="project-header">
-								<h3>{project.name}</h3>
-								<span class="project-badge">{project.period}</span>
-							</div>
-							<a href={project.url} target="_blank" rel="noopener noreferrer" class="project-link">
-								<i class={`${getIconClass(project.name, project.url)} icon`} aria-hidden="true"></i>
-								{project.url.replace('https://', '')}
-							</a>
-							<ul class="project-features">
-								{project.features.map((feature) => <li set:html={feature} />)}
-							</ul>
-						</article>
-					))
-				}
 			</div>
 		</section>
 	</div>
