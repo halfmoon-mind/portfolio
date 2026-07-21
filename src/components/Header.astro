@@ -146,7 +146,7 @@ const switchHref = langAlternate === undefined ? localizePath(Astro.url.pathname
 		cursor: pointer;
 		transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 		box-shadow: none;
-		margin-right: 12px;
+		margin-left: 12px;
 		-webkit-tap-highlight-color: transparent;
 	}
 	
@@ -230,7 +230,16 @@ const switchHref = langAlternate === undefined ? localizePath(Astro.url.pathname
 		#menu-toggle {
 			display: flex;
 		}
-		
+
+		/* 모바일: 제목 | (여백) | 언어토글 | 햄버거 순서로 우측 정렬 */
+		h2 {
+			margin-right: auto;
+		}
+
+		.menu-container {
+			order: 1;
+		}
+
 		.internal-links {
 			display: none;
 			position: absolute;
