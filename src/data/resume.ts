@@ -257,13 +257,32 @@ export const education: ResumeEducation = {
 
 export const openSourceProjects: ResumeOpenSourceProject[] = [
   {
+    name: 'Rubric Evaluator',
+    period: '2026년 6월 - 현재',
+    url: 'https://github.com/halfmoon-mind/rubric-evaluator',
+    features: [
+      `Claude Code / Codex 스킬 디렉토리를 6섹션·31항목 <span class="highlight">루브릭</span>으로 평가하는 플러그인`,
+      `구조·안전성 검사를 stdlib 기반 Python 스크립트로 수행하고, S~F 등급을 <span class="highlight">결정적(deterministic)</span>으로 산출`,
+      `단일 소스에서 <span class="highlight">Claude Code와 Codex</span> 두 호스트용 플러그인을 동시에 배포`,
+    ],
+  },
+  {
+    name: 'Fusion Council',
+    period: '2026년 6월 - 현재',
+    url: 'https://github.com/halfmoon-mind/fusion-council',
+    features: [
+      `구현 계획과 코드 리뷰를 <span class="highlight">다중 모델(Claude 역할 패널 + GPT-5.5)</span>로 교차 검증하는 Claude Code 플러그인`,
+      `architect·skeptic·test·maintainer 역할 패널이 병렬로 심의하고, judge가 <span class="highlight">하나의 결과로 합성</span>하는 결정적 파이프라인 설계`,
+      `벤치마크 기반 평가(EVAL.md)로 기본 구성을 검증하여 <span class="highlight">노이즈 절반, 비용 21% 절감</span> 구성을 기본값으로 채택`,
+    ],
+  },
+  {
     name: 'Awesome Articles',
     period: '2025년 1월 - 현재',
     url: 'https://github.com/yourssu/awesome-articles',
     features: [
       `iOS, Android, 프론트엔드, 백엔드, 엔지니어링 등 <span class="highlight">다양한 분야의 아티클</span>을 분류하여 체계적으로 아카이빙하는 오픈소스 프로젝트`,
       `다양한 개발자들이 함께 좋은 아티클을 공유하고 토론하며 전반적인 <span class="highlight">엔지니어링 수준</span>을 높이는 지식 공유 플랫폼`,
-      `<span class="highlight">MIT 라이선스</span>로 운영되어 누구나 자유롭게 기여하고 활용할 수 있는 환경 구축`,
       `<span class="highlight">GitHub Discussion</span>을 통해 의견 교환을 하고, 정기적으로 의견과 링크를 취합하여 업데이트`,
     ],
   },
