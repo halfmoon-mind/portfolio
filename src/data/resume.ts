@@ -95,12 +95,6 @@ export const experiences: ResumeExperience[] = [
           `<span class="highlight">앱인앱 구조</span>로 커뮤니티 내 숏드라마 서비스 구현하여 2가지(<span class="highlight">Bloc+GoRouter, GetX</span>) 상태 관리를 동시에 사용할 수 있도록 구현`,
           `Cursor와 같은 <span class="highlight">AI Agent</span>를 적극적으로 활용하여 빠르게 프로젝트를 구축`,
           `커뮤니티 내 게시글 뷰어, 게시글 작성을 위한 <span class="highlight">HTML 에디터</span> 기능 구현`,
-        ],
-      },
-      {
-        name: '슈룹 - 숏폼 드라마 플랫폼',
-        links: [],
-        responsibilities: [
           `<span class="highlight">DRM</span> 적용된 <span class="highlight">HLS/DASH 스트리밍</span> 방식 동영상 플레이어 개발하고, 불안정한 네트워크 환경에서 적절하게 화면이 보여질 수 있도록 지속적으로 기능 개선`,
           `전세계 스토어 대상으로 배포하여 <span class="highlight">다국어 지원</span> 애플리케이션 개발 경험`,
           `유저가 인앱결제를 시도 할 때, 서버가 응답하지 않을 경우를 대비해 1분마다 <span class="highlight">영수증 검증 처리 재시도</span>하면서 유저와 인증 정보를 <span class="highlight">Sentry</span> 서버에 로그로 남겨 CS 대응에 수월하도록 처리`,
