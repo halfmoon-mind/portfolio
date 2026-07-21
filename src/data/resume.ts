@@ -184,6 +184,16 @@ export const skillCategories = [
 
 export const talks: ResumeTalk[] = [
   {
+    year: '2026',
+    title: '바람개비 - 결국, 만들어 본 사람만 남는다',
+    links: [
+      {
+        label: '발표자료',
+        href: '/26.06.20%20%EB%B0%94%EB%9E%8C%EA%B0%9C%EB%B9%84%20%EB%B0%9C%ED%91%9C.pdf',
+      },
+    ],
+  },
+  {
     year: '2025',
     title: '스타트업에서 AI와 함께 살아남기',
     links: [
