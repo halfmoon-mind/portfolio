@@ -1,0 +1,56 @@
+---
+title: 'Open Source Summit Korea 2026 참여 후기'
+description: 'Open Source Summit Korea 2026에 참가해 살펴본 OpenRAG, Agentic AI 기반 배포 자동화, AI 안전 표준에 관한 세션과 현장 기록'
+pubDate: '2026-08-14'
+heroImage: '/2026-OSS/open-source-summit-2026-hero.webp'
+tags: ['오픈소스', 'Open Source Summit', 'AI', 'Agentic AI', 'RAG', '개발 문화']
+---
+
+2026년 8월 11일부터 12일까지 서울 그랜드 인터컨티넨탈 서울 파르나스에서 열린 [Open Source Summit Korea 2026](https://events.linuxfoundation.org/open-source-summit-korea/)에 다녀왔다.
+
+오픈소스 프로젝트와 커뮤니티가 한자리에 모이는 행사인 만큼 Linux, Cloud, Open Source 등 여러 주제의 발표가 진행됐다. 그중에서도 최근 관심을 두고 있던 AI와 오픈소스가 만나는 세션을 중심으로 들었다.
+
+사실 AWS Summit 과 비슷한 색깔인줄 알고 안가려고 했는데 오히려 
+
+AWS Summit은 애초에 AWS 서비스를 홍보하기 위한 컨퍼런스니까 뭔가 주제가 흥미로워보여도 대부분의 세션들이 "이런 문제가 있지만, AWS에 있는 특정 서비스를 쓰면 다 해결됩니다!" 라는 식의 말을 너무 많이 들어서 처음 몇번은 되게 재밌게 들었는데 그 이후부터는 그냥 굿즈 받으러가는 정도의 행사가 되었던 것 같다.
+
+근데 오히려 이번에는 오픈소스 기반으로 말하는 것들도 들어보고 잘 활용하는 진짜 엔지니어 분들이 많이 모인 것 같아서 오히려 거부감이 덜 했다. 그리고 실제 내부 발표 내용들도 오픈소스를 활용해서 어떤 작업들을 했다 이런 식으로 실전적인 내용이 많아서 더 좋았던 것 같다.
+
+![Open Source Summit Korea 2026 참가 배지](/2026-OSS/IMG_9534.JPG)
+
+## Trust by Design: Engineering Reliable Enterprise AI Workflows with Open Source
+
+가장 먼저 기억에 남은 발표는 설계 단계에서 신뢰할 수 있는 프로세스를 만드는 과정을 오픈소스를 활용해서 작업한 내용이었다.
+
+![프로세스 설명](/2026-OSS/스크린샷 2026-08-11 오후 1.44.37.png)
+
+여기에 나오는 내용이지만, 각 단계에서 여러 문제(모델의 성능이 낮거나, 청킹이 잘못되어서 RAG에서 잘못된 값이 나오거나)들을 오픈 소스로 어떻게 해결해 나갈까에 대한 이야기 였다.
+
+![OpenRAG의 레퍼런스 아키텍처를 설명하는 발표](/2026-OSS/IMG_8031.JPG)
+
+RAG를 실제 서비스에 적용하려면 모델이나 검색 방식만큼이나 입력 문서를 어떻게 다룰지가 중요하다. PDF, DOCX, HTML, PPTX처럼 형태가 다른 문서에서 텍스트를 꺼내고, 표와 이미지의 구조까지 보존해야 검색과 답변의 품질을 높일 수 있기 때문이다.
+
+발표에서 소개된 [Docling](https://github.com/docling-project/docling)은 이 첫 단계를 맡는다. 여러 형식의 문서와 스캔 이미지를 구조화된 데이터로 변환하고, 레이아웃·표·이미지·메타데이터를 분석해 Markdown이나 JSON 등으로 출력한다. 이렇게 정리된 데이터는 OpenSearch에 저장되고, Langflow를 거쳐 검색과 에이전트 워크플로에 활용된다.
+
+![다양한 문서를 구조화된 데이터로 변환하는 Docling 파이프라인](/2026-OSS/IMG_8033.JPG)
+
+최근에 회사에서도 자동화 리뷰, 개발 등을 맡아서 개선 작업들을 해내고 있는데 이러한 관점에서 오픈 소스를 활용해서 어떻게 더 나은 output을 뽑아낼 것인가, 그리고 더 적은 input으로 더 나은 output을 뽑아내는가에 대해서 많은 고민이 있었는데 일부 해결할 수 있어서 좋은 내용이었다.
+
+## Automating Production Fixes With Agentic AI
+
+Kubernetes, Argo CD, Argo Rollouts를 이용한 Progressive Delivery에 AI 에이전트를 결합하는 내용을 다뤘다.
+
+![Self-Healing Rollouts 세션을 발표하는 Kevin Dubois](/2026-OSS/IMG_9514.JPG)
+
+기존 자동화에서는 카나리 배포를 진행하고, 문제 상황이 발생하면 다시 롤백하는 것까지였다면 더 나아가서 에러 지표들을 수집하고 분석해서 자동으로 PR 생성, 이후 머지하면 자동으로 배포가 돌면서 자동으로 개선되는 방식으로 진행하는 것에 대해서 이야기 하고 있어.
+
+![Self-Healing Rollouts 예제와 참고 저장소가 담긴 발표 화면](/2026-OSS/IMG_9515.JPG)
+
+운영 장애를 AI가 전부 알아서 해결한다는 이야기보다는, 관측·분석·수정 제안처럼 사람이 반복하던 단계를 어디까지 안전하게 자동화할 수 있는지를 보여주는 사례로 느껴졌다.
+
+## 행사를 마치며
+
+이번 행사에서 본 AI는 오픈소스를 대체하는 기술이 아니었다. 오픈소스를 활용해서 생산성을 높이고, 적은 노력으로 더 높은 생산성을 이룰 수 있도록 상호 보완적인 존재로 생각이 되었다.
+
+![Open Source Summit Korea 2026 현장에서 함께한 사람들](/2026-OSS/IMG_9523.PNG)
+
