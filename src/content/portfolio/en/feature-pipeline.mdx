@@ -1,0 +1,51 @@
+---
+title: 'Feature Pipeline'
+description: 'An in-house AI development pipeline that drives one ticket from plan to PR through fixed stages'
+pubDate: '2026-08'
+heroImage: '/assets/feature_pipeline.webp'
+tags: ['Claude Code', 'AI Agent', 'Multi-Agent', 'Codex CLI', 'Workflow']
+lang: en
+---
+
+# Feature Pipeline
+
+Feature Pipeline is a Claude Code skill I built for our in-house Flutter app development.
+With a single command it takes one Jira ticket through **plan → verify → implement → review → PR**, following fixed stages all the way to the end.
+It's an internal project, so the code isn't public — this page focuses on what problems it solves and how.
+
+## Why
+
+Handing a whole feature to an AI agent kept running into the same problems.
+
+- When a session dies, its context and decisions die with it.
+- The agent that wrote the code gets to declare its own work "done".
+- Reviews never end, reopening points that were already decided.
+
+## How I built it
+
+There was no finished design up front. I shaped it over three weeks while shipping real tickets, and nearly every rule in it traces back to the ticket that made it necessary.
+
+**State lives in a committed document, not the conversation.**
+Each ticket gets a plan doc with a stage checklist and the next command to run at the top, committed to the repo. Every session reads it first and starts from the first unchecked stage, so a crashed session or a usage limit costs a restart, not the work — and any machine can pick it up.
+
+**Important boundaries always get a fresh session.**
+Plan → implement and implement → review always start in a new session, so the reviewer doesn't inherit hypotheses the implementer already discarded. Every other boundary is decided by measuring context usage.
+
+**Whoever wrote it doesn't grade it.**
+Each stage is checked by a different set of eyes. Plans are reviewed by [Fusion Council](/en/portfolio/fusion-council), a multi-model panel, and by Codex against the original requirements. Implementation and fixes go through a Codex review whose prompt the session never sees, plus a review gate at the end of every turn. UI changes are rendered so I can check the actual screen myself.
+
+**Done is proven by a receipt, not a checkbox.**
+The agent can't mark a stage complete. A script writes a receipt only when static analysis and the full test suite pass on that exact commit, and the next stage verifies the receipt first. When in doubt, it falls back to another review, not to shipping.
+
+**Repetition is stopped with numbers, not judgment.**
+One ticket took 34 hours, of which implementation was 5; the rest was review rounds circling a point that had already been decided three times. A rule against exactly that already existed, and the agent quoted it while running the same round again. So review rounds, rule file size, and session handoff points all got numeric limits. A limit can be raised, but raising it shows up in the diff with a reason.
+
+**One loop adds rules, another removes them.**
+After every ticket, the pitfalls it hit get promoted into rules or guides. That alone grew the rule file to 87KB — more than an agent could follow. So every two weeks a retro skill mines hundreds of session transcripts, deletes rules that never fire, and turns rules broken twice into tested scripts. The reasoning behind each rule lives in a separate document, so the agent only reads the rules it has to execute.
+
+## Results
+
+- Review rounds per ticket: worst case 31 → median 3
+- Rules loaded by an implementation session: ~90KB → ~47KB
+- Rule size held under a cap, with the reasoning for each rule recorded separately in 160+ entries
+- On one ticket, my only input was the command and picks for 9 questions; every course correction came from the verification stages
