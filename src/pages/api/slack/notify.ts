@@ -10,6 +10,7 @@ import {
 } from '../../../lib/slack/blobs';
 import { buildClipMessage, type SlackMessage } from '../../../lib/slack/block-kit';
 import { getClipMetadata, getSourceDomain } from '../../../utils/clips-metadata';
+import { byLocale } from '../../../i18n/content';
 
 export const prerender = false;
 
@@ -38,6 +39,7 @@ async function postToSlack(
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(5000),
     });
   } catch (err) {
     console.error('slack fetch threw', install.team_id, err);
@@ -69,7 +71,8 @@ export const POST: APIRoute = async ({ url }) => {
   }
   const lastNotifiedAt = new Date(lastRaw);
 
-  const allClips = await getCollection('clips');
+  // en variants live at /en/clips/<x>; buildClipMessage would link /clips/en/<x> (404). Send ko only.
+  const allClips = byLocale(await getCollection('clips'), 'ko');
   const newClips = allClips
     .filter((c) => c.data.pubDate > lastNotifiedAt)
     .sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
@@ -102,16 +105,20 @@ export const POST: APIRoute = async ({ url }) => {
   const installs = await listInstalls();
   let cleaned = 0;
 
-  for (const install of installs) {
-    for (const payload of payloads) {
-      const outcome = await postToSlack(install, payload);
-      if (outcome === 'dead') {
-        await deleteInstall(install.team_id);
-        cleaned++;
-        break; // stop sending remaining clips to this dead workspace
+  // ponytail: a completed run advances last_notified_at past failed sends (no retry);
+  // an interrupted or concurrent run may re-send duplicates. Add per-install cursors if that matters.
+  await Promise.all(
+    installs.map(async (install) => {
+      for (const payload of payloads) {
+        const outcome = await postToSlack(install, payload);
+        if (outcome === 'dead') {
+          await deleteInstall(install.team_id);
+          cleaned++;
+          break; // stop sending remaining clips to this dead workspace
+        }
       }
-    }
-  }
+    }),
+  );
 
   const newest = newClips[newClips.length - 1].data.pubDate.toISOString();
   await setState('last_notified_at', newest);

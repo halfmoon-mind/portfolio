@@ -65,7 +65,7 @@ const clips = defineCollection({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
-    sourceUrl: z.string().url(),
+    sourceUrl: z.string().url().refine((u) => /^https?:\/\//.test(u), "sourceUrl must be http(s)"),
     sourceTitle: z.string().optional(),
     quote: z.string().optional(),
     tags: z.array(z.string()).optional(),

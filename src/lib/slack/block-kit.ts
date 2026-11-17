@@ -17,18 +17,27 @@ export type SlackMessage = {
   blocks: unknown[];
 };
 
-const BODY_CHAR_BUDGET = 2800;
+// Slack rejects section text over 3000 chars.
+const SECTION_CHAR_LIMIT = 3000;
 
-function truncateBody(body: string): string {
-  const trimmed = body.trim();
-  if (trimmed.length <= BODY_CHAR_BUDGET) return trimmed;
-  return trimmed.slice(0, BODY_CHAR_BUDGET - 1).trimEnd() + '…';
+/** Truncates already-escaped text to `max` chars, never leaving a half-cut `&amp;`-style entity. */
+function truncateEscaped(text: string, max: number): string {
+  if (text.length <= max) return text;
+  if (max <= 0) return '';
+  return text.slice(0, max - 1).replace(/&[a-z]*$/, '').trimEnd() + '…';
 }
 
 export function buildClipMessage(clip: ClipInput): SlackMessage {
   const safeTitle = escapeSlackText(clip.title);
-  const safeBody = escapeSlackText(truncateBody(clip.body));
-  const safeQuote = clip.quote ? escapeSlackText(clip.quote) : undefined;
+  // section text is `*${safeTitle}*\n${safeBody}` → 3 chars of markup
+  const safeBody = truncateEscaped(
+    escapeSlackText(clip.body.trim()),
+    Math.max(0, SECTION_CHAR_LIMIT - safeTitle.length - 3),
+  );
+  // quote section is `> ${safeQuote}` → 2 chars of markup
+  const safeQuote = clip.quote
+    ? truncateEscaped(escapeSlackText(clip.quote), SECTION_CHAR_LIMIT - 2)
+    : undefined;
   const sourceLabel = escapeSlackText(clip.sourceTitle ?? clip.sourceUrl);
   const clipUrl = `${clip.siteUrl.replace(/\/$/, '')}/clips/${clip.slug}`;
 

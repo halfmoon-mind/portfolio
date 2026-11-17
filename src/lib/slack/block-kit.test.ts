@@ -58,10 +58,26 @@ describe('buildClipMessage', () => {
     const longBody = 'ㄱ'.repeat(5000);
     const out = buildClipMessage({ ...sample, body: longBody });
     const section = (out.blocks[1] as { text: { text: string } }).text.text;
-    // `*<title>*\n` prefix adds ~`title.length + 3` chars; body itself must
-    // be kept under the 2800-char budget and end with an ellipsis.
-    expect(section.length).toBeLessThanOrEqual(2800 + 'On code review'.length + 3);
+    expect(section.length).toBeLessThanOrEqual(3000);
     expect(section.endsWith('…')).toBe(true);
+  });
+
+  it('keeps escape-heavy title/body/quote sections within 3000 chars without cut entities', () => {
+    const out = buildClipMessage({
+      ...sample,
+      title: '<&'.repeat(100),
+      body: '<&'.repeat(3000),
+      quote: '&<'.repeat(3000),
+    });
+    const sections = out.blocks
+      .filter((b) => (b as { type: string }).type === 'section')
+      .map((b) => (b as { text: { text: string } }).text.text);
+    expect(sections).toHaveLength(2);
+    for (const text of sections) {
+      expect(text.length).toBeLessThanOrEqual(3000);
+      expect(text.endsWith('…')).toBe(true);
+      expect(text).not.toMatch(/&[a-z]*…$/);
+    }
   });
 
   it('escapes control chars inside the body', () => {
