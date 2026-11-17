@@ -1,6 +1,7 @@
 [build]
   publish = "dist"
-  command = "npm run build"
+  command = "yarn build"
 
 [build.environment]
   SECRETS_SCAN_OMIT_KEYS = "PUBLIC_SITE_URL"
+  NODE_VERSION = "22"

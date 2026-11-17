@@ -23,7 +23,6 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
-    "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
     "netlify-cli": "^25.3.0",
     "open-graph-scraper": "^6.11.0",

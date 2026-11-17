@@ -32,18 +32,18 @@ async function saveCache(cache) {
 }
 
 async function listClipSourceUrls() {
-  const entries = await readdir(CLIPS_DIR);
-  const urls = [];
+  const entries = await readdir(CLIPS_DIR, { recursive: true });
+  const urls = new Set();
   for (const entry of entries) {
     if (!entry.endsWith('.md') && !entry.endsWith('.mdx')) continue;
     const full = join(CLIPS_DIR, entry);
     const raw = await readFile(full, 'utf8');
     const { data } = matter(raw);
     if (typeof data.sourceUrl === 'string') {
-      urls.push(data.sourceUrl);
+      urls.add(data.sourceUrl);
     }
   }
-  return urls;
+  return [...urls];
 }
 
 function normalizeImageUrl(maybe, baseUrl) {
@@ -111,11 +111,11 @@ async function main() {
   let updated = 0;
   for (const url of urls) {
     const hasEntry = Object.prototype.hasOwnProperty.call(cache, url);
-    if (hasEntry && !force) {
+    if (hasEntry && !force && !cache[url].failed) {
       console.log(`  ✓ cached: ${url}`);
       continue;
     }
-    console.log(`  ↻ fetching: ${url}${force && hasEntry ? ' (forced)' : ''}`);
+    console.log(`  ↻ fetching: ${url}${hasEntry ? (force ? ' (forced)' : ' (retry)') : ''}`);
     cache[url] = await scrape(url);
     updated += 1;
   }
