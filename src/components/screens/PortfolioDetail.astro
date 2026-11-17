@@ -36,16 +36,12 @@ const monthFmt = { year: 'numeric', month: 'long' } as const;
 		<article>
 			<div class="hero-image">
 				{entry.data.heroImage && (
-					entry.data.heroImage.startsWith('http') ? (
-						<img src={entry.data.heroImage} alt={`Cover image for ${entry.data.title}`} />
-					) : (
-						<img
-							src={entry.data.heroImage}
-							alt={`Cover image for ${entry.data.title}`}
-							width={DISPLAY_IMAGE_WIDTH}
-							height={DISPLAY_IMAGE_HEIGHT}
-						/>
-					)
+					<img
+						src={entry.data.heroImage}
+						alt={`Cover image for ${entry.data.title}`}
+						width={DISPLAY_IMAGE_WIDTH}
+						height={DISPLAY_IMAGE_HEIGHT}
+					/>
 				)}
 			</div>
 			<div class="prose">

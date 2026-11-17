@@ -86,6 +86,7 @@ const langAlternate = localizePath(Astro.url.pathname, locale === 'ko' ? 'en' : 
 
     <style>
       main {
+        width: auto;
         max-width: 1012px;
         padding: 16px;
         margin: 0 auto;
@@ -220,7 +221,7 @@ const langAlternate = localizePath(Astro.url.pathname, locale === 'ko' ? 'en' : 
       }
       .card-date {
         font-size: 0.8em;
-        color: var(--hm-color-fg-subtle);
+        color: var(--hm-color-fg-muted);
       }
       .card-tags {
         list-style: none;

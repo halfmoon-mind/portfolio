@@ -106,6 +106,7 @@ const langAlternate = localizePath(Astro.url.pathname, locale === 'ko' ? 'en' : 
 	<body>
 		<Header locale={locale} langAlternate={langAlternate} />
 		<main>
+			<h1 class="sr-only">Blog</h1>
 			<section>
 				<ul>
 					{

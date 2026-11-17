@@ -12,7 +12,7 @@ const description =
   'Get new Half to Full Clips delivered to a Slack channel with a short personal comment and source link.';
 ---
 
-<BaseLayout title={pageTitle} description={description} locale={locale}>
+<BaseLayout title={pageTitle} description={description} locale={locale} htmlLang="en">
   <section class="slack-hero">
     <div class="hero-copy">
       <p class="eyebrow">Half to Full Clips for Slack</p>
@@ -35,7 +35,7 @@ const description =
       </div>
     </div>
 
-    <aside class="message-preview" aria-label="Example Slack notification">
+    <aside class="message-preview" aria-hidden="true" aria-label="Example Slack notification">
       <div class="preview-bar">
         <span class="dot red"></span>
         <span class="dot yellow"></span>
@@ -55,7 +55,7 @@ const description =
             source and tags attached for context.
           </p>
           <div class="source-row">Source: example.com</div>
-          <button type="button">Open on halfmoon.day</button>
+          <span class="mock-button">Open on halfmoon.day</span>
         </div>
       </div>
     </aside>
@@ -235,7 +235,8 @@ const description =
     line-height: var(--hm-font-line-height-normal);
   }
 
-  .preview-message button {
+  .preview-message .mock-button {
+    display: inline-block;
     margin-top: 0.75rem;
     padding: 0.5rem 0.75rem;
     border: 0;

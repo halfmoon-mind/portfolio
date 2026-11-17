@@ -58,7 +58,7 @@
 }
 
 .pdf-button:focus-visible {
-  outline: 3px solid rgba(49, 130, 206, 0.25);
+  outline: 2px solid var(--hm-color-action-primary-bg);
   outline-offset: 2px;
 }
 

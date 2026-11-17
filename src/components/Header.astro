@@ -18,7 +18,7 @@ const switchHref = langAlternate === undefined ? localizePath(Astro.url.pathname
 	<nav>
 		<h2><a href={localizePath('/', locale)}>{SITE_TITLE}</a></h2>
 		<div class="menu-container">
-			<button id="menu-toggle" aria-label={t('a11y.openMenu')}>
+			<button id="menu-toggle" aria-label={t('a11y.openMenu')} aria-expanded="false" aria-controls="dropdown-menu" data-menu-locale={locale}>
 				<div class="menu-icon-wrapper">
 					<span class="menu-icon"></span>
 				</div>
@@ -34,7 +34,7 @@ const switchHref = langAlternate === undefined ? localizePath(Astro.url.pathname
 		</div>
 		<div class="nav-right">
 			{switchHref && (
-				<div class="lang-toggle" aria-label={t('a11y.langSwitch')}>
+				<div class="lang-toggle" role="group" aria-label={t('a11y.langSwitch')}>
 					{locale === 'ko' ? <span aria-current="true">KO</span> : <a href={switchHref}>KO</a>}
 					<span class="lang-sep">·</span>
 					{locale === 'en' ? <span aria-current="true">EN</span> : <a href={switchHref}>EN</a>}
@@ -84,13 +84,13 @@ const switchHref = langAlternate === undefined ? localizePath(Astro.url.pathname
 		align-items: center;
 		justify-content: space-between;
 	}
-	nav a {
+	nav :global(a) {
 		padding: 1em 0.5em;
-		color: var(--black);
+		color: rgb(var(--black));
 		border-bottom: none;
 		text-decoration: none;
 	}
-	nav a.active {
+	nav :global(a.active) {
 		text-decoration: none;
 		color: var(--accent);
 	}
@@ -241,7 +241,8 @@ const switchHref = langAlternate === undefined ? localizePath(Astro.url.pathname
 		}
 
 		.internal-links {
-			display: none;
+			visibility: hidden;
+			pointer-events: none;
 			position: absolute;
 			top: calc(100% + 8px);
 			right: 0;
@@ -255,16 +256,17 @@ const switchHref = langAlternate === undefined ? localizePath(Astro.url.pathname
 			overflow: hidden;
 			opacity: 0;
 			transform: translateY(-8px);
-			transition: opacity 0.3s ease, transform 0.3s ease;
+			transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
 		}
 		
 		.internal-links.show {
-			display: block;
+			visibility: visible;
+			pointer-events: auto;
 			opacity: 1;
 			transform: translateY(0);
 		}
 		
-		.internal-links a {
+		.internal-links :global(a) {
 			display: flex;
 			align-items: center;
 			padding: 12px 16px;
@@ -273,11 +275,11 @@ const switchHref = langAlternate === undefined ? localizePath(Astro.url.pathname
 			transition: background-color 0.2s ease;
 		}
 		
-		.internal-links a:hover {
+		.internal-links :global(a:hover) {
 			background-color: var(--hm-color-gray-200);
 		}
 		
-		.internal-links a.active {
+		.internal-links :global(a.active) {
 			border-left: none;
 			padding-left: 16px;
 			background-color: var(--hm-color-gray-200);
