@@ -15,12 +15,12 @@ export function getTranslation<T extends Translatable>(post: T, all: T[]): T | n
 
 /**
  * ko/en 쌍을 canonical 하나로 합친다. preferred 언어를 우선 노출하고, 없으면 ko,
- * 그래도 없으면 그룹의 첫 항목. 쌍이 없는 글은 그대로 통과.
+ * 그래도 없으면 그룹의 첫 항목. 쌍이 없는 글은 자기 lang(기본 ko)이 preferred일 때만 노출.
  */
 export function canonicalVariants<T extends Translatable>(all: T[], preferred: 'ko' | 'en' = 'ko'): T[] {
 	return all.filter((post) => {
 		const key = post.data.translationKey;
-		if (!key) return true;
+		if (!key) return (post.data.lang ?? 'ko') === preferred;
 		const group = all.filter((p) => p.data.translationKey === key);
 		const canonical =
 			group.find((p) => (p.data.lang ?? 'ko') === preferred) ??

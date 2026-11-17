@@ -1,5 +1,4 @@
 ---
-import type { CollectionEntry } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -19,11 +18,13 @@ type Props = {
 	githubUrl?: string;
 	liveUrl?: string;
 	locale?: Locale;
+	// <html lang> override for pages whose content language differs from the header locale.
+	htmlLang?: Locale;
 	langAlternate?: string | null;
 	alternates?: { hreflang: string; href: string }[];
 };
 
-const { title, description, heroImage, locale = 'ko', langAlternate, alternates = [] } = Astro.props;
+const { title, description, heroImage, locale = 'ko', htmlLang = locale, langAlternate, alternates = [] } = Astro.props;
 
 // A page with a known locale sibling gets ko/en/x-default hreflang for free.
 const hreflangAlternates =
@@ -37,18 +38,10 @@ const websiteSchema = {
 	"@type": "WebSite",
 	"name": SITE_TITLE,
 	"url": Astro.site?.toString(),
-	"potentialAction": {
-		"@type": "SearchAction",
-		"target": {
-			"@type": "EntryPoint",
-			"urlTemplate": `${Astro.site}search?q={search_term_string}`
-		},
-		"query-input": "required name=search_term_string"
-	}
 };
 ---
 
-<html lang={locale}>
+<html lang={htmlLang}>
 	<head>
 		<BaseHead title={title} description={description} image={heroImage ?? baseHeroImage} locale={locale} alternates={hreflangAlternates} />
 		<style>

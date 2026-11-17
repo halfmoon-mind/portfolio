@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { getTranslation, primaryVariants } from './language';
+import { canonicalVariants, getTranslation, primaryVariants } from './language';
 
 const ko = { id: 'post-ko', data: { lang: 'ko', translationKey: 'post' } };
 const en = { id: 'post-en', data: { lang: 'en', translationKey: 'post' } };
@@ -32,5 +32,13 @@ describe('primaryVariants', () => {
 		const a = { id: 'a', data: { lang: 'en', translationKey: 'k' } };
 		const b = { id: 'b', data: { lang: 'en', translationKey: 'k' } };
 		expect(primaryVariants([a, b])).toEqual([a]);
+	});
+});
+
+describe('canonicalVariants', () => {
+	it('쌍 없는 글은 자기 lang을 따른다 (lang 없으면 ko)', () => {
+		const loneEn = { id: 'lone-en', data: { lang: 'en' } };
+		expect(canonicalVariants([lone, loneEn], 'ko')).toEqual([lone]);
+		expect(canonicalVariants([lone, loneEn], 'en')).toEqual([loneEn]);
 	});
 });

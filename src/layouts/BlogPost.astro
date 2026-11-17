@@ -61,7 +61,7 @@ const articleSchema = {
 	"headline": title,
 	"description": description,
 	"inLanguage": lang === 'en' ? 'en' : 'ko',
-	"image": heroImage ? new URL(heroImage, Astro.site).toString() : "",
+	"image": heroImage ? new URL(heroImage, Astro.site).toString() : undefined,
 	"datePublished": formatISODate(pubDate),
 	"dateModified": updatedDate ? formatISODate(updatedDate) : formatISODate(pubDate),
 	"author": {
@@ -85,25 +85,6 @@ const articleSchema = {
 
 <html lang={lang}>
 	<head>
-		{translation && (
-			<script is:inline define:vars={{ siblingUrl: `/blog/${translation.id}/`, pageLang: lang }}>
-				// Auto-redirect to the visitor's language version. This was an edge
-				// middleware, but pages are now static/CDN-cached so the per-user
-				// decision must run in the browser. Runs first in <head> (before paint)
-				// to avoid a flash. Set the cookie BEFORE redirecting so the back button
-				// and a manual toggle-back aren't bounced (cookie present → never auto).
-				(function () {
-					try {
-						if (/(?:^|;\s*)blogLang=/.test(document.cookie)) return;
-						var pref = (navigator.language || '').slice(0, 2).toLowerCase();
-						if (pref !== 'ko' && pref !== 'en') return;
-						if (pref === pageLang) return;
-						document.cookie = 'blogLang=' + pref + '; path=/; max-age=31536000; samesite=lax';
-						location.replace(siblingUrl);
-					} catch (e) {}
-				})();
-			</script>
-		)}
 		<BaseHead title={title} description={description} image={heroImage} article={true} locale={locale} alternates={baseHeadAlternates} />
 			{hreflangLinks.map((l) => <link rel="alternate" hreflang={l.hreflang} href={l.href} />)}
 		<style>
@@ -183,21 +164,12 @@ const articleSchema = {
 						<nav class="lang-switch" aria-label="언어 선택">
 							{langVariants.map((v) =>
 								v.href ? (
-									<a href={v.href} hreflang={v.code} lang={v.code} data-set-lang={v.code}>{LANG_LABEL[v.code]}</a>
+									<a href={v.href} hreflang={v.code} lang={v.code}>{LANG_LABEL[v.code]}</a>
 								) : (
 									<span aria-current="true" lang={v.code}>{LANG_LABEL[v.code]}</span>
 								)
 							)}
 						</nav>
-					)}
-					{langVariants.length > 0 && (
-						<script is:inline>
-							document.querySelectorAll('a[data-set-lang]').forEach(function (a) {
-								a.addEventListener('click', function () {
-									document.cookie = 'blogLang=' + a.dataset.setLang + '; path=/; max-age=31536000; samesite=lax';
-								});
-							});
-						</script>
 					)}
 					<div class="title">
 						<div class="date">
